@@ -10,8 +10,8 @@
             ],
 
             'online' => [
-                'root' => 'http://softdoc.pub',
-                'cdn' => 'http://cdn.softdoc.pub',
+                'root' => 'http://softdoc.cn',
+                'cdn' => 'http://cdn.softdoc.cn',
             ],
         ],
 
