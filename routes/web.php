@@ -98,6 +98,17 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
         Route::get('/', $controller.'@index');
 
 
+        // 【info】
+        Route::group(['prefix' => 'info'], function () {
+
+            $controller = 'HomeController';
+
+            Route::get('index', $controller.'@info_index');
+            Route::match(['get','post'], 'edit', $controller.'@infoEditAction');
+
+        });
+
+
         // 作者
         Route::group(['prefix' => 'course'], function () {
 
