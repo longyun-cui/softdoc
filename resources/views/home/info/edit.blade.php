@@ -16,7 +16,7 @@
         <!-- BEGIN PORTLET-->
         <div class="box box-info">
 
-            <div class="box-header with-border" style="margin:16px 0;">
+            <div class="box-header with-border" style="margin:8px 0;">
                 <h3 class="box-title">编辑个人信息</h3>
                 <div class="box-tools pull-right">
                 </div>
@@ -67,7 +67,7 @@
             </form>
 
             <div class="box-footer">
-                <div class="row" style="margin:16px 0;">
+                <div class="row" style="margin:8px 0;">
                     <div class="col-md-8 col-md-offset-2">
                         <button type="button" onclick="" class="btn btn-primary" id="edit-info-submit"><i class="fa fa-check"></i>提交</button>
                         <button type="button" onclick="history.go(-1);" class="btn btn-default">返回</button>

@@ -106,6 +106,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
             Route::get('index', $controller.'@info_index');
             Route::match(['get','post'], 'edit', $controller.'@infoEditAction');
 
+            Route::match(['get','post'], 'password/reset', $controller.'@passwordResetAction');
+
         });
 
 

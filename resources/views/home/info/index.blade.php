@@ -14,7 +14,7 @@
         <!-- BEGIN PORTLET-->
         <div class="box box-info">
 
-            <div class="box-header with-border" style="margin:16px 0;">
+            <div class="box-header with-border">
                 <h3 class="box-title">基本信息</h3>
                 <div class="pull-right">
                     <a href="{{url('/home/info/edit')}}">
@@ -85,7 +85,7 @@
             </form>
 
             <div class="box-footer">
-                <div class="row" style="margin:16px 0;">
+                <div class="row" style="margin:8px 0;">
                     <div class="col-md-8">
                         <a href="{{url('/home/info/edit')}}">
                             <button type="button" onclick="" class="btn btn-success"><i class="fa "></i>编辑信息</button>
@@ -96,6 +96,32 @@
             </div>
         </div>
         <!-- END PORTLET-->
+
+
+        <div class="box box-info">
+
+            <div class="box-header">
+                <h3 class="box-title">修改密码</h3>
+                <div class="pull-right">
+                    <a href="{{url('/home/info/password/reset')}}">
+                        <button type="button" onclick="" class="btn btn-primary pull-right"><i class="fa "></i>修改密码</button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="row" style="margin:8px 0;">
+                    <div class="col-md-8 col-md-offset-2">
+                        <a href="{{url('/home/info/password/reset')}}">
+                            <button type="button" onclick="" class="btn btn-primary"><i class="fa "></i>修改密码</button>
+                        </a>
+                        <button type="button" onclick="history.go(-1);" class="btn btn-default">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>
 @endsection

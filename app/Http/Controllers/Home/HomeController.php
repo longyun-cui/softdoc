@@ -28,7 +28,6 @@ class HomeController extends Controller
 
 
 
-
     // 返回【用户信息】视图
     public function info_index()
     {
@@ -40,6 +39,15 @@ class HomeController extends Controller
     {
         if(request()->isMethod('get')) return $this->repo->view_info_edit();
         else if (request()->isMethod('post')) return $this->repo->info_save(request()->all());
+    }
+
+
+
+    // 【密码】【修改】
+    public function passwordResetAction()
+    {
+        if(request()->isMethod('get')) return $this->repo->view_password_reset();
+        else if (request()->isMethod('post')) return $this->repo->password_reset(request()->all());
     }
 
 
