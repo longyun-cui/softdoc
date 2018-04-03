@@ -406,6 +406,17 @@ if(!function_exists('strip_html_tags')){
         return $data;
     }
 }
+/*
+ * 获取html
+ */
+if(!function_exists('get_html_img')){
+
+    function get_html_img($html){
+        $strPreg = '/<\s*img\s+[^>]*?src\s*=\s*(\'|\")(.*?)\\1[^>]*?\/?\s*>/i';
+        preg_match_all($strPreg, $html, $matches);
+        return $matches;
+    }
+}
 
 
 /**

@@ -71,7 +71,16 @@ class RootRepository {
                 'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); }
             ])->where('active', 1)->orderBy('id','desc')->paginate(20);
         }
-        return view('frontend.root.courses')->with(['getType'=>'items','courses'=>$courses]);
+
+        foreach ($courses as $item)
+        {
+            $item->content_show = strip_tags($item->content);
+            $img_tags = get_html_img($item->content);
+            $item->img_tags = $img_tags;
+        }
+//        dd($lines->toArray());
+
+        return view('frontend.root.courses')->with(['item_magnitude'=>'item-plural','getType'=>'items','courses'=>$courses]);
     }
 
 
@@ -86,6 +95,8 @@ class RootRepository {
         $user = User::with([
             'courses'=>function($query) { $query->orderBy('id','desc'); }
         ])->withCount('courses')->find($user_decode);
+        $user->timestamps = false;
+        $user->increment('visit_num');
 
         if(Auth::check())
         {
@@ -106,10 +117,15 @@ class RootRepository {
             ])->where(['user_id'=>$user_decode,'active'=>1])->orderBy('id','desc')->paginate(20);
         }
 
-        $user->timestamps = false;
-        $user->increment('visit_num');
+        foreach ($courses as $item)
+        {
+            $item->content_show = strip_tags($item->content);
+            $img_tags = get_html_img($item->content);
+            $item->img_tags = $img_tags;
+        }
+//        dd($lines->toArray());
 
-        return view('frontend.root.user')->with(['getType'=>'items','data'=>$user,'courses'=>$courses]);
+        return view('frontend.root.user')->with(['item_magnitude'=>'item-plural','getType'=>'items','data'=>$user,'courses'=>$courses]);
     }
 
 
@@ -192,7 +208,7 @@ class RootRepository {
         }
         else $item = $course;
 
-        return view('frontend.course.course')->with(['getType'=>'item','course'=>$course,'content'=>$content,'item'=>$item]);
+        return view('frontend.course.course')->with(['item_magnitude'=>'item-singular','getType'=>'item','course'=>$course,'content'=>$content,'item'=>$item]);
     }
 
 

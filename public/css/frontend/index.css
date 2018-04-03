@@ -53,6 +53,10 @@
 .item-piece .text-red {color:#e21433}
 
 
+.item-piece .media .media-left {width:150px;height:auto;max-height:150px;float:left;}
+.item-piece .media img {width:100%;}
+
+
 .item-entity-container {background:#fff;}
 .item-title-row {border-bottom:1px solid #f4f4f4;}
 .item-title-row a {color:#494949;font-size:16px;font-weight:bold;}
@@ -64,7 +68,9 @@
 .item-tools-row {padding:8px 10px;}
 .item-tools-row a {color:#888}
 
-article {max-height:22px;}
+.item-plural .media .media-left {display:block;}
+.item-plural article {max-height:66px;line-height:22px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient: vertical;overflow: hidden;}
+/*.item-plural article {max-height:22px;overflow:hidden;}*/
 
 
 .items .comment-container {display:none;}

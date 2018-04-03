@@ -1,5 +1,5 @@
 {{--内容--}}
-<div class="item-piece item-option course-option item"
+<div class="item-piece item-option course-option item {{$item_magnitude or 'item-singular'}}"
      data-course="{{$course->encode_id or encode(0)}}"
      data-content="{{$content->encode_id or encode(0)}}"
 >

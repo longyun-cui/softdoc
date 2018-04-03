@@ -1,5 +1,7 @@
 @foreach($courses as $num => $item)
-<div class="item-piece item-option course-option items" data-course="{{encode($item->id)}}" data-content="{{encode(0)}}">
+<div class="item-piece item-option course-option items {{$item_magnitude or 'item-plural'}}"
+     data-course="{{encode($item->id)}}"
+     data-content="{{encode(0)}}">
     <!-- BEGIN PORTLET-->
     <div class="panel-default box-default item-entity-container">
 
@@ -37,7 +39,17 @@
         {{--content--}}
         @if(!empty($item->content))
             <div class="box-body item-content-row">
-                <article class="colo-md-12"> {!! $item->content or '' !!} </article>
+                <div class="media">
+                    <div class="media-left">
+                        <img src="{!! $item->img_tags[2][0] or '' !!}" alt="" class="media-object">
+                    </div>
+                    <div class="media-body">
+                        <div class="clearfix">
+                            <article class="colo-md-12"> {!! $item->content_show or '' !!} </article>
+                        </div>
+                    </div>
+                </div>
+                {{--<article class="colo-md-12"> {!! $item->content or '' !!} </article>--}}
             </div>
         @endif
 
