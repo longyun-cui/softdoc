@@ -1,5 +1,9 @@
 @extends('frontend.course.layout')
 
+@section('wx_share_title') {{$course->name or ''}} @endsection
+@section('wx_share_desc') {{$course->description or ''}} @endsection
+@section('wx_share_imgUrl'){{config('common.host.'.env('APP_ENV').'.cdn').'/'.$course->user->portrait_img}}@endsection
+
 @section('title') {{$course->title}} @endsection
 @section('header','')
 @section('description','')
