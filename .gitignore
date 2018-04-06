@@ -14,3 +14,5 @@ yarn-error.log
 
 /storage/*.key
 /storage/resource
+
+.composer.lock
