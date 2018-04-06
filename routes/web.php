@@ -36,7 +36,7 @@ Route::group(['prefix' => 'common'], function () {
 /*
  * Root Frontend
  */
-Route::group(['namespace' => 'Front'], function () {
+Route::group(['namespace' => 'Front', 'middleware' => 'wechat.share'], function () {
 
     Route::get('/', function () {
         return redirect('/courses');

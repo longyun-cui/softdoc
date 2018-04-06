@@ -1,5 +1,9 @@
 @extends('frontend.layout.layout')
 
+@section('wx_share_title') {{$data->name}} @endsection
+@section('wx_share_desc') 欢迎来到我的课栈 @endsection
+@section('wx_share_imgUrl') {{config('common.host.'.env('APP_ENV').'.cdn').'/'.$data->portrait_img}} @endsection
+
 @section('header_title')  @endsection
 
 @section('title') {{$data->name}}的主页 @endsection

@@ -1,8 +1,12 @@
 @extends('frontend.layout.layout')
 
+@section('wx_share_title') 课栈 @endsection
+@section('wx_share_desc') 三人行必有我师焉 @endsection
+@section('wx_share_imgUrl') {{config('common.host.'.env('APP_ENV').'.root').'/favicon.png'}} @endsection
+
 @section('header_title')  @endsection
 
-@section('title','三人行')
+@section('title','课栈')
 @section('header','三人行必有我师焉')
 @section('description','课程集')
 
