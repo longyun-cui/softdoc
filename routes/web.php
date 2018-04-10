@@ -36,18 +36,22 @@ Route::group(['prefix' => 'common'], function () {
 /*
  * Root Frontend
  */
-Route::group(['namespace' => 'Front', 'middleware' => 'wechat.share'], function () {
+Route::group(['namespace' => 'Front'], function () {
 
     Route::get('/', function () {
         return redirect('/courses');
     });
 
-    Route::get('courses', 'RootController@view_courses');
-//    Route::get('course', 'RootController@view_course');
-    Route::get('course/{id?}', 'RootController@view_course');
+    Route::group(['middleware' => 'wechat.share'], function () {
 
+        Route::get('courses', 'RootController@view_courses');
 
-    Route::get('u/{id?}', 'RootController@view_user');
+        Route::get('course/{id?}', 'RootController@view_course');
+//        Route::get('course', 'RootController@view_course');
+
+        Route::get('u/{id?}', 'RootController@view_user');
+
+    });
 
 
     Route::group(['middleware' => 'login'], function () {
