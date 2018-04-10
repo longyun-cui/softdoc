@@ -2,7 +2,13 @@
 
 @section('wx_share_title') {{$item->title or ''}} @endsection
 @section('wx_share_desc') {{$item->description or '@'.$course->title}} @endsection
-@section('wx_share_imgUrl') @if(!empty($course->user->portrait_img)){{config('common.host.'.env('APP_ENV').'.cdn').'/'.$course->user->portrait_img}}@else{{config('common.host.'.env('APP_ENV').'.root').'/favicon.png'}}@endif @endsection
+@section('wx_share_imgUrl')
+    @if(!empty($course->user->portrait_img))
+        {{config('common.host.'.env('APP_ENV').'.cdn').'/'.$course->user->portrait_img}}
+    @else
+        {{config('common.host.'.env('APP_ENV').'.root').'/favicon.png'}}
+    @endif
+@endsection
 
 @section('title') {{$course->title}} @endsection
 @section('header','')

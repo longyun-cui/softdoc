@@ -392,7 +392,7 @@ desired effect
                     desc: "@yield('wx_share_desc')",
                     link: link,
                     dataUrl: '',
-                    imgUrl: "@yield('wx_share_imgUrl')",
+                    imgUrl: $.trim("@yield('wx_share_imgUrl')"),
                     success: function () {
                         // 用户确认分享后执行的回调函数
                         {{--$.get(--}}
@@ -417,7 +417,7 @@ desired effect
                     title: "@yield('wx_share_title')",
                     desc: "@yield('wx_share_desc')",
                     link: link,
-                    imgUrl: "@yield('wx_share_imgUrl')",
+                    imgUrl: $.trim("@yield('wx_share_imgUrl')"),
                     success: function () {
                         // 用户确认分享后执行的回调函数
                         {{--$.get(--}}
@@ -442,7 +442,7 @@ desired effect
                     title: "@yield('wx_share_title')",
                     desc: "@yield('wx_share_desc')",
                     link: link,
-                    imgUrl: "@yield('wx_share_imgUrl')",
+                    imgUrl: $.trim("@yield('wx_share_imgUrl')"),
                     success: function () {
                         // 用户确认分享后执行的回调函数
                         {{--$.get(--}}
@@ -467,7 +467,7 @@ desired effect
                     title: "@yield('wx_share_title')",
                     desc: "@yield('wx_share_desc')",
                     link: link,
-                    imgUrl: "@yield('wx_share_imgUrl')",
+                    imgUrl: $.trim("@yield('wx_share_imgUrl')"),
                     success: function () {
                         // 用户确认分享后执行的回调函数
                         {{--$.get(--}}
@@ -492,7 +492,7 @@ desired effect
                     title: "@yield('wx_share_title')",
                     desc: "@yield('wx_share_desc')",
                     link: link,
-                    imgUrl: "@yield('wx_share_imgUrl')",
+                    imgUrl: $.trim("@yield('wx_share_imgUrl')"),
                     success: function () {
                         // 用户确认分享后执行的回调函数
                         {{--$.get(--}}
