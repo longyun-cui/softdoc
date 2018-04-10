@@ -75,7 +75,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         .recursion-row {color:#eee;padding:0 4px;}
         .recursion-menu {min-height:28px;line-height:28px;margin:0;}
-        .recursion-icon {margin-right:0;cursor:pointer;}
+        .recursion-icon {margin-right:0;color:#666;cursor:pointer;}
         .recursion-icon .fa-file-text {color:#bbb;}
         /*.recursion-icon .fa-plus-square {color:#3c8dbc;}*/
         /*.recursion-icon .fa-minus-square {color:green;}*/
