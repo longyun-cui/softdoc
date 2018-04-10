@@ -3,8 +3,8 @@
 @section('wx_share_title') {{$item->title or ''}} @endsection
 @section('wx_share_desc') {{$item->description or '@'.$course->title}} @endsection
 
-@if(!empty($course->user->portrait_img))
-    @section('wx_share_imgUrl'){{config('common.host.'.env('APP_ENV').'.cdn').'/'.$course->user->portrait_img}}@endsection
+@if(!empty($item->user->portrait_img))
+    @section('wx_share_imgUrl'){{config('common.host.'.env('APP_ENV').'.cdn').'/'.$item->user->portrait_img}}@endsection
 @else
     @section('wx_share_imgUrl'){{config('common.host.'.env('APP_ENV').'.root').'/favicon.png'}}@endsection
 @endif
