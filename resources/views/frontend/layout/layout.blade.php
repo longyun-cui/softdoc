@@ -352,9 +352,6 @@ desired effect
 <script src="https://cdn.bootcss.com/Readmore.js/2.2.0/readmore.min.js"></script>
 
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
-
-
-<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
  <script>
 
     console.log("@yield('wx_share_imgUrl')");
@@ -506,7 +503,7 @@ desired effect
                                 {{--'share': 5--}}
                             {{--},--}}
                             {{--function(data) {--}}
-{{--//                                if(!data.success) layer.msg(data.msg);--}}
+                                {{--if(!data.success) layer.msg(data.msg);--}}
                             {{--}, --}}
                         {{--'json');--}}
                     },

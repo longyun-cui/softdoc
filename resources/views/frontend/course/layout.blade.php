@@ -410,7 +410,8 @@ desired effect
             Anything you want
         </div>
         <!-- Default to the left -->
-        <strong>Copyright &copy; 上海如哉网络科技有限公司 2017 <a href="#">Company</a>.</strong> All rights reserved. 沪ICP备17052782号-1
+        <strong>Copyright &copy; 上海如哉网络科技有限公司 2017-2018 Company.</strong> All rights reserved.
+        <a href="http://www.miitbeian.gov.cn">沪ICP备17052782号-2</a>
     </footer>
 
 
@@ -521,9 +522,6 @@ desired effect
 <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
 <script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
-
-<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
-
 
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
  <script>
@@ -676,7 +674,7 @@ desired effect
                         {{--'share': 5--}}
                         {{--},--}}
                         {{--function(data) {--}}
-                        {{--//                                if(!data.success) layer.msg(data.msg);--}}
+                        {{--if(!data.success) layer.msg(data.msg);--}}
                         {{--}, --}}
                         {{--'json');--}}
                     },

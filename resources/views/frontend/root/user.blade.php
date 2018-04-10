@@ -32,8 +32,8 @@
             </div>
 
             <div class="box-body" style="margin-top:8px;background:#fff;">
-                <div class="margin">课程数：{{ $data->topics_count or 0 }}</div>
-                <div class="margin">访问量：{{ $data->visit_num or 0 }}</div>
+                <div class="margin">课程数：<span class="text-blue">{{ $data->courses_count or 0 }}</span> 个</div>
+                <div class="margin">访问量：<span class="text-blue">{{ $data->visit_num or 0 }}</span> 次</div>
             </div>
 
         </div>
