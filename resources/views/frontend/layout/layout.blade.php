@@ -357,6 +357,7 @@ desired effect
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
  <script>
 
+    console.log("@yield('wx_share_imgUrl')");
     var wechat_config = {!! $wechat_config or '' !!};
     //    console.log(wechat_config);
 

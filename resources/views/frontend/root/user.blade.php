@@ -2,13 +2,12 @@
 
 @section('wx_share_title') {{$data->name or ''}} @endsection
 @section('wx_share_desc') 欢迎来到我的课栈 @endsection
-@section('wx_share_imgUrl')
-    @if(!empty($data->portrait_img))
-        {{config('common.host.'.env('APP_ENV').'.cdn').'/'.$data->portrait_img}}
-    @else
-        {{config('common.host.'.env('APP_ENV').'.root').'/favicon.png'}}
-    @endif
-@endsection
+
+@if(!empty($data->portrait_img))
+    @section('wx_share_imgUrl'){{config('common.host.'.env('APP_ENV').'.cdn').'/'.$data->portrait_img}}@endsection
+@else
+    @section('wx_share_imgUrl'){{config('common.host.'.env('APP_ENV').'.root').'/favicon.png'}}@endsection
+@endif
 
 @section('header_title')  @endsection
 
