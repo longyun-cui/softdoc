@@ -1,5 +1,10 @@
 
+* { margin: 0; padding: 0; }
+body { margin: 0; padding: 0; background: url('/bg.gif') repeat; }
+.wrapper { margin: 0; padding: 0; background: url('/bg.gif') repeat; }
+.content-wrapper {margin-left: 0; background: url('/bg.gif') repeat;}
 
+.main-header {color:#fff;}
 .container {width:1010px;padding-left:0;padding-right:0;}
 .container-body-left {}
 .container-body-right {}
@@ -18,7 +23,7 @@
 .main-side-block { color: #888; }
 .main-side-block a { color: #888; }
 .main-side-block i { width: 16px; height: 16px; margin-right: 4px; }
-.main-side-hover:hover {background: #ccc; color: #fff;}
+.main-side-hover:hover {background: #eee;}
 
 .fold-button {height:24px;line-height:24px;cursor:pointer;}
 .fold-button:hover { color:#222;background-color:#ccc; }
@@ -29,6 +34,8 @@
 .recursion-icon .fa-file-text {color:#888;}
 /*.recursion-icon .fa-plus-square {color:#3c8dbc;}*/
 /*.recursion-icon .fa-minus-square {color:green;}*/
+.main-side-menu i { margin-right: 0; }
+.main-side-menu i { width: 16px; height: 16px; line-height: 28px; margin-right: 0; }
 .recursion-text { width:calc(100% - 16px);width:-moz-calc(100% - 16px);width:-webkit-calc(100% - 16px);float:right; }
 .recursion-text a { width:100%;padding:6px 8px;line-height:16px;color:#666;float:right; }
 .container-body-left .recursion-text a {color:#666;}

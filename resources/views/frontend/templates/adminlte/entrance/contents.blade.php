@@ -1,14 +1,11 @@
 @extends('frontend.templates.adminlte.layout.layout')
+@section('html-head-title') 课栈 @endsection
+
 
 @section('wx_share_title') 课栈 @endsection
 @section('wx_share_desc') 三人行必有我师焉 @endsection
 @section('wx_share_imgUrl'){{config('common.host.'.env('APP_ENV').'.root').'/favicon.png'}}@endsection
 
-@section('header_title')  @endsection
-
-@section('title','课栈')
-@section('header','三人行必有我师焉')
-@section('description','课程集')
 
 @section('content')
 
@@ -40,11 +37,6 @@
 @section('js')
 <script>
     $(function() {
-//        $('article').readmore({
-//            speed: 150,
-//            moreLink: '<a href="#">展开更多</a>',
-//            lessLink: '<a href="#">收起</a>'
-//        });
     });
 </script>
 @endsection

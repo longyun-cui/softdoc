@@ -40,7 +40,7 @@
                                     <i class="fa fa-file-text"></i>
                                 @endif
                             </span>
-                            <span class="form-control">{{ $content->title or '' }}</span>
+                            <span class="form-control multi-ellipsis-1">{{ $content->title or '' }}</span>
 
                             @if($content->type == 1)
                             <span class="input-group-addon btn create-follow-menu" style="border-left:0;"><i class="fa fa-plus"></i></span>

@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="icon" type="image/png" sizes="196x196" href="{{ url('favicon.png') }}">
 
     <meta name="_token" content="{{ csrf_token() }}"/>
-    <title>@yield('title')</title>
+    <title>@yield('html-head-title')</title>
     <meta name="title" content="@yield('meta_title')" />
     <meta name="author" content="@yield('meta_author')" />
     <meta name="description" content="@yield('meta_description')" />
@@ -75,20 +75,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <link rel="stylesheet" href="{{asset('css/common.css')}}">
     <link rel="stylesheet" href="{{asset('css/frontend/index.css')}}">
-    <style>
-        * { margin: 0; padding: 0; }
-        body { margin: 0; padding: 0; }
-        .wrapper { margin: 0; padding: 0; }
-        .content-wrapper {margin-left: 0; background: url('/bg.gif') repeat;}
-        .main-header .header-title {
-            float: left;
-            background-color: transparent;
-            background-image: none;
-            padding: 15px 15px;
-            font-family: fontAwesome;
-            color:#fff;
-        }
-    </style>
 
     @yield('css')
     @yield('style')
@@ -114,58 +100,19 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="skin-blue fixed">
+<body class="skin-black sidebar-mini">
 <div class="wrapper">
 
     {{--header--}}
     @include('frontend.templates/adminlte/component/header')
 
+
     {{--floating-button--}}
     {{--@include('frontend.templates/adminlte/component/floating-button')--}}
 
 
-    {{--<!-- Left side column. contains the logo and sidebar -->--}}
-    <aside class="main-sidebar _none">
-
-        {{--<!-- sidebar: style can be found in sidebar.less -->--}}
-        <section class="sidebar">
-
-            <!-- Sidebar Menu -->
-            <ul class="sidebar-menu">
-
-                <li class="header">目录</li>
-
-                <li class="treeview">
-                    <a href="{{url('/')}}"><i class="fa fa-list text-orange"></i> <span>平台主页</span></a>
-                </li>
-
-                <li class="header">Home</li>
-
-                @if(!Auth::check())
-
-                    <li class="treeview">
-                        <a href="{{url('/login')}}"><i class="fa fa-circle-o"></i> <span>登录</span></a>
-                    </li>
-                    <li class="treeview">
-                        <a href="{{url('/register')}}"><i class="fa fa-circle-o"></i> <span>注册</span></a>
-                    </li>
-                @else
-                    <li class="treeview">
-                        <a href="{{url('/home')}}"><i class="fa fa-home text-default"></i> <span>返回我的后台</span></a>
-                    </li>
-                @endif
-
-
-            </ul>
-            <!-- /.sidebar-menu -->
-        </section>
-        {{--<!-- /.sidebar -->--}}
-    </aside>
-
-
-
     {{--sidebar--}}
-    @yield('sidebar')
+    @include('frontend.templates/adminlte/component/sidebar')
 
 
     {{--main-container--}}

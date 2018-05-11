@@ -1,4 +1,4 @@
-<div class="box-body main-side-block">
+<div class="box-body main-side-block main-side-menu main-side-info">
 
     <div class="col-md-12">
         <span class="recursion-icon" style="color:orange;">
@@ -22,7 +22,7 @@
 
     <div class="col-md-12">
         <span class="recursion-icon" style="color:orange;">
-            <i class="fa fa-tv"></i>
+            <i class="fa fa-search"></i>
         </span>
         <span class="recursion-text">
             <a href="javascript:void(0)">浏览 <span class="text-blue">{{ $course->visit_num or 0 }}</span> 次</a>

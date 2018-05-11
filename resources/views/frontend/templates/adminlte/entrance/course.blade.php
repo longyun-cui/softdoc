@@ -46,6 +46,7 @@
 
         @include('frontend.templates.adminlte.component.main-side.info')
         @include('frontend.templates.adminlte.component.main-side.menu')
+        @include('frontend.templates.adminlte.component.main-side.header')
 
     </div>
 
