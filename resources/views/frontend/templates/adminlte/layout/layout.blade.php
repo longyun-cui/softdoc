@@ -11,13 +11,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="shortcut icon" type="image/png" href="{{ url('favicon.png') }}">
     <link rel="icon" sizes="16x16 32x32 64x64" href="{{ url('favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="196x196" href="{{ url('favicon.png') }}">
-    <title>@yield('title')</title>
+
     <meta name="_token" content="{{ csrf_token() }}"/>
-    <meta name="robots" content="all" />
+    <title>@yield('title')</title>
     <meta name="title" content="@yield('meta_title')" />
     <meta name="author" content="@yield('meta_author')" />
     <meta name="description" content="@yield('meta_description')" />
     <meta name="keywords" content="@yield('meta_keywords')" />
+    <meta name="robots" content="all" />
+
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -46,21 +48,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
     {{--<![endif]-->--}}
     {{--<link href="https://cdn.bootcss.com/bootstrap-modal/2.2.6/css/bootstrap-modal.min.css" rel="stylesheet">--}}
 
-    <link href="https://cdn.bootcss.com/bootstrap-fileinput/4.4.3/css/fileinput.min.css" rel="stylesheet">
+    {{--<link href="https://cdn.bootcss.com/bootstrap-fileinput/4.4.3/css/fileinput.min.css" rel="stylesheet">--}}
 
-    <link rel="stylesheet" href="{{asset('AdminLTE/plugins/datatables/dataTables.bootstrap.css')}}">
+{{--    <link rel="stylesheet" href="{{asset('AdminLTE/plugins/datatables/dataTables.bootstrap.css')}}">--}}
 
-    <link href="https://cdn.bootcss.com/iCheck/1.0.2/skins/all.css" rel="stylesheet">
+    {{--<link href="https://cdn.bootcss.com/iCheck/1.0.2/skins/all.css" rel="stylesheet">--}}
 
-    <script src="https://cdn.bootcss.com/moment.js/2.19.0/moment.min.js"></script>
+    {{--<script src="https://cdn.bootcss.com/moment.js/2.19.0/moment.min.js"></script>--}}
 
-    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    {{--<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">--}}
 
-    <link href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    {{--<link href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">--}}
+
+
+
+
+    <link type="text/css" rel="stylesheet" href="{{ asset('templates/themes/floating-button/ionicons.min.css') }}" />
+
+    <script src="{{ asset('templates/themes/floating-button/modernizr.touch.js') }}"></script>
+
+    {{--<link type="text/css" rel="stylesheet" href="{{ asset('templates/themes/floating-button/index.css') }}" />--}}
+    <link type="text/css" rel="stylesheet" href="{{ asset('templates/themes/floating-button/mfb.css') }}" />
+
+
+
 
     <link rel="stylesheet" href="{{asset('css/common.css')}}">
     <link rel="stylesheet" href="{{asset('css/frontend/index.css')}}">
     <style>
+        * { margin: 0; padding: 0; }
+        body { margin: 0; padding: 0; }
+        .wrapper { margin: 0; padding: 0; }
+        .content-wrapper {margin-left: 0; background: url('/bg.gif') repeat;}
         .main-header .header-title {
             float: left;
             background-color: transparent;
@@ -95,88 +114,21 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="skin-blue fixed">
 <div class="wrapper">
 
-    <!-- Main Header -->
-    <header class="main-header">
+    {{--header--}}
+    @include('frontend.templates/adminlte/component/header')
 
-        <!-- Logo -->
-        <a href="{{url('/')}}" class="logo" style="display:none;background-color:#222d32;">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>师</b></span>
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>三人行</b></span>
-        </a>
-
-        {{--<!-- Header Navbar -->--}}
-        <nav class="navbar navbar-static-top" role="navigation" style="margin-left:0;background-color:#1a2226;">
-            {{--<!-- Sidebar toggle button-->--}}
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" style="display:none;">
-                <span class="sr-only">Toggle navigation</span>
-            </a>
-
-            <div class="navbar-custom-menu" style="height:50px;color:#f39c12 !important;float:left;">
-                <span class="logo-big"><a href="{{url('/')}}"><img src="/favicon_transparent.png" class="img-icon" alt="Image"> <b>课栈</b></a></span>
-            </div>
-
-
-
-            <span class="header-title"> @yield('header_title') </span>
-
-            {{--<!-- Navbar Right Menu -->--}}
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-
-                    @if(Auth::check())
-                        <li><a href="{{url('/home')}}"><i class="fa fa-home text-default"></i> <span>{{Auth::user()->name}}</span></a></li>
-                    @else
-                        {{--<li><a href="{{url('/login')}}"><i class="fa fa-circle-o"></i> <span>登录</span></a></li>--}}
-                        {{--<li><a href="{{url('/register')}}"><i class="fa fa-circle-o"></i> <span>注册</span></a></li>--}}
-                    @endif
-
-                    <li class="dropdown notifications-menu" style="display:none;">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-home"></i>
-                            {{--<span class="label label-warning">10</span>--}}
-                        </a>
-                        <ul class="dropdown-menu">
-                            {{--<li class="header">You have 10 notifications</li>--}}
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    @if(Auth::check())
-                                        <li><a href="{{url('/home')}}"><i class="fa fa-home text-default"></i> <span>{{Auth::user()->name}}</span></a></li>
-                                    @else
-                                        <li><a href="{{url('/login')}}"><i class="fa fa-circle-o"></i> <span>登录</span></a></li>
-                                        <li><a href="{{url('/register')}}"><i class="fa fa-circle-o"></i> <span>注册</span></a></li>
-                                    @endif
-                                </ul>
-                            </li>
-                            {{--<li class="footer"><a href="#">View all</a></li>--}}
-                        </ul>
-                    </li>
-
-                    {{--<!-- Control Sidebar Toggle Button -->--}}
-                    <li style="display:none;">
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-
-    </header>
-
+    {{--floating-button--}}
+    {{--@include('frontend.templates/adminlte/component/floating-button')--}}
 
 
     {{--<!-- Left side column. contains the logo and sidebar -->--}}
-    <aside class="main-sidebar" style="display:none;">
+    <aside class="main-sidebar _none">
 
         {{--<!-- sidebar: style can be found in sidebar.less -->--}}
         <section class="sidebar">
-
-
 
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu">
@@ -204,7 +156,6 @@ desired effect
                 @endif
 
 
-
             </ul>
             <!-- /.sidebar-menu -->
         </section>
@@ -213,114 +164,41 @@ desired effect
 
 
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="margin-left:0;background:url('/bg.gif') repeat;">
+    {{--sidebar--}}
+    @yield('sidebar')
+
+
+    {{--main-container--}}
+    <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <section class="content-header" style="display:none;">
+        <section class="content-header _none">
             <h1>
-                @yield('header')
-                <small>@yield('description')</small>
+                Title
+                <small>description</small>
             </h1>
-            <ol class="breadcrumb">
-                @yield('breadcrumb')
-            </ol>
+            <ol class="breadcrumb"> breadcrumb </ol>
         </section>
 
-        <!-- Main content -->
-        <section class="content" style="">
-            @yield('content') {{--Your Page Content Here--}}
+        {{--Your Page Content Here--}}
+        <section class="content">
+            @yield('content')
         </section>
-        <!-- /.content -->
+
     </div>
-    <!-- /.content-wrapper -->
 
-    {{--<!-- Main Footer -->--}}
-    <footer class="main-footer" style="margin-left:0;">
-        <!-- To the right -->
-        <div class="pull-right hidden-xs">
-            Anything you want
-        </div>
-        <!-- Default to the left -->
-        <strong>Copyright &copy; 上海如哉网络科技有限公司 2017-2018 Company.</strong> All rights reserved.
-        <a href="http://www.miitbeian.gov.cn">沪ICP备17052782号-2</a>
-    </footer>
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Create the tabs -->
-        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-            <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-            <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <!-- Home tab content -->
-            <div class="tab-pane active" id="control-sidebar-home-tab">
-                <h3 class="control-sidebar-heading">Recent Activity</h3>
-                <ul class="control-sidebar-menu">
-                    <li>
-                        <a href="javascript:;">
-                            <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+    {{--footer--}}
+    @include('frontend.templates/adminlte/component/footer')
 
-                            <div class="menu-info">
-                                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
 
-                                <p>Will be 23 on April 24th</p>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.control-sidebar-menu -->
+    {{--control-sidebar--}}
+    @include('frontend.templates/adminlte/component/control-sidebar')
 
-                <h3 class="control-sidebar-heading">Tasks Progress</h3>
-                <ul class="control-sidebar-menu">
-                    <li>
-                        <a href="javascript:;">
-                            <h4 class="control-sidebar-subheading">
-                                Custom Template Design
-                                <span class="pull-right-container">
-                                    <span class="label label-danger pull-right">70%</span>
-                                </span>
-                            </h4>
 
-                            <div class="progress progress-xxs">
-                                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.control-sidebar-menu -->
 
-            </div>
-            <!-- /.tab-pane -->
-            <!-- Stats tab content -->
-            <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-            <!-- /.tab-pane -->
-            <!-- Settings tab content -->
-            <div class="tab-pane" id="control-sidebar-settings-tab">
-                <form method="post">
-                    <h3 class="control-sidebar-heading">General Settings</h3>
 
-                    <div class="form-group">
-                        <label class="control-sidebar-subheading">
-                            Report panel usage
-                            <input type="checkbox" class="pull-right" checked>
-                        </label>
 
-                        <p>
-                            Some information about this general settings option
-                        </p>
-                    </div>
-                    <!-- /.form-group -->
-                </form>
-            </div>
-            <!-- /.tab-pane -->
-        </div>
-    </aside>
-    <!-- /.control-sidebar -->
-    <!-- Add the sidebar's background. This div must be placed
-         immediately after the control sidebar -->
-    <div class="control-sidebar-bg"></div>
+
 </div>
 <!-- ./wrapper -->
 
@@ -338,19 +216,6 @@ desired effect
 {{--<script src="https://cdn.bootcss.com/bootstrap-modal/2.2.6/js/bootstrap-modal.min.js"></script>--}}
 
 <script src="https://cdn.bootcss.com/layer/3.0.3/layer.min.js"></script>
-
-<script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.3/js/fileinput.min.js"></script>
-
-<script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.min.js"></script>
-
-<script src="{{asset('AdminLTE/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('AdminLTE/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
-
-<script src="https://cdn.bootcss.com/iCheck/1.0.2/icheck.min.js"></script>
-
-<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-
-<script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
 
 <script src="https://cdn.bootcss.com/Readmore.js/2.2.0/readmore.min.js"></script>
 

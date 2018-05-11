@@ -80,7 +80,8 @@ class RootRepository {
         }
 //        dd($lines->toArray());
 
-        return view('frontend.root.courses')->with(['item_magnitude'=>'item-plural','getType'=>'items','courses'=>$courses]);
+        return view('frontend.templates.adminlte.entrance.courses')
+            ->with(['item_magnitude'=>'item-plural','getType'=>'items','courses'=>$courses]);
     }
 
     // 平台主页
@@ -114,7 +115,8 @@ class RootRepository {
         }
 //        dd($lines->toArray());
 
-        return view('frontend.root.contents')->with(['item_magnitude'=>'item-plural','getType'=>'items','contents'=>$contents]);
+        return view('frontend.templates.adminlte.entrance.contents')
+            ->with(['item_magnitude'=>'item-plural','getType'=>'items','contents'=>$contents]);
     }
 
 
@@ -159,7 +161,8 @@ class RootRepository {
         }
 //        dd($lines->toArray());
 
-        return view('frontend.root.user')->with(['item_magnitude'=>'item-plural','getType'=>'items','data'=>$user,'courses'=>$courses]);
+        return view('frontend.templates.adminlte.entrance.user')
+            ->with(['item_magnitude'=>'item-plural','getType'=>'items','data'=>$user,'courses'=>$courses]);
     }
 
 
@@ -242,7 +245,9 @@ class RootRepository {
         }
         else $item = $course;
 
-        return view('frontend.course.course')->with(['item_magnitude'=>'item-singular','getType'=>'item','course'=>$course,'content'=>$content,'item'=>$item]);
+//        return view('frontend.course.course')
+        return view('frontend.templates.adminlte.entrance.course')
+            ->with(['item_magnitude'=>'item-singular','getType'=>'item','course'=>$course,'content'=>$content,'item'=>$item]);
     }
 
 
