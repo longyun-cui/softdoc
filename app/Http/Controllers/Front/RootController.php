@@ -24,6 +24,10 @@ class RootController extends Controller
     {
         return $this->repo->view_courses(request()->all());
     }
+    public function view_contents()
+    {
+        return $this->repo->view_contents(request()->all());
+    }
 
     public function view_course($id=0)
     {

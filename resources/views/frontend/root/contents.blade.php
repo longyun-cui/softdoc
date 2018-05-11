@@ -52,9 +52,9 @@
             {{--@foreach($courses as $num => $course)--}}
             {{--@include('frontend.component.course')--}}
             {{--@endforeach--}}
-            @include('frontend.component.course')
+            @include('frontend.component.contents',['datas'=>$contents])
 
-            {{{ $courses->links() }}}
+            {{{ $contents->links() }}}
 
         </div>
 

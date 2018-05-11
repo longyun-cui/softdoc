@@ -45,7 +45,7 @@
             {{--@endforeach--}}
             @include('frontend.component.course')
 
-            {{ $courses->links() }}
+            {{{ $courses->links() }}}
 
         </div>
 

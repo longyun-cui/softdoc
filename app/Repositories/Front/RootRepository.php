@@ -83,6 +83,40 @@ class RootRepository {
         return view('frontend.root.courses')->with(['item_magnitude'=>'item-plural','getType'=>'items','courses'=>$courses]);
     }
 
+    // 平台主页
+    public function view_contents($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+            $contents = Content::with([
+                'user',
+//                'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id,'content_id' => 0]); },
+//                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id,'content_id' => 0]); }
+            ])->whereHas('course', function ($query) { $query->where('active', 1);} )
+                ->orderBy('id','desc')->paginate(20);
+        }
+        else
+        {
+            $contents = Content::with([
+                'user',
+            ])->whereHas('course', function ($query) { $query->where('active', 1);} )
+                ->orderBy('id','desc')->paginate(20);
+        }
+
+
+        foreach ($contents as $item)
+        {
+            $item->content_show = strip_tags($item->content);
+            $img_tags = get_html_img($item->content);
+            $item->img_tags = $img_tags;
+        }
+//        dd($lines->toArray());
+
+        return view('frontend.root.contents')->with(['item_magnitude'=>'item-plural','getType'=>'items','contents'=>$contents]);
+    }
+
 
     // 用户首页
     public function view_user($post_data,$id=0)

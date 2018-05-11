@@ -38,13 +38,17 @@ Route::group(['prefix' => 'common'], function () {
  */
 Route::group(['namespace' => 'Front'], function () {
 
-    Route::get('/', function () {
-        return redirect('/courses');
-    });
 
     Route::group(['middleware' => 'wechat.share'], function () {
 
+//        Route::get('/', function () {
+//            return redirect('/courses');
+//        });
+        Route::get('/', 'RootController@view_contents');
+
         Route::get('courses', 'RootController@view_courses');
+
+        Route::get('contents', 'RootController@view_contents');
 
         Route::get('course/{id?}', 'RootController@view_course');
 //        Route::get('course', 'RootController@view_course');

@@ -71,6 +71,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
     </style>
 
+    @yield('css')
     @yield('style')
 
 </head>
@@ -520,6 +521,7 @@ desired effect
 <script src="{{asset('js/frontend/index.js')}}"></script>
 
 @yield('js')
+@yield('script')
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
