@@ -45,10 +45,22 @@ body { margin: 0; padding: 0; background: url('/bg.gif') repeat; }
 .recursion-text.active a { color:#222; }
 
 
-.main-sidebar { padding-top:50px !important;width: 300px;background-color: #1a2226; }
+.main-sidebar {  left: -300px; width: 300px !important; padding-top:50px !important; background-color: #1a2226;  }
+.sidebar-mini.sidebar-collapse  .main-sidebar { display: block; left: 0; }
 
 
 
+
+@media (min-width: 767px) {
+    .sidebar-mini.sidebar-collapse  .main-sidebar {
+        left: 0;
+        -webkit-transition: .3s ease-in-out,left .3s ease-in-out;
+        -moz-transition: .3s ease-in-out,left .3s ease-in-out;
+        -o-transition: .3s ease-in-out,left .3s ease-in-out;
+        transition: .3s ease-in-out,left .3s ease-in-out;
+    }
+    .sidebar-mini.sidebar-collapse .content-wrapper { margin-left: 300px !important; }
+}
 
 @media (max-width: 767px) {
     .content-wrapper, .right-side, .main-footer {
