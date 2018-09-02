@@ -33,8 +33,12 @@ class RootRepository {
 //        $header = request()->header();
 //        dd($header);
 
-        $user = Auth::user();
-        $user_id = $user->id;
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+        }
+        else $user_id = 0;
 
         $items = RootItem::with([
             'user',
