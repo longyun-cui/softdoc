@@ -7,7 +7,7 @@ class Pivot_User_Collection extends Model
     //
     protected $table = "pivot_user_collection";
     protected $fillable = [
-        'sort', 'type', 'user_id', 'course_id', 'content_id'
+        'sort', 'type', 'user_id', 'item_id', 'content_id'
     ];
     protected $dateFormat = 'U';
 
@@ -19,9 +19,9 @@ class Pivot_User_Collection extends Model
     }
 
     // 课题
-    function course()
+    function item()
     {
-        return $this->belongsTo('App\Models\Course','course_id','id');
+        return $this->belongsTo('App\Models\Item','item_id','id');
     }
 
     // 章节

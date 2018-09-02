@@ -7,7 +7,7 @@ class Content extends Model
     //
     protected $table = "contents";
     protected $fillable = [
-        'sort', 'type', 'active', 'user_id', 'course_id', 'p_id', 'order', 'title', 'description', 'content',
+        'sort', 'type', 'active', 'user_id', 'item_id', 'p_id', 'order', 'title', 'description', 'content',
         'is_shared', 'visit_num', 'share_num'
     ];
     protected $dateFormat = 'U';
@@ -27,9 +27,9 @@ class Content extends Model
     }
 
     // 课程
-    function course()
+    function item()
     {
-        return $this->belongsTo('App\Models\Course','course_id','id');
+        return $this->belongsTo('App\Models\Item','item_id','id');
     }
 
     // 父节点

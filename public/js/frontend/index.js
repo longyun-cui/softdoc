@@ -31,7 +31,7 @@ jQuery( function ($) {
         layer.msg('不能收藏自己的', function(){});
     });
     // 收藏
-    $(".item-option").off("click",".collect-this").on('click', ".collect-this", function() {
+    $(".item-option").off("click",".add-this-collection").on('click', ".add-this-collection", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -40,11 +40,10 @@ jQuery( function ($) {
             ,btn: ['确定', '取消']
             ,yes: function(index){
                 $.post(
-                    "/item/collect/save",
+                    "/item/add/collection",
                     {
                         _token: $('meta[name="_token"]').attr('content'),
-                        course_id: item_option.attr('data-course'),
-                        content_id: item_option.attr('data-content'),
+                        item_id: item_option.attr('data-item'),
                         type: 1
                     },
                     function(data){
@@ -53,13 +52,14 @@ jQuery( function ($) {
                         {
                             layer.msg("收藏成功");
 
-                            var btn = that.parents('.collect-btn');
-                            var num = parseInt(btn.attr('data-num'));
-                            num = num + 1;
-                            btn.attr('data-num',num);
-                            var html = '<span class="collect-this-cancel"><i class="fa fa-heart text-red"></i> '+num+'</span>';
-                            btn.html(html);
-                            // item_option.html(data.data.html);
+                            // var btn = that.parents('.collect-btn');
+                            // var num = parseInt(btn.attr('data-num'));
+                            // num = num + 1;
+                            // btn.attr('data-num',num);
+                            // var html = '<span class="collect-this-cancel"><i class="fa fa-heart text-red"></i> '+num+'</span>';
+                            // btn.html(html);
+                            //
+                            // // item_option.html(data.data.html);
                         }
                     },
                     'json'
@@ -69,7 +69,7 @@ jQuery( function ($) {
 
     });
     // 取消收藏
-    $(".item-option").off("click",".collect-this-cancel").on('click', ".collect-this-cancel", function() {
+    $(".item-option").off("click",".remove-this-collection").on('click', ".remove-this-collection", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -78,11 +78,10 @@ jQuery( function ($) {
             ,btn: ['确定', '取消']
             ,yes: function(index){
                 $.post(
-                    "/item/collect/cancel",
+                    "/item/remove/collection",
                     {
                         _token: $('meta[name="_token"]').attr('content'),
-                        course_id: item_option.attr('data-course'),
-                        content_id: item_option.attr('data-content'),
+                        item_id: item_option.attr('data-item'),
                         type: 1
                     },
                     function(data){
@@ -90,18 +89,19 @@ jQuery( function ($) {
                         else
                         {
                             layer.closeAll();
+
                             // var index = parent.layer.getFrameIndex(window.name);
                             // parent.layer.close(index);
-
-                            var btn = that.parents('.collect-btn');
-                            var num = parseInt(btn.attr('data-num'));
-                            num = num - 1;
-                            btn.attr('data-num',num);
-                            if(num == 0) num = '';
-                            var html = '<span class="collect-this"><i class="fa fa-heart-o"> '+num+'</span>';
-                            btn.html(html);
-
-                            // item_option.html(data.data.html);
+                            //
+                            // var btn = that.parents('.collect-btn');
+                            // var num = parseInt(btn.attr('data-num'));
+                            // num = num - 1;
+                            // btn.attr('data-num',num);
+                            // if(num == 0) num = '';
+                            // var html = '<span class="collect-this"><i class="fa fa-heart-o"> '+num+'</span>';
+                            // btn.html(html);
+                            //
+                            // // item_option.html(data.data.html);
                         }
                     },
                     'json'
@@ -113,51 +113,129 @@ jQuery( function ($) {
 
 
     // 点赞
-    $(".item-option").off("click",".favor-this").on('click', ".favor-this", function() {
+    $(".item-option").off("click",".add-this-favor").on('click', ".add-this-favor", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
         $.post(
-            "/item/favor/save",
+            "/item/add/favor",
             {
                 _token: $('meta[name="_token"]').attr('content'),
-                course_id: item_option.attr('data-course'),
-                content_id: item_option.attr('data-content'),
-                type: 1
+                item_id: item_option.attr('data-item'),
+                type: 9
             },
             function(data){
                 if(!data.success) layer.msg(data.msg);
                 else
                 {
                     layer.msg("点赞成功");
+                    that.addClass('remove-this-favor').removeClass('add-this-favor');
+                    that.find('i').addClass('fa-thumbs-up text-red').removeClass('fa-thumbs-o-up');
 
-                    var btn = that.parents('.favor-btn');
+                    var btn = that.parents('.operate-btn');
                     var num = parseInt(btn.attr('data-num'));
                     num = num + 1;
                     btn.attr('data-num',num);
-                    var html = '<span class="favor-this-cancel"><i class="fa fa-thumbs-up text-red"></i> '+num+'</span>';
-                    btn.html(html);
-                    // item_option.html(data.data.html);
+                    btn.find('num').html(num);
+
+                    // var btn = that.parents('.favor-btn');
+                    // var num = parseInt(btn.attr('data-num'));
+                    // num = num + 1;
+                    // btn.attr('data-num',num);
+                    // var html = '<span class="favor-this-cancel"><i class="fa fa-thumbs-up text-red"></i> '+num+'</span>';
+                    // btn.html(html);
+                    //
+                    // // item_option.html(data.data.html);
                 }
             },
             'json'
         );
+
     });
     // 取消点赞
-    $(".item-option").off("click",".favor-this-cancel").on('click', ".favor-this-cancel", function() {
+    $(".item-option").off("click",".remove-this-favor").on('click', ".remove-this-favor", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
-        layer.msg('取消"点赞"？', {
+        $.post(
+            "/item/remove/favor",
+            {
+                _token: $('meta[name="_token"]').attr('content'),
+                item_id: item_option.attr('data-item'),
+                type: 9
+            },
+            function(data){
+                if(!data.success) layer.msg(data.msg);
+                else
+                {
+                    layer.closeAll();
+                    // var index = parent.layer.getFrameIndex(window.name);
+                    // parent.layer.close(index);
+
+                    that.addClass('add-this-favor').removeClass('remove-this-favor');
+                    that.find('i').addClass('fa-thumbs-o-up').removeClass('fa-thumbs-up text-red');
+
+                    var btn = that.parents('.operate-btn');
+                    var num = parseInt(btn.attr('data-num'));
+                    num = num - 1;
+                    btn.attr('data-num',num);
+                    btn.find('num').html(num);
+                    // if(num == 0) num = '';
+                    // var html = '<span class="favor-this"><i class="fa fa-thumbs-o-up"></i> '+num+'</span>';
+
+                    //
+                    // // item_option.html(data.data.html);
+                }
+            },
+            'json'
+        );
+
+    });
+
+
+    // 添加待办事
+    $(".item-option").off("click",".add-this-todolist").on('click', ".add-this-todolist", function() {
+        var that = $(this);
+        var item_option = $(this).parents('.item-option');
+
+        layer.msg('添加待办事？', {
             time: 0
             ,btn: ['确定', '取消']
             ,yes: function(index){
                 $.post(
-                    "/item/favor/cancel",
+                    "/item/add/todolist",
                     {
                         _token: $('meta[name="_token"]').attr('content'),
-                        course_id: item_option.attr('data-course'),
-                        content_id: item_option.attr('data-content'),
+                        item_id: item_option.attr('data-item'),
+                        type: 11
+                    },
+                    function(data){
+                        if(!data.success) layer.msg(data.msg);
+                        else
+                        {
+                            layer.msg("添加成功");
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
+
+    });
+    // 移除待办事
+    $(".item-option").off("click",".remove-this-todolist").on('click', ".remove-this-todolist", function() {
+        var that = $(this);
+        var item_option = $(this).parents('.item-option');
+
+        layer.msg('移除待办事？', {
+            time: 0
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.post(
+                    "/item/remove/todolist",
+                    {
+                        _token: $('meta[name="_token"]').attr('content'),
+                        item_id: item_option.attr('data-item'),
                         type: 1
                     },
                     function(data){
@@ -165,24 +243,14 @@ jQuery( function ($) {
                         else
                         {
                             layer.closeAll();
-                            // var index = parent.layer.getFrameIndex(window.name);
-                            // parent.layer.close(index);
-
-                            var btn = that.parents('.favor-btn');
-                            var num = parseInt(btn.attr('data-num'));
-                            num = num - 1;
-                            btn.attr('data-num',num);
-                            if(num == 0) num = '';
-                            var html = '<span class="favor-this"><i class="fa fa-thumbs-o-up"></i> '+num+'</span>';
-                            btn.html(html);
-
-                            // item_option.html(data.data.html);
+                            layer.msg("");
                         }
                     },
                     'json'
                 );
             }
         });
+
     });
 
 

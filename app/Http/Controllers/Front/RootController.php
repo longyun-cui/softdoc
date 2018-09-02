@@ -20,6 +20,99 @@ class RootController extends Controller
     }
 
 
+    public function view_root()
+    {
+        return $this->repo->view_root(request()->all());
+    }
+
+
+    // 【待办事】
+    public function view_home_todolist()
+    {
+        return $this->repo->view_home_todolist(request()->all());
+    }
+    // 【日程】
+    public function view_home_schedule()
+    {
+        return $this->repo->view_home_schedule(request()->all());
+    }
+    // 【收藏】
+    public function view_home_collection()
+    {
+        return $this->repo->view_home_collection(request()->all());
+    }
+    // 【点赞】
+    public function view_home_favor()
+    {
+        return $this->repo->view_home_favor(request()->all());
+    }
+    // 【收藏】
+    public function view_home_discovery()
+    {
+        return $this->repo->view_home_discovery(request()->all());
+    }
+    // 【点赞】
+    public function view_home_circle()
+    {
+        return $this->repo->view_home_circle(request()->all());
+    }
+
+
+
+
+    // 【内容详情】
+    public function view_item($id=0)
+    {
+        return $this->repo->view_item(request()->all(),$id);
+    }
+
+
+
+
+    // 【收藏】
+    public function item_add_collection()
+    {
+        return $this->repo->item_add_this(request()->all(),1);
+    }
+    public function item_remove_collection()
+    {
+        return $this->repo->item_remove_this(request()->all(),1);
+    }
+
+    // 【点赞】
+    public function item_add_favor()
+    {
+        return $this->repo->item_add_this(request()->all(),9);
+    }
+    public function item_remove_favor()
+    {
+        return $this->repo->item_remove_this(request()->all(),9);
+    }
+
+    // 【待办事】
+    public function item_add_todolist()
+    {
+        return $this->repo->item_add_this(request()->all(),11);
+    }
+    public function item_remove_todolist()
+    {
+        return $this->repo->item_remove_this(request()->all(),11);
+    }
+
+    // 【日程】
+    public function item_add_schedule()
+    {
+        return $this->repo->item_add_this(request()->all(),12);
+    }
+    public function item_remove_schedule()
+    {
+        return $this->repo->item_remove_this(request()->all(),12);
+    }
+
+
+
+
+
     public function view_courses()
     {
         return $this->repo->view_courses(request()->all());

@@ -466,6 +466,52 @@ EOF;
 /**
  * 上传文件
  */
+if (!function_exists('upload_storage')) {
+    function upload_storage($file, $filename = '', $saveFolder = 'research/common')
+    {
+        $allowedExtensions = [
+            'png', 'jpg', 'jpeg', 'gif', "PNG", "JPG", "JPEG", "GIF", 'csv', 'xls', 'pdf'
+        ];
+        $extension = $file->getClientOriginalExtension();
+
+        /*判断后缀是否合法*/
+        if (in_array(strtolower($extension), $allowedExtensions)) {
+            $image = Image::make($file);
+            /*保存图片*/
+            $date = date('Y-m-d');
+            $upload_path = <<<EOF
+resource/$saveFolder/$date/
+EOF;
+
+            $mysql_save_path = <<<EOF
+$saveFolder/$date/
+EOF;
+            $path = storage_path($upload_path);
+            if (!is_dir($path)) {
+                mkdir($path, 0777, true);
+            }
+            if($filename == '') $filename = uniqid() . time() . '.' . $extension;
+            else $filename = $filename . '.' . $extension;
+
+            $image->save($path . $filename);
+            $returnData = [
+                'result' => true,
+                'msg' => '上传成功',
+                'local' => $mysql_save_path . $filename,
+                'extension' => $extension,
+            ];
+        } else {
+            $returnData = [
+                'result' => false,
+                'msg' => '上传图片格式不正确',
+            ];
+        }
+        return $returnData;
+    }
+}
+/**
+ * 上传文件
+ */
 if (!function_exists('upload_s')) {
     function upload_s($file, $saveFolder, $patch = 'research')
     {

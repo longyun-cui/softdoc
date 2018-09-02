@@ -5,9 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 class Notification extends Model
 {
     //
-    protected $table = "notifications";
+    protected $table = "root_notifications";
     protected $fillable = [
-        'sort', 'type', 'is_read', 'user_id', 'source_id', 'course_id', 'content_id', 'comment_id', 'reply_id', 'content', 'ps'
+        'sort', 'type', 'is_read', 'user_id', 'source_id', 'item_id', 'content_id', 'comment_id', 'reply_id', 'content', 'ps'
     ];
     protected $dateFormat = 'U';
 
@@ -21,9 +21,9 @@ class Notification extends Model
         return $this->belongsTo('App\User','source_id','id');
     }
 
-    function course()
+    function item()
     {
-        return $this->belongsTo('App\Models\Course','course_id','id');
+        return $this->belongsTo('App\Models\Item','item_id','id');
     }
 
     function chapter()

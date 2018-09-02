@@ -71,7 +71,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-2">头像：</label>
                     <div class="col-md-8 ">
-                        <div style="width:100px;height:100px;"><img src="{{config('common.host.'.env('APP_ENV').'.cdn').'/'.$info->portrait_img}}" alt=""></div>
+                        <div style="width:100px;height:100px;"><img src="{{ config('common.host.'.env('APP_ENV').'.cdn').'/'.$info->portrait_img }}" alt=""></div>
                     </div>
                 </div>
                 {{--qrcode--}}

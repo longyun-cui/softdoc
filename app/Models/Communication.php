@@ -5,9 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 class Communication extends Model
 {
     //
-    protected $table = "communications";
+    protected $table = "root_communications";
     protected $fillable = [
-        'sort', 'type', 'active', 'support', 'user_id', 'course_id', 'content_id', 'is_anonymous', 'reply_id', 'dialog_id', 'order',
+        'sort', 'type', 'active', 'support', 'user_id', 'item_id', 'content_id', 'is_anonymous', 'reply_id', 'dialog_id', 'order',
         'title', 'content',
         'is_shared', 'favor_num', 'comment_num'
     ];
@@ -21,9 +21,9 @@ class Communication extends Model
     }
 
     // 课程
-    function course()
+    function item()
     {
-        return $this->belongsTo('App\Models\Course','course_id','id');
+        return $this->belongsTo('App\Models\Item','item_id','id');
     }
 
     //

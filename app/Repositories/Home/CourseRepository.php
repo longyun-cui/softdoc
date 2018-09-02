@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories\Home;
 
-use App\Models\Course;
+use App\Models\Item;
 use App\Models\Content;
 
 use App\Repositories\Common\CommonRepository;
@@ -26,7 +26,7 @@ class CourseRepository {
     public function get_list_datatable($post_data)
     {
         $user = Auth::user();
-        $query = Course::select("*")->with(['user'])->where('user_id', $user->id);
+        $query = Item::select("*")->with(['user'])->where('user_id', $user->id);
         if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
         if(!empty($post_data['major'])) $query->where('major', 'like', "%{$post_data['major']}%");
         if(!empty($post_data['nation'])) $query->where('nation', 'like', "%{$post_data['nation']}%");
@@ -76,7 +76,7 @@ class CourseRepository {
         }
         else
         {
-            $data = Course::find($decode_id);
+            $data = Item::find($decode_id);
             if($data)
             {
                 unset($data->id);
@@ -114,12 +114,12 @@ class CourseRepository {
         {
             if($operate == 'create') // $id==0，添加一个新的课程
             {
-                $course = new Course;
+                $course = new Item;
                 $post_data["user_id"] = $user->id;
             }
             elseif('edit') // 编辑
             {
-                $course = Course::find($id);
+                $course = Item::find($id);
                 if(!$course) return response_error([],"该课程不存在，刷新页面重试");
                 if($course->user_id != $user->id) return response_error([],"你没有操作权限");
             }
@@ -151,9 +151,9 @@ class CourseRepository {
         catch (Exception $e)
         {
             DB::rollback();
+            $msg = '操作失败，请重试！';
+//            $msg = $e->getMessage();
 //            exit($e->getMessage());
-            $msg = $e->getMessage();
-//            $msg = '操作失败，请重试！';
             return response_fail([], $msg);
         }
     }
@@ -165,7 +165,7 @@ class CourseRepository {
         $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该课程不存在，刷新页面试试");
 
-        $course = Course::find($id);
+        $course = Item::find($id);
         if($course->user_id != $user->id) return response_error([],"你没有操作权限");
 
         DB::beginTransaction();
@@ -192,7 +192,7 @@ class CourseRepository {
         $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该作者不存在，刷新页面试试");
 
-        $course = Course::find($id);
+        $course = Item::find($id);
         if($course->user_id != $user->id) return response_error([],"你没有操作权限");
         $update["active"] = 1;
         DB::beginTransaction();
@@ -218,7 +218,7 @@ class CourseRepository {
         $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该文章不存在，刷新页面试试");
 
-        $course = Course::find($id);
+        $course = Item::find($id);
         if($course->user_id != $user->id) return response_error([],"你没有操作权限");
         $update["active"] = 9;
         DB::beginTransaction();
@@ -248,7 +248,7 @@ class CourseRepository {
         if(!$course_decode) return view('home.404')->with(['error'=>'参数有误']);
         // abort(404);
 
-        $course = Course::with(['contents'])->find($course_decode);
+        $course = Item::with(['contents'])->find($course_decode);
         if($course)
         {
             $course->encode_id = encode($course->id);

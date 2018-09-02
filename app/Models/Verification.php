@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Verification extends Model
 {
     //
-    protected $table = "verification";
+    protected $table = "root_verification";
     protected $fillable = [
         'sort', 'type', 'user_id', 'email', 'mobile', 'code'
     ];

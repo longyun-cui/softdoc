@@ -2,12 +2,12 @@
 namespace App\Repositories\Front;
 
 use App\User;
-use App\Models\Course;
+use App\Models\RootItem;
 use App\Models\Content;
 use App\Models\Communication;
 use App\Models\Notification;
 use App\Models\Pivot_User_Collection;
-use App\Models\Pivot_User_Course;
+use App\Models\Pivot_User_Item;
 
 use App\Repositories\Common\CommonRepository;
 
@@ -24,15 +24,34 @@ class RootRepository {
         Blade::setEchoFormat('nl2br(e(%s))');
     }
 
+    // 平台主页
+    public function view_root($post_data)
+    {
+//        $headers = apache_request_headers();
+//        $headers = getallheaders();
+//        dd($headers);
+//        $header = request()->header();
+//        dd($header);
 
-    // 课程模板
+        $user = Auth::user();
+        $user_id = $user->id;
+
+        $items = RootItem::with([
+            'user',
+            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
+
+        return view('frontend.entrance.root')->with(['items'=>$items]);
+    }
+
+    // 内容模板
     public function view_item_html($id)
     {
         if(Auth::check())
         {
             $user = Auth::user();
             $user_id = $user->id;
-            $course = Course::with([
+            $item = RootItem::with([
                 'user',
                 'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); },
                 'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); }
@@ -40,14 +59,302 @@ class RootRepository {
         }
         else
         {
-            $course = Course::with([
+            $item = RootItem::with([
                 'user',
                 'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); }
             ])->find($id);
         }
-        $courses[0] = $course;
-        return view('frontend.component.course')->with(['courses'=>$courses])->__toString();
+        $items[0] = $item;
+        return view('frontend.component.items')->with(['items'=>$items])->__toString();
     }
+
+
+
+
+    // 【待办事】
+    public function view_home_todolist($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            // Method 1
+            $query = User::with([
+                'pivot_item'=>function($query) use($user_id) { $query->with([
+                    'user',
+                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+                ])->wherePivot('type',11)->orderby('pivot_user_item.id','desc'); }
+            ])->find($user_id);
+            $items = $query->pivot_item;
+
+//            // Method 2
+//            $query = Pivot_User_Item::with([
+//                    'item'=>function($query) { $query->with(['user']); }
+//                ])->where(['type'=>11,'user_id'=>$user_id])->orderby('id','desc')->get();
+//            dd($query->toArray());
+        }
+        else $items = [];
+
+        return view('frontend.entrance.works')->with(['items'=>$items,'root_todolist_active'=>'active']);
+    }
+
+    // 【日程】
+    public function view_home_schedule($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            // Method 1
+            $query = User::with([
+                'pivot_item'=>function($query) use($user_id) { $query->with([
+                    'user',
+                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+                ])->wherePivot('type',12)->orderby('pivot_user_item.id','desc'); }
+            ])->find($user_id);
+            $items = $query->pivot_item;
+        }
+        else $items = [];
+
+        return view('frontend.entrance.works')->with(['items'=>$items,'root_schedule_active'=>'active']);
+    }
+
+    // 【收藏】
+    public function view_home_collection($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            // Method 1
+            $query = User::with([
+                'pivot_item'=>function($query) use($user_id) { $query->with([
+                    'user',
+                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+                ])->wherePivot('type',1)->orderby('pivot_user_item.id','desc'); }
+            ])->find($user_id);
+            $items = $query->pivot_item;
+        }
+        else $items = [];
+
+        return view('frontend.entrance.works')->with(['items'=>$items,'root_collection_active'=>'active']);
+    }
+
+    // 【点赞】
+    public function view_home_favor($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            // Method 1
+            $query = User::with([
+                'pivot_item'=>function($query) use($user_id) { $query->with([
+                    'user',
+                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+                ])->wherePivot('type',9)->orderby('pivot_user_item.id','desc'); }
+            ])->find($user_id);
+            $items = $query->pivot_item;
+        }
+        else $items = [];
+
+        return view('frontend.entrance.works')->with(['items'=>$items,'root_favor_active'=>'active']);
+    }
+
+    // 【点赞】
+    public function view_home_discovery($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+        }
+        else $user_id = 0;
+
+        $items = RootItem::with([
+            'user',
+            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
+
+        return view('frontend.entrance.works')->with(['items'=>$items,'root_discovery_active'=>'active']);
+    }
+
+    // 【点赞】
+    public function view_home_circle($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            // Method 1
+            $query = User::with([
+                'pivot_item'=>function($query) { $query->with(['user'])->wherePivot('type',9)->orderby('pivot_user_item.id','desc'); }
+            ])->find($user_id);
+            $items = $query->pivot_item;
+        }
+        else $items = [];
+
+        return view('frontend.entrance.works')->with(['items'=>$items,'root_circle_active'=>'active']);
+    }
+
+
+
+    // 【内容详情】
+    public function view_item($post_data,$id=0)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+        }
+        else $user_id = 0;
+
+        $item = RootItem::with([
+            'user',
+            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+        ])->find($id);
+        if($item)
+        {
+            $item->increment('visit_num');
+        }
+        else return view('frontend.errors.404');
+
+        return view('frontend.entrance.item')->with(['item'=>$item]);
+    }
+
+
+
+    // 【添加】
+    public function item_add_this($post_data,$type=0)
+    {
+        if(Auth::check())
+        {
+            $messages = [
+                'type.required' => '参数有误',
+                'item_id.required' => '参数有误'
+            ];
+            $v = Validator::make($post_data, [
+                'type' => 'required',
+                'item_id' => 'required'
+            ], $messages);
+            if ($v->fails())
+            {
+                $errors = $v->errors();
+                return response_error([],$errors->first());
+            }
+
+            $item_id = $post_data['item_id'];
+            $item = RootItem::find($item_id);
+            if($item)
+            {
+                $user = Auth::user();
+                $pivot = Pivot_User_Item::where(['type'=>$type,'user_id'=>$user->id,'item_id'=>$item_id])->first();
+                if(!$pivot)
+                {
+                    DB::beginTransaction();
+                    try
+                    {
+                        $time = time();
+                        $user->pivot_item()->attach($item_id,['type'=>$type,'created_at'=>$time,'updated_at'=>$time]);
+
+                        $item->increment('favor_num');
+
+                        DB::commit();
+                        return response_success([]);
+                    }
+                    catch (Exception $e)
+                    {
+                        DB::rollback();
+                        $msg = '操作失败，请重试！';
+//                        $msg = $e->getMessage();
+//                        exit($e->getMessage());
+                        return response_fail([],$msg);
+                    }
+                }
+                else
+                {
+                    if($type == 1) $msg = '已经收藏过了';
+                    else if($type == 9) $msg = '成功点赞';
+                    else if($type == 11) $msg = '已经在待办事列表';
+                    else if($type == 12) $msg = '已经在日程列表';
+                    else $msg = '';
+                    return response_fail(['reason'=>'exist'],$msg);
+                }
+            }
+            else return response_fail([],'内容不存在！');
+
+        }
+        else return response_error([],'请先登录！');
+    }
+    // 【移除】
+    public function item_remove_this($post_data,$type=0)
+    {
+        if(Auth::check())
+        {
+            $messages = [
+                'type.required' => '参数有误',
+                'item_id.required' => '参数有误'
+            ];
+            $v = Validator::make($post_data, [
+                'type' => 'required',
+                'item_id' => 'required'
+            ], $messages);
+            if ($v->fails())
+            {
+                $errors = $v->errors();
+                return response_error([],$errors->first());
+            }
+
+            $item_id = $post_data['item_id'];
+            $item = RootItem::find($item_id);
+            if($item)
+            {
+                $user = Auth::user();
+                $pivots = Pivot_User_Item::where(['type'=>$type,'user_id'=>$user->id,'item_id'=>$item_id])->get();
+                if(count($pivots) > 0)
+                {
+                    DB::beginTransaction();
+                    try
+                    {
+                        $num = Pivot_User_Item::where(['type'=>$type,'user_id'=>$user->id,'item_id'=>$item_id])->delete();
+                        if($num != count($pivots)) throw new Exception("delete--pivots--fail");
+
+                        $item->decrement('favor_num');
+
+                        DB::commit();
+                        return response_success([]);
+                    }
+                    catch (Exception $e)
+                    {
+                        DB::rollback();
+                        $msg = '操作失败，请重试！';
+//                        $msg = $e->getMessage();
+//                        exit($e->getMessage());
+                        return response_fail([],$msg);
+                    }
+                }
+                else
+                {
+                    if($type == 1) $msg = '已经收藏过了';
+                    else if($type == 9) $msg = '';
+                    else if($type == 11) $msg = '已经在待办事列表';
+                    else if($type == 12) $msg = '已经在日程列表';
+                    else $msg = '';
+                    return response_fail(['reason'=>'exist'],$msg);
+                }
+            }
+            else return response_fail([],'内容不存在！');
+        }
+        else return response_error([],'请先登录！');
+
+    }
+
+
 
 
     // 平台主页
@@ -57,7 +364,7 @@ class RootRepository {
         {
             $user = Auth::user();
             $user_id = $user->id;
-            $courses = Course::with([
+            $courses = RootItem::with([
                 'user',
                 'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); },
                 'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id,'content_id' => 0]); },
@@ -66,7 +373,7 @@ class RootRepository {
         }
         else
         {
-            $courses = Course::with([
+            $courses = RootItem::with([
                 'user',
                 'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); }
             ])->where('active', 1)->orderBy('id','desc')->paginate(20);
@@ -118,6 +425,8 @@ class RootRepository {
         return view('frontend.templates.adminlte.entrance.contents')
             ->with(['item_magnitude'=>'item-plural','getType'=>'items','contents'=>$contents]);
     }
+
+
 
 
     // 用户首页
@@ -452,7 +761,7 @@ class RootRepository {
             $content_decode = decode($content_encode);
             if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
 
-            $course = Course::find($course_decode);
+            $course = RootItem::find($course_decode);
             if($course)
             {
                 if($content_decode != 0)

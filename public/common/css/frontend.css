@@ -1,0 +1,23 @@
+
+.view-more {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 30px;
+    border: 2px solid #ff5c01;
+    color: #ff5c01;
+    font-size: 16px;
+    transition: All .2s ease-in-out;
+    -webkit-transition: All .2s ease-in-out;
+    -moz-transition: All .2s ease-in-out;
+    -o-transition: All .2s ease-in-out;
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -mz-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+}
+
+.view-more:hover {
+    color: #e34f43;
+    border: 2px solid #e34f43;
+}
