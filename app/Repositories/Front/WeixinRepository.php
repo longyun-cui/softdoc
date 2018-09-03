@@ -90,6 +90,7 @@ class WeixinRepository {
         $response1 = curl_exec($ch);
         $response1 = json_decode($response1, true);
 
+        dd($response1);
 
         $access_token = $response1["access_token"];
         $openid = $response1["openid"];
