@@ -119,6 +119,7 @@ class WeixinRepository {
             if($user)
             {
                 Auth::login($user,true);
+                return redirect('/');
             }
             else
             {
@@ -156,6 +157,7 @@ class WeixinRepository {
 
                             if (file_put_contents($filename, base64_decode(str_replace($result[1], '', $img_content))))
                             {
+                                $user1->name = $response2["nickname"];
                                 $user1->portrait_img = $sql_name;
                                 $user1->save();
                             }
