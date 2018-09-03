@@ -58,6 +58,7 @@ Route::group(['namespace' => 'Front'], function () {
         });
 
         Route::match(['get', 'post'],'auth', $controller."@weixin_auth");
+        Route::match(['get', 'post'],'login', $controller."@weixin_login");
 
 
         Route::match(['get', 'post'],'gongzhonghao', $controller."@gongzhonghao");
