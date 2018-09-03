@@ -148,6 +148,12 @@ class WeixinRepository {
                             $type = $result[2]; // 得到图片类型png?jpg?jpeg?gif?
                             $filename = storage_path("resource/user".$user1->id."/unique/".uniqid().time().'.'.$type);
                             $sql_name = storage_path("user".$user1->id."/".uniqid().time().$type);
+
+                            $path = storage_path($filename);
+                            if (!is_dir($path)) {
+                                mkdir($path, 0777, true);
+                            }
+
                             if (file_put_contents($filename, base64_decode(str_replace($result[1], '', $img_content))))
                             {
                                 $user1->portrait_img = $sql_name;
