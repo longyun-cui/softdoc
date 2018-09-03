@@ -1,12 +1,11 @@
 <?php
 namespace App\Repositories\Front;
 
-
-use App\Repositories\Common\CommonRepository;
-
 use Response, Auth, Validator, DB, Exception, Cache, Log;
 use QrCode;
 use Lib\Wechat\TokenManager;
+
+use App\Repositories\Common\CommonRepository;
 
 class WeixinRepository {
 
@@ -14,7 +13,6 @@ class WeixinRepository {
     private $repo;
     public function __construct()
     {
-        $this->model = new OrgOrganization;
     }
 
     public function test()
