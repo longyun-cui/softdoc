@@ -1,6 +1,8 @@
 <?php
 namespace App\Repositories\Front;
 
+use App\User;
+
 use Response, Auth, Validator, DB, Exception, Cache, Log;
 use QrCode;
 use Lib\Wechat\TokenManager;
@@ -87,24 +89,30 @@ class WeixinRepository {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response1 = curl_exec($ch);
         $response1 = json_decode($response1, true);
-        var_dump($response1);
+
 
         $access_token = $response1["access_token"];
         $openid = $response1["openid"];
+        $unionid = $response1["unionid"];
 
-        // 获取授权用户信息
-        $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$access_token}&openid={$openid}&lang=zh_CN";
-        curl_setopt($ch, CURLOPT_URL, $url);
-        $response2 = curl_exec($ch);
-        $response2 = json_decode($response2, true);
-        var_dump($response2);
+        dd($unionid);
 
-        // 获取一般用户信息
-        // $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$access_token}&openid={$openid}&lang=zh_CN";
+        $user = User::where('wx_unionid',$unionid)->first();
 
-        $info = $this->getInfo($openid);
-        $info = json_decode($info, true);
-        var_dump($info);
+
+//        // 获取授权用户信息
+//        $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$access_token}&openid={$openid}&lang=zh_CN";
+//        curl_setopt($ch, CURLOPT_URL, $url);
+//        $response2 = curl_exec($ch);
+//        $response2 = json_decode($response2, true);
+//        var_dump($response2);
+//
+//        // 获取一般用户信息
+//        // $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$access_token}&openid={$openid}&lang=zh_CN";
+//
+//        $info = $this->getInfo($openid);
+//        $info = json_decode($info, true);
+//        var_dump($info);
     }
 
     //
