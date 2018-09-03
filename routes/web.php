@@ -33,10 +33,38 @@ Route::group(['prefix' => 'common'], function () {
 });
 
 
+
+/*
+ * weixin
+ */
+Route::group(['prefix' => 'weixin'], function () {
+
+    $controller = "WeixinController";
+
+    Route::match(['get', 'post'],'auth/MP_verify_0m3bPByLDcHKLvIv.txt', function () {
+        return "0m3bPByLDcHKLvIv";
+    });
+
+    Route::match(['get', 'post'],'auth/MP_verify_eTPw6Fu85pGY5kiV.txt', function () {
+        return "eTPw6Fu85pGY5kiV";
+    });
+
+    Route::match(['get', 'post'],'auth', $controller."@weixin_auth");
+
+
+    Route::match(['get', 'post'],'gongzhonghao', $controller."@gongzhonghao");
+    Route::match(['get', 'post'],'root', $controller."@root");
+    Route::match(['get', 'post'],'test', $controller."@test");
+
+});
+
+
 /*
  * Root Frontend
  */
 Route::group(['namespace' => 'Front'], function () {
+
+
 
 
     Route::group(['middleware' => 'wechat.share'], function () {
@@ -57,6 +85,9 @@ Route::group(['namespace' => 'Front'], function () {
         Route::get('item/{id?}', 'RootController@view_item');
 
         Route::get('user/{id?}', 'RootController@view_user');
+
+
+
 
     });
 
