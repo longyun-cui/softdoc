@@ -149,8 +149,9 @@ class WeixinRepository {
                             $type = $result[2]; // 得到图片类型png?jpg?jpeg?gif?
                             $filename = uniqid().time().'.'.$type;
                             $storage_path = "resource/user".$user1->id."/unique/";
+                            $sql_path = "user".$user1->id."/unique/";
+                            $sql_text = $sql_path.$filename;
 
-                            $sql_text = $storage_path.$filename;
                             $file = storage_path($storage_path.$filename);
 
                             $path = storage_path("resource/user".$user1->id."/unique/");
