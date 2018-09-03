@@ -17,6 +17,13 @@ class WeixinRepository {
     {
     }
 
+
+    public function root()
+    {
+        $info = $this->getInfo("ojBDq06UlHn3OTfJ2TKeaifaHzCc");
+        dd($info);
+    }
+
     public function test()
     {
         $account = 'MHA00CTM';
@@ -90,22 +97,77 @@ class WeixinRepository {
         $response1 = curl_exec($ch);
         $response1 = json_decode($response1, true);
 
-        dd($response1);
+        if(isset($response1["errcode"]))
+        {
+            dd($response1);
+        }
+        else
+        {
+            $access_token = $response1["access_token"];
+            $openid = $response1["openid"];
+            $unionid = $response1["unionid"];
 
-        $access_token = $response1["access_token"];
-        $openid = $response1["openid"];
-        $unionid = $response1["unionid"];
+            // 获取授权用户信息
+            $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$access_token}&openid={$openid}&lang=zh_CN";
+            curl_setopt($ch, CURLOPT_URL, $url);
+            $response2 = curl_exec($ch);
+            $response2 = json_decode($response2, true);
 
-        dd($unionid);
+            $headimgurl = $response2["headimgurl"];
 
-        $user = User::where('wx_unionid',$unionid)->first();
+            $user = User::where('wx_unionid',$unionid)->first();
+            if($user)
+            {
+                Auth::login($user,true);
+            }
+            else
+            {
+                $return =$this->register_wx_user($unionid);
+                if($return["success"])
+                {
+                    $user1 = User::where('wx_unionid',$unionid)->first();
+                    Auth::login($user1,true);
+
+                    $curl = curl_init();
+                    curl_setopt($curl, CURLOPT_URL, $headimgurl);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+                    curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
+                    $data = curl_exec($curl);
+                    $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    curl_close($curl);
+                    if ($code == 200)
+                    {
+                        //把URL格式的图片转成base64_encode格式的！
+                        $imgBase64Code = "data:image/jpeg;base64," . base64_encode($data);
+                        $img_content = $imgBase64Code;//图片内容
+
+                        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $img_content, $result))
+                        {
+
+                            $type = $result[2]; // 得到图片类型png?jpg?jpeg?gif?
+                            $filename = storage_path("resource/user".$user1->id."/unique/".uniqid().time().'.'.$type);
+                            $sql_name = storage_path("user".$user1->id."/".uniqid().time().$type);
+                            if (file_put_contents($filename, base64_decode(str_replace($result[1], '', $img_content))))
+                            {
+                                $user1->portrait_img = $sql_name;
+                                $user1->save();
+                            }
+                        }
+                    }
+                    //echo $img_content;exit;
+                    return redirect('/');
+
+                }
+                else
+                {
+                    dd($return);
+                }
+            }
+        }
 
 
-//        // 获取授权用户信息
-//        $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$access_token}&openid={$openid}&lang=zh_CN";
-//        curl_setopt($ch, CURLOPT_URL, $url);
-//        $response2 = curl_exec($ch);
-//        $response2 = json_decode($response2, true);
+
 //        var_dump($response2);
 //
 //        // 获取一般用户信息
@@ -220,13 +282,6 @@ class WeixinRepository {
 
     }
 
-
-    public function root()
-    {
-        $info = $this->getInfo("ojBDq06UlHn3OTfJ2TKeaifaHzCc");
-        dd($info);
-    }
-
     // 创建菜单
     public function createMenu($data, $token='')
     {
@@ -281,6 +336,31 @@ class WeixinRepository {
         if (curl_errno($ch)) return curl_error($ch);
         curl_close($ch);
         return $tmpInfo;
+    }
+
+
+    public function register_wx_user($unionid)
+    {
+        DB::beginTransaction();
+        try
+        {
+            $user = new User;
+            $user_create['wx_unionid'] = $unionid;
+            $bool = $user->fill($user_create)->save();
+            if(!$bool) throw new Exception("insert-user-failed");
+
+            DB::commit();
+            return ['success' => true];
+        }
+        catch (Exception $e)
+        {
+            DB::rollback();
+            $msg = '注册失败，请重试！';
+//            $msg = $e->getMessage();
+//            exit($e->getMessage());
+            return ['success' => false];
+        }
+
     }
 
 
