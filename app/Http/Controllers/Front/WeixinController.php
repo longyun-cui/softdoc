@@ -28,13 +28,13 @@ class WeixinController extends Controller
     // 公众号授权
     public function weixin_login()
     {
-        $this->repo->weixin_login(request()->all());
+        return $this->repo->weixin_login(request()->all());
     }
 
     // 公众号授权
     public function weixin_auth()
     {
-        $this->repo->weixin_auth(request()->all());
+        return $this->repo->weixin_auth(request()->all());
     }
 
     // 公众号

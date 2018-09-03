@@ -80,7 +80,87 @@ class WeixinRepository {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response1 = curl_exec($ch);
         $response1 = json_decode($response1, true);
-        var_dump($response1);
+
+        if(isset($response1["errcode"]))
+        {
+            dd($response1);
+        }
+        else
+        {
+            $access_token = $response1["access_token"];
+            $openid = $response1["openid"];
+            $unionid = $response1["unionid"];
+
+            // 获取授权用户信息
+            $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$access_token}&openid={$openid}&lang=zh_CN";
+            curl_setopt($ch, CURLOPT_URL, $url);
+            $response2 = curl_exec($ch);
+            $response2 = json_decode($response2, true);
+
+            $headimgurl = $response2["headimgurl"];
+
+            $user = User::where('wx_unionid',$unionid)->first();
+            if($user)
+            {
+                Auth::login($user,true);
+                return redirect('/');
+            }
+            else
+            {
+                $return =$this->register_wx_user($unionid);
+                if($return["success"])
+                {
+                    $user1 = User::where('wx_unionid',$unionid)->first();
+                    Auth::login($user1,true);
+
+                    $curl = curl_init();
+                    curl_setopt($curl, CURLOPT_URL, $headimgurl);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+                    curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
+                    $data = curl_exec($curl);
+                    $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    curl_close($curl);
+                    if ($code == 200)
+                    {
+                        //把URL格式的图片转成base64_encode格式的！
+                        $imgBase64Code = "data:image/jpeg;base64," . base64_encode($data);
+                        $img_content = $imgBase64Code;//图片内容
+
+                        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $img_content, $result))
+                        {
+
+                            $type = $result[2]; // 得到图片类型png?jpg?jpeg?gif?
+                            $filename = uniqid().time().'.'.$type;
+                            $storage_path = "resource/user".$user1->id."/unique/";
+                            $sql_path = "user".$user1->id."/unique/";
+                            $sql_text = $sql_path.$filename;
+
+                            $file = storage_path($storage_path.$filename);
+
+                            $path = storage_path("resource/user".$user1->id."/unique/");
+                            if (!is_dir($path)) {
+                                mkdir($path, 0777, true);
+                            }
+
+                            if (file_put_contents($file, base64_decode(str_replace($result[1], '', $img_content))))
+                            {
+                                $user1->name = $response2["nickname"];
+                                $user1->portrait_img = $sql_text;
+                                $user1->save();
+                            }
+                        }
+                    }
+                    //echo $img_content;exit;
+                    return redirect('/');
+
+                }
+                else
+                {
+                    dd($return);
+                }
+            }
+        }
     }
 
     //
