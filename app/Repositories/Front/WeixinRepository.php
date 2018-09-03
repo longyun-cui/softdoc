@@ -129,9 +129,6 @@ class WeixinRepository {
                     $user1 = User::where('wx_unionid',$unionid)->first();
                     Auth::login($user1,true);
 
-                    $user1->name = $response2["nickname"];
-                    $user1->save();
-
                     $curl = curl_init();
                     curl_setopt($curl, CURLOPT_URL, $headimgurl);
                     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -153,18 +150,18 @@ class WeixinRepository {
                             $filename = storage_path("resource/user".$user1->id."/unique/".uniqid().time().'.'.$type);
                             $sql_name = storage_path("user".$user1->id."/".uniqid().time().$type);
 
-                            $path = storage_path($filename);
+                            $path = storage_path("resource/user".$user1->id."/unique/");
                             dd($path);
                             if (!is_dir($path)) {
                                 mkdir($path, 0777, true);
                             }
 
-//                            if (file_put_contents($filename, base64_decode(str_replace($result[1], '', $img_content))))
-//                            {
-//                                $user1->name = $response2["nickname"];
-//                                $user1->portrait_img = $sql_name;
-//                                $user1->save();
-//                            }
+                            if (file_put_contents($filename, base64_decode(str_replace($result[1], '', $img_content))))
+                            {
+                                $user1->name = $response2["nickname"];
+                                $user1->portrait_img = $sql_name;
+                                $user1->save();
+                            }
                         }
                     }
                     //echo $img_content;exit;
