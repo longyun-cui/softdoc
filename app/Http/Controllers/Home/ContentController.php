@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-//use App\Services\Home\CourseService;
-use App\Repositories\Home\CourseRepository;
+//use App\Services\Home\ContentService;
+use App\Repositories\Home\ContentRepository;
 
 
-class CourseController extends Controller
+class ContentController extends Controller
 {
     //
     private $service;
@@ -19,7 +19,7 @@ class CourseController extends Controller
     public function __construct()
     {
 //        $this->service = new ProductService;
-        $this->repo = new CourseRepository;
+        $this->repo = new ContentRepository;
     }
 
 
@@ -68,28 +68,28 @@ class CourseController extends Controller
 
 
     // 列表
-    public function course_content_view_index()
+    public function content_viewIndex()
     {
-        return $this->repo->course_content_view_index(request()->all());
+        return $this->repo->content_view_index(request()->all());
     }
 
     // 编辑
-    public function course_content_editAction()
+    public function content_editAction()
     {
-        if(request()->isMethod('get')) return $this->repo->course_content_view_edit();
-        else if (request()->isMethod('post')) return $this->repo->course_content_save(request()->all());
+        if(request()->isMethod('get')) return $this->repo->content_view_edit();
+        else if (request()->isMethod('post')) return $this->repo->content_save(request()->all());
     }
 
     // 【删除】
-    public function course_content_getAction()
+    public function content_getAction()
     {
-        return $this->repo->course_content_get(request()->all());
+        return $this->repo->content_get(request()->all());
     }
 
     // 【删除】
-    public function course_content_deleteAction()
+    public function content_deleteAction()
     {
-        return $this->repo->course_content_delete(request()->all());
+        return $this->repo->content_delete(request()->all());
     }
 
 

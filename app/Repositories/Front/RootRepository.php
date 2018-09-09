@@ -12,6 +12,7 @@ use App\Models\Pivot_User_Item;
 use App\Repositories\Common\CommonRepository;
 
 use Response, Auth, Validator, DB, Exception, Blade;
+use Carbon\Carbon;
 use QrCode;
 
 class RootRepository {
@@ -27,6 +28,9 @@ class RootRepository {
     // 平台主页
     public function view_root($post_data)
     {
+//        $item = RootItem::first();
+//        dd($item->created_at);
+
 //        $headers = apache_request_headers();
 //        $headers = getallheaders();
 //        dd($headers);
@@ -100,7 +104,7 @@ class RootRepository {
         }
         else $items = [];
 
-        return view('frontend.entrance.works')->with(['items'=>$items,'root_todolist_active'=>'active']);
+        return view('frontend.entrance.todolist')->with(['items'=>$items,'root_todolist_active'=>'active']);
     }
 
     // 【日程】
@@ -122,7 +126,7 @@ class RootRepository {
         }
         else $items = [];
 
-        return view('frontend.entrance.works')->with(['items'=>$items,'root_schedule_active'=>'active']);
+        return view('frontend.entrance.schedule')->with(['items'=>$items,'root_schedule_active'=>'active']);
     }
 
     // 【收藏】
@@ -144,7 +148,7 @@ class RootRepository {
         }
         else $items = [];
 
-        return view('frontend.entrance.works')->with(['items'=>$items,'root_collection_active'=>'active']);
+        return view('frontend.entrance.collection')->with(['items'=>$items,'root_collection_active'=>'active']);
     }
 
     // 【点赞】
@@ -166,7 +170,7 @@ class RootRepository {
         }
         else $items = [];
 
-        return view('frontend.entrance.works')->with(['items'=>$items,'root_favor_active'=>'active']);
+        return view('frontend.entrance.favor')->with(['items'=>$items,'root_favor_active'=>'active']);
     }
 
     // 【点赞】
@@ -184,7 +188,7 @@ class RootRepository {
             'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
         ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
 
-        return view('frontend.entrance.works')->with(['items'=>$items,'root_discovery_active'=>'active']);
+        return view('frontend.entrance.discovery')->with(['items'=>$items,'root_discovery_active'=>'active']);
     }
 
     // 【点赞】
@@ -203,7 +207,7 @@ class RootRepository {
         }
         else $items = [];
 
-        return view('frontend.entrance.works')->with(['items'=>$items,'root_circle_active'=>'active']);
+        return view('frontend.entrance.circle')->with(['items'=>$items,'root_circle_active'=>'active']);
     }
 
 
@@ -224,6 +228,7 @@ class RootRepository {
         ])->find($id);
         if($item)
         {
+            $item->timestamps = false;
             $item->increment('visit_num');
         }
         else return view('frontend.errors.404');
@@ -266,6 +271,7 @@ class RootRepository {
                         $time = time();
                         $user->pivot_item()->attach($item_id,['type'=>$type,'created_at'=>$time,'updated_at'=>$time]);
 
+                        $item->timestamps = false;
                         $item->increment('favor_num');
 
                         DB::commit();

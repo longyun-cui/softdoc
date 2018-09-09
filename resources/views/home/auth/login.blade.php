@@ -5,7 +5,7 @@
 @section('content')
 <div class="login-box">
     <div class="login-logo">
-        <a href="/"><b>课栈</b> </a>
+        <a href="/"><b>{{ config('information.website_name') }}</b> </a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -36,16 +36,18 @@
                 <!-- /.col -->
             </div>
         </form>
-
-        <div class="social-auth-links text-center" style="display: none">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> 微信登陆</a>
-            <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> 支付宝登陆</a>
-        </div>
         <!-- /.social-auth-links -->
 
         <a href="#">忘记密码</a><br>
         <a href="/register" class="text-center">注册新用户</a>
+
+        <div class="social-auth-links text-center" >
+            <p>- 第三方登录 -</p>
+            <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxaf993c7aace04371&redirect_uri=http%3A%2F%2Fsoftdoc.cn%2Fweixin%2Flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect" class="btn btn-block- btn-social- btn-success btn-flat">
+                <i class="fa fa-weixin"></i> 微信登陆
+            </a>
+            {{--<a href="#" class="btn btn-block btn-social btn-primary btn-flat"><i class="fa fa-"></i> 支付宝登陆</a>--}}
+        </div>
 
     </div>
     <!-- /.login-box-body -->
@@ -55,7 +57,7 @@
     </div>
 
     <div class="login-box-body">
-        <a href="{{url('/')}}"><button type="button" class="btn btn-default btn-block btn-flat" id="register-submit">游客访问</button></a>
+        <a href="{{url('/')}}"><button type="button" class="btn btn-default btn-block btn-flat" id="register-submit">返回平台主页</button></a>
     </div>
 
 </div>

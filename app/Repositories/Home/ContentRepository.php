@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories\Home;
 
-use App\Models\Item;
+use App\Models\RootItem;
 use App\Models\Content;
 
 use App\Repositories\Common\CommonRepository;
@@ -9,7 +9,7 @@ use App\Repositories\Common\CommonRepository;
 use Response, Auth, Validator, DB, Exception;
 use QrCode;
 
-class CourseRepository {
+class ContentRepository {
 
     private $model;
     public function __construct()
@@ -26,7 +26,7 @@ class CourseRepository {
     public function get_list_datatable($post_data)
     {
         $user = Auth::user();
-        $query = Item::select("*")->with(['user'])->where('user_id', $user->id);
+        $query = RootItem::select("*")->with(['user'])->where('user_id', $user->id);
         if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
         if(!empty($post_data['major'])) $query->where('major', 'like', "%{$post_data['major']}%");
         if(!empty($post_data['nation'])) $query->where('nation', 'like', "%{$post_data['nation']}%");
@@ -76,7 +76,7 @@ class CourseRepository {
         }
         else
         {
-            $data = Item::find($decode_id);
+            $data = RootItem::find($decode_id);
             if($data)
             {
                 unset($data->id);
@@ -119,7 +119,7 @@ class CourseRepository {
             }
             elseif('edit') // 编辑
             {
-                $course = Item::find($id);
+                $course = RootItem::find($id);
                 if(!$course) return response_error([],"该课程不存在，刷新页面重试");
                 if($course->user_id != $user->id) return response_error([],"你没有操作权限");
             }
@@ -165,7 +165,7 @@ class CourseRepository {
         $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该课程不存在，刷新页面试试");
 
-        $course = Item::find($id);
+        $course = RootItem::find($id);
         if($course->user_id != $user->id) return response_error([],"你没有操作权限");
 
         DB::beginTransaction();
@@ -192,7 +192,7 @@ class CourseRepository {
         $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该作者不存在，刷新页面试试");
 
-        $course = Item::find($id);
+        $course = RootItem::find($id);
         if($course->user_id != $user->id) return response_error([],"你没有操作权限");
         $update["active"] = 1;
         DB::beginTransaction();
@@ -218,7 +218,7 @@ class CourseRepository {
         $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该文章不存在，刷新页面试试");
 
-        $course = Item::find($id);
+        $course = RootItem::find($id);
         if($course->user_id != $user->id) return response_error([],"你没有操作权限");
         $update["active"] = 9;
         DB::beginTransaction();
@@ -241,18 +241,18 @@ class CourseRepository {
 
 
     // 返回列表数据
-    public function course_content_view_index($post_data)
+    public function content_view_index($post_data)
     {
-        $course_encode = $post_data['id'];
-        $course_decode = decode($course_encode);
-        if(!$course_decode) return view('home.404')->with(['error'=>'参数有误']);
+        $item_encode = $post_data['id'];
+        $item_decode = decode($item_encode);
+        if(!$item_decode) return view('home.404')->with(['error'=>'参数有误']);
         // abort(404);
 
-        $course = Item::with(['contents'])->find($course_decode);
-        if($course)
+        $item = RootItem::with(['contents'])->find($item_decode);
+        if($item)
         {
-            $course->encode_id = encode($course->id);
-            unset($course->id);
+            $item->encode_id = encode($item->id);
+            unset($item->id);
 
 //            $contents = $course->contents->toArray();
 
@@ -262,9 +262,9 @@ class CourseRepository {
 //            $contents_recursion_array = $this->get_recursion_array($contents,0);
 //            $course->contents_recursion_array = collect($contents_recursion_array);
 
-            $course->contents_recursion = $this->get_recursion($course->contents,0);
+            $item->contents_recursion = $this->get_recursion($item->contents,0);
 
-            return view('home.course.content')->with(['data'=>$course]);
+            return view('home.content.content')->with(['data'=>$item]);
 
 //            if(request()->isMethod('get'))
 //            else if(request()->isMethod('post')) return $this->get_people_product_list_datatable($post_data);
@@ -274,13 +274,13 @@ class CourseRepository {
     }
 
     // 返回添加视图
-    public function course_content_view_create()
+    public function content_view_create()
     {
-        return view('home.course.menu');
+        return view('home.content.menu');
     }
 
     // 返回编辑视图
-    public function course_content_view_edit()
+    public function content_view_edit()
     {
         $id = request("id",0);
         $decode_id = decode($id);
@@ -288,7 +288,7 @@ class CourseRepository {
 
         if($decode_id == 0)
         {
-            return view('home.course.menu')->with(['operate'=>'create', 'encode_id'=>$id]);
+            return view('home.content.menu')->with(['operate'=>'create', 'encode_id'=>$id]);
         }
         else
         {
@@ -296,14 +296,14 @@ class CourseRepository {
             if($data)
             {
                 unset($data->id);
-                return view('home.course.menu')->with(['operate'=>'edit', 'encode_id'=>$id, 'data'=>$data]);
+                return view('home.item.menu')->with(['operate'=>'edit', 'encode_id'=>$id, 'data'=>$data]);
             }
             else return view('home.404')->with(['error'=>'课程不存在']);
         }
     }
 
     // 保存数据
-    public function course_content_save($post_data)
+    public function content_save($post_data)
     {
         $messages = [
             'id.required' => '参数有误',
@@ -323,14 +323,14 @@ class CourseRepository {
 
         $user = Auth::user();
 
-
-        $course_encode = $post_data["course_id"];
-        $course_decode = decode($course_encode);
-        if(!$course_decode) return response_error();
-        $course = Course::find($course_decode);
-        if($course)
+        $post_data["category"] = 51;
+        $item_encode = $post_data["item_id"];
+        $item_decode = decode($item_encode);
+        if(!$item_decode) return response_error();
+        $item = RootItem::find($item_decode);
+        if($item)
         {
-            if($course->user_id == $user->id)
+            if($item->user_id == $user->id)
             {
 
                 $content_decode = decode($post_data["id"]);
@@ -339,21 +339,54 @@ class CourseRepository {
                 DB::beginTransaction();
                 try
                 {
-                    $post_data["course_id"] = $course_decode;
+                    $post_data["item_id"] = $item_decode;
                     $operate = $post_data["operate"];
                     if($operate == 'create') // $id==0，添加一个新的内容
                     {
-                        $content = new Content;
+                        $content = new RootItem;
                         $post_data["user_id"] = $user->id;
                     }
                     elseif('edit') // 编辑
                     {
-                        $content = Content::find($content_decode);
-                        if(!$content) return response_error([],"该课程不存在，刷新页面重试");
+                        if($content_decode == $post_data["p_id"]) return response_error([],"不能选择自己为父节点");
+
+                        $content = RootItem::find($content_decode);
+                        if(!$content) return response_error([],"该内容不存在，刷新页面重试");
                         if($content->user_id != $user->id) return response_error([],"你没有操作权限");
-                        if($content->type == 1) unset($post_data["type"]);
+//                        if($content->type == 1) unset($post_data["type"]);
+
+                        if($post_data["p_id"] != 0)
+                        {
+                            $is_child = true;
+                            $p_id = $post_data["p_id"];
+                            while($is_child)
+                            {
+                                $p = RootItem::find($p_id);
+                                if(!$p) return response_error([],"参数有误，刷新页面重试");
+                                if($p->p_id == 0) $is_child = false;
+                                if($p->p_id == $content_decode)
+                                {
+                                    $content_children = RootItem::where('p_id',$content_decode)->get();
+                                    $children_count = count($content_children);
+                                    if($children_count)
+                                    {
+                                        $num = RootItem::where('p_id',$content_decode)->update(['p_id'=>$content->p_id]);
+                                        if($num != $children_count)  throw new Exception("update--children--fail");
+                                    }
+                                }
+                                $p_id = $p->p_id;
+                            }
+                        }
+
                     }
                     else throw new Exception("operate--error");
+
+
+                    if($post_data["p_id"] != 0)
+                    {
+                        $parent = RootItem::find($post_data["p_id"]);
+                        if(!$parent) return response_error([],"父节点不存在，刷新页面重试");
+                    }
 
                     $bool = $content->fill($post_data)->save();
                     if($bool)
@@ -369,28 +402,28 @@ class CourseRepository {
                 catch (Exception $e)
                 {
                     DB::rollback();
-        //            exit($e->getMessage());
-        //            $msg = $e->getMessage();
                     $msg = '操作失败，请重试！';
+                    $msg = $e->getMessage();
+//                    exit($e->getMessage())、;
                     return response_fail([], $msg);
                 }
 
             }
-            else response_error([],"该课程不是您的，您不能操作！");
+            else response_error([],"该内容不是您的，您不能操作！");
 
         }
         else return response_error([],"该课程不存在");
     }
 
     // 内容获取
-    public function course_content_get($post_data)
+    public function content_get($post_data)
     {
         $user = Auth::user();
         $id = $post_data["id"];
 //        $id = decode($post_data["id"]);
         if(!$id) return response_error([],"该课程不存在，刷新页面试试");
 
-        $content = Content::find($id);
+        $content = RootItem::find($id);
         if($content->user_id != $user->id) return response_error([],"你没有操作权限");
         else
         {
@@ -400,24 +433,24 @@ class CourseRepository {
     }
 
     // 内容删除
-    public function course_content_delete($post_data)
+    public function content_delete($post_data)
     {
         $user = Auth::user();
         $id = $post_data["id"];
 //        $id = decode($post_data["id"]);
-        if(!$id) return response_error([],"该课程不存在，刷新页面试试");
+        if(!$id) return response_error([],"该内容不存在，刷新页面试试");
 
-        $content = Content::find($id);
+        $content = RootItem::find($id);
         if($content->user_id != $user->id) return response_error([],"你没有操作权限");
 
         DB::beginTransaction();
         try
         {
-            $content_children = Content::where('p_id',$id)->get();
+            $content_children = RootItem::where('p_id',$id)->get();
             $children_count = count($content_children);
             if($children_count)
             {
-                $num = Content::where('p_id',$id)->update(['p_id'=>$content->p_id]);
+                $num = RootItem::where('p_id',$id)->update(['p_id'=>$content->p_id]);
                 if($num != $children_count)  throw new Exception("update--children--fail");
             }
             $bool = $content->delete();

@@ -26,7 +26,6 @@
                         <i class="fa fa-plus"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header"><a href="{{url('/home/course/create')}}"><i class="fa fa-circle-o text-red"></i>添加课程</a></li>
                         <li class="header"><a href="{{url('/home/item/create')}}"><i class="fa fa-circle-o text-red"></i>添加内容</a></li>
                         <li class="footer"><a href="#">See All Messages</a></li>
                     </ul>

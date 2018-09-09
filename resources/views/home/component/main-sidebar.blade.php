@@ -33,39 +33,43 @@
 
             <li class="header">内容管理</li>
 
-            <li class="treeview {{$menu_course_list or ''}}">
-                <a href="{{url('/home/item/list')}}"><i class="fa fa-table text-green"></i> <span>全部管理</span></a>
+            <li class="treeview {{$menu_all_list or ''}}">
+                <a href="{{url('/home/item/list')}}"><i class="fa fa-list text-red"></i> <span>全部内容</span></a>
             </li>
 
-            <li class="treeview">
-                <a href="{{url('/home/item/list')}}"><i class="fa fa-table text-green"></i> <span>文章类型</span></a>
+            <li class="treeview {{$menu_article_list or ''}}">
+                <a href="{{url('/home/item/list?category=article')}}"><i class="fa fa-circle-o text-red"></i> <span>一般文本</span></a>
             </li>
 
-            <li class="treeview">
-                <a href="{{url('/home/item/list?category=menu')}}"><i class="fa fa-table text-green"></i> <span>目录类型</span></a>
+            <li class="treeview {{$menu_debase_list or ''}}">
+                <a href="{{url('/home/item/list?category=debase')}}"><i class="fa fa-circle-o text-red"></i> <span>辩题</span></a>
             </li>
 
-            <li class="treeview">
-                <a href="{{url('/home/item/list?category=timeline')}}"><i class="fa fa-table text-green"></i> <span>目录类型</span></a>
+            <li class="treeview {{$menu_menu_list or ''}}">
+                <a href="{{url('/home/item/list?category=menu')}}"><i class="fa fa-circle-o text-red"></i> <span>书目类型</span></a>
+            </li>
+
+            <li class="treeview {{$menu_timeline_list or ''}}">
+                <a href="{{url('/home/item/list?category=timeline')}}"><i class="fa fa-circle-o text-red"></i> <span>时间线</span></a>
             </li>
 
 
 
-            <li class="header">其他</li>
+            <li class="header _none">其他</li>
 
-            <li class="treeview {{$menu_collect_course or ''}}">
+            <li class="treeview {{$menu_collect_course or ''}} _none">
                 <a href="{{url('/home/collect/course/list')}}"><i class="fa fa-heart text-red"></i> <span>收藏「课程」</span></a>
             </li>
 
-            <li class="treeview {{$menu_favor_course or ''}}">
+            <li class="treeview {{$menu_favor_course or ''}} _none">
                 <a href="{{url('/home/favor/course/list')}}"><i class="fa fa-thumbs-up text-red"></i> <span>点赞「课程」</span></a>
             </li>
 
-            <li class="treeview {{$menu_collect_chapter or ''}}">
+            <li class="treeview {{$menu_collect_chapter or ''}} _none">
                 <a href="{{url('/home/collect/chapter/list')}}"><i class="fa fa-heart text-blue"></i> <span>收藏内容</span></a>
             </li>
 
-            <li class="treeview {{$menu_favor_chapter or ''}}">
+            <li class="treeview {{$menu_favor_chapter or ''}} _none">
                 <a href="{{url('/home/favor/chapter/list')}}"><i class="fa fa-thumbs-up text-blue"></i> <span>点赞内容</span></a>
             </li>
 

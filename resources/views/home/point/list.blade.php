@@ -1,11 +1,11 @@
 @extends('home.layout.layout')
 
-@section('head_title','内容列表')
-@section('header','内容列表')
-@section('description','内容列表')
+@section('title'){{$item->title or ''}}(时间点列表)@endsection
+@section('header','时间点列表')
+@section('description','时间点列表')
 @section('breadcrumb')
     <li><a href="{{url('/home')}}"><i class="fa fa-home"></i>首页</a></li>
-    <li><a href="{{url('/home/item/list')}}"><i class="fa "></i>内容列表</a></li>
+    <li><a href="{{url('/home/item/list?category=timeline')}}"><i class="fa "></i>时间线列表</a></li>
     <li><a href="#"><i class="fa "></i>Here</a></li>
 @endsection
 
@@ -17,50 +17,50 @@
         <div class="box box-info">
 
             <div class="box-header with-border" style="margin:16px 0;">
-                <h3 class="box-title">内容列表</h3>
+                <h3 class="box-title">
+                    <a target="_blank" href="{{url('/item/'.$item->id)}}">{{$item->title or ''}}</a>
+                </h3>
 
                 <div class="pull-right">
-                    <a href="{{url('/home/item/create')}}">
-                        <button type="button" onclick="" class="btn btn-success pull-right"><i class="fa fa-plus"></i> 添加内容</button>
+                    <a href="{{url('/home/item/point/create?item_id='.$item->encode)}}">
+                        <button type="button" onclick="" class="btn btn-success pull-right"><i class="fa fa-plus"></i> 添加时间点</button>
                     </a>
                 </div>
             </div>
 
-            <div class="box-body" id="item-list-body">
+            <div class="box-body" id="point-list-body">
                 <!-- datatable start -->
                 <table class='table table-striped table-bordered' id='datatable_ajax'>
                     <thead>
-                        <tr role='row' class='heading'>
-                            <th>名称</th>
-                            <th>类型</th>
-                            <th>分享</th>
-                            <th>创建时间</th>
-                            <th>修改时间</th>
-                            <th>内容管理</th>
-                            <th>操作</th>
-                        </tr>
-                        <tr>
-                            <td><input type="text" class="form-control" name="title" /></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-success filter-submit">搜索</button>
-                                    <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">重置</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">Separated link</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                    <tr role='row' class='heading'>
+                        <th>标题</th>
+                        <th>时间点</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                        <th>修改时间</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="form-control" name="title" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-success filter-submit">搜索</button>
+                                <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">重置</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
                     </thead>
                     <tbody>
                     </tbody>
@@ -90,17 +90,17 @@
 
             var dt = $('#datatable_ajax');
             var ajax_datatable = dt.DataTable({
-                "aLengthMenu": [[20, 50, 200, 500, -1], ["20", "50", "200", "500", "全部"]],
+                "aLengthMenu": [[50, 200, 500, -1], ["50", "200", "500", "全部"]],
                 "processing": true,
                 "serverSide": true,
                 "searching": false,
                 "ajax": {
-                    'url': '/home/item/list',
+                    'url': '/home/item/point',
                     "type": 'POST',
                     "dataType" : 'json',
                     "data": function (d) {
                         d._token = $('meta[name="_token"]').attr('content');
-                        d.category = "{{ request()->input('category', '') }}";
+                        d.id = "{{ $item->encode or encode(0) }}";
                         d.title 	= $('input[name="title"]').val();
 //                        d.major 	= $('input[name="major"]').val();
 //                        d.nation 	= $('input[name="nation"]').val();
@@ -114,28 +114,22 @@
                         "data": "encode_id",
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            return '<a target="_blank" href="/item/'+data+'">'+row.title+'</a>';
+                            return '<a target="_blank" href="/point/'+data+'">'+row.title+'</a>';
                         }
                     },
                     {
-                        'data': 'category',
-                        'orderable': false,
-                        render: function(data, type, row, meta) {
-                            if(data == 1) return '<small class="label bg-primary">一般文本</small>';
-                            else if(data == 7) return '<small class="label bg-red">辩题</small>';
-                            else if(data == 11) return '<small class="label bg-purple">书目类型</small>';
-                            else if(data == 18) return '<small class="label bg-green">时间线</small>';
-                            else return '<small class="label bg-red"></small>';
+                        'data': 'time_point',
+                        'orderable': true,
+                        render: function(val) {
+                            return val == null ? 0 : val;
                         }
                     },
                     {
-                        'data': 'is_shared',
+                        'data': 'active',
                         'orderable': false,
-                        render: function(data, type, row, meta) {
-                            if(data == 11) return '<small class="label bg-red">自己可见</small>';
-                            else if(data == 41) return '<small class="label bg-purple">关注可见</small>';
-                            else if(data == 100) return '<small class="label bg-green">所有人可见</small>';
-                            else return '<small class="label bg-red"></small>';
+                        render: function(val) {
+                            if(val == 1) return '<small class="label bg-green">启</small>';
+                            else return '<small class="label bg-red">禁</small>';
                         }
                     },
                     {
@@ -160,39 +154,11 @@
                         'data': 'encode_id',
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            if(row.category == 11) {
-                                return '<a href="/home/item/content?id='+data+'"><button type="button" class="btn btn-sm bg-purple">内容管理</button></a>';
-                            }
-                            else if(row.category == 18) {
-                                return '<a href="/home/item/point?id='+data+'"><button type="button" class="btn btn-sm bg-purple">时间点管理</button></a>';
-                            }
-                            else {
-                                return '';
-                            }
-                        }
-                    },
-                    {
-                        'data': 'encode_id',
-                        'orderable': false,
-                        render: function(data, type, row, meta) {
-
                             var active_html = '';
-                            if(row.active == 1) {
-                                active_html = '<li><a class="item-disable-submit" data-id="'+data+'">禁用</a></li>';
-                            }
-                            else {
-                                active_html = '<li><a class="item-enable-submit" data-id="'+data+'">启用</a></li>';
-                            }
-
-                            var content_html = '';
-                            if(row.category == 11) {
-                                content_html = '<li><a href="/home/item/content?id='+data+'">目录管理</a></li>';
-                            }
-
-                            var timeline_html = '';
-                            if(row.category == 18) {
-                                timeline_html = '<li><a href="/home/item/point?id='+data+'">管理时间点</a></li>';
-                            }
+                            if(row.active == 1)
+                                active_html = '<li><a class="point-disable-submit" data-id="'+data+'">禁用</a></li>';
+                            else
+                                active_html = '<li><a class="point-enable-submit" data-id="'+data+'">启用</a></li>';
 
                             var html =
                                 '<div class="btn-group">'+
@@ -202,14 +168,12 @@
                                 '<span class="sr-only">Toggle Dropdown</span>'+
                                 '</button>'+
                                 '<ul class="dropdown-menu" role="menu">'+
-                                '<li><a href="/home/item/edit?id='+data+'">编辑</a></li>'+
-//                                '<li><a href="/home/item/content?id='+data+'">内容管理</a></li>'+
-                                content_html+
-                                timeline_html+
+                                '<li><a href="/home/item/point/edit?id='+data+'">编辑</a></li>'+
+//                                '<li><a href="/home/point/point?id='+data+'">内容管理</a></li>'+
                                 active_html+
 //                                '<li><a href="/admin/statistics/page?module=2&id='+data+'">流量统计</a></li>'+
 //                                '<li><a class="download-qrcode" data-id="'+data+'">下载二维码</a></li>'+
-                                '<li><a class="item-delete-submit" data-id="'+data+'" >删除</a></li>'+
+                                '<li><a class="point-delete-submit" data-id="'+data+'" >删除</a></li>'+
                                 '<li class="divider"></li>'+
                                 '<li><a href="#">Separated link</a></li>'+
                                 '</ul>'+
@@ -289,15 +253,15 @@
 <script>
     $(function() {
 
-        // 【删除】
-        $("#item-list-body").on('click', ".item-delete-submit", function() {
+        // 表格【删除】
+        $("#point-list-body").on('click', ".point-delete-submit", function() {
             var that = $(this);
-            layer.msg('确定要删除么？', {
+            layer.msg('确定要删除?', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                            "/home/item/delete",
+                            "/home/item/point/delete",
                             {
                                 _token: $('meta[name="_token"]').attr('content'),
                                 id:that.attr('data-id')
@@ -312,15 +276,15 @@
             });
         });
 
-        // 【启动】
-        $("#item-list-body").on('click', ".item-enable-submit", function() {
+        // 表格【分享】
+        $("#point-list-body").on('click', ".point-enable-submit", function() {
             var that = $(this);
-            layer.msg('确定启用？', {
+            layer.msg('启用？', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                            "/home/item/enable",
+                            "/home/item/point/enable",
                             {
                                 _token: $('meta[name="_token"]').attr('content'),
                                 id:that.attr('data-id')
@@ -335,15 +299,15 @@
             });
         });
 
-        // 【禁用】
-        $("#item-list-body").on('click', ".item-disable-submit", function() {
+        // 表格【取消分享】
+        $("#point-list-body").on('click', ".point-disable-submit", function() {
             var that = $(this);
-            layer.msg('确定禁用？', {
+            layer.msg('禁用', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                            "/home/item/disable",
+                            "/home/item/point/disable",
                             {
                                 _token: $('meta[name="_token"]').attr('content'),
                                 id:that.attr('data-id')
@@ -359,9 +323,9 @@
         });
 
         // 【下载】 二维码
-        $("#item-list-body").on('click', ".download-qrcode", function() {
+        $("#main-body").on('click', ".download-qrcode", function() {
             var that = $(this);
-            window.open('/admin/download_qrcode?sort=table&id='+that.attr('data-id'));
+            window.open('/home/download/qrcode?sort=table&id='+that.attr('data-id'));
         });
 
     });

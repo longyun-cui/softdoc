@@ -18,13 +18,19 @@
                 <li class="{{ $header_about_active or '' }}"><a href="{{ url('/about_us') }}"></a></li>
                 <li class="{{ $header_service_active or '' }}"><a href="{{ url('/services') }}"></a></li>
                 <li class="{{ $header_contact_active or '' }}"><a href="{{ url('/contact') }}"></a></li>
-                <li class="header-phone">
+
+                <li class="header-phone" style="display:none;">
                     <a href="tel:{{ config('company.info.telephone') }}">
                         <i class="fa fa-mobile-phone"></i>
                         <strong>{{ config('company.info.telephone') }}</strong>
                     </a>
                 </li>
-                <li class="header-quote"><a href="{{ url('/quote') }}" style="color:#fff">123</a></li>
+
+                @if(Auth::check())
+                <li class="header-quote"><a href="{{ url('/home') }}" style="color:#fff">内容管理后台</a></li>
+
+                <li class="header-quote"><a href="{{ url('/logout') }}" style="color:#fff">退出</a></li>
+                @endif
 
                 <li class="header-wechat" role="button">
                     <a href="javascript:void(0);" style="color:#fff"><i class="fa fa-weixin"></i> <b>微信公众号</b></a>

@@ -69,7 +69,8 @@
             <div class="pull-left">
 
                 <a class="margin" role="button">
-                    {{ time_show($item->created_at) }}
+                    {{ time_show($item->created_at->timestamp) }}
+                    {{--{{ time_show($item->created_at->getTimestamp()) }}--}}
                 </a>
 
             </div>

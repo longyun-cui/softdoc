@@ -179,15 +179,31 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
             Route::post('enable', $controller.'@enableAction');
             Route::post('disable', $controller.'@disableAction');
 
-            // 作者
+            // 书目类型
             Route::group(['prefix' => 'content'], function () {
 
-                $controller = 'CourseController';
+                $controller = 'ContentController';
 
-                Route::match(['get','post'], '/', $controller.'@course_content_view_index');
-                Route::match(['get','post'], 'edit', $controller.'@course_content_editAction');
-                Route::post('get', $controller.'@course_content_getAction');
-                Route::post('delete', $controller.'@course_content_deleteAction');
+                Route::match(['get','post'], '/', $controller.'@content_viewIndex');
+                Route::match(['get','post'], 'edit', $controller.'@content_editAction');
+                Route::post('get', $controller.'@content_getAction');
+                Route::post('delete', $controller.'@content_deleteAction');
+
+            });
+
+            // 时间线类型
+            Route::group(['prefix' => 'point'], function () {
+
+                $controller = 'PointController';
+
+                Route::match(['get','post'], '/', $controller.'@viewList');
+                Route::get('create', $controller.'@createAction');
+                Route::match(['get','post'], 'edit', $controller.'@editAction');
+                Route::match(['get','post'], 'list', $controller.'@viewList');
+                Route::post('delete', $controller.'@deleteAction');
+                Route::post('enable', $controller.'@enableAction');
+                Route::post('disable', $controller.'@disableAction');
+
             });
 
             Route::get('select2_menus', $controller.'@select2_menus');

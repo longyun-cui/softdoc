@@ -10,7 +10,7 @@
 
 @section('breadcrumb')
     <li><a href="{{url('/home')}}"><i class="fa fa-dashboard"></i>首页</a></li>
-    <li><a href="{{url('/home/item/list?category=menu')}}"><i class="fa "></i>目录类型内容列表</a></li>
+    <li><a href="{{url('/home/item/list?category=menu')}}"><i class="fa "></i>目录类型列表</a></li>
     <li><a href="#"><i class="fa "></i>Here</a></li>
 @endsection
 
@@ -22,7 +22,7 @@
         <div class="box box-warning">
 
             <div class="box-header with-border" style="margin:16px 0;">
-                <h3 class="box-title">目录结构</h3>
+                <h3 class="box-title">内容结构图</h3>
                 <div class="pull-right">
                     <button type="button" class="btn btn-success pull-right show-create-content"><i class="fa fa-plus"></i> 添加新内容</button>
                 </div>
@@ -42,9 +42,9 @@
                             </span>
                             <span class="form-control multi-ellipsis-1">{{ $content->title or '' }}</span>
 
-                            @if($content->type == 1)
+                            {{--@if($content->type == 1)--}}
                             <span class="input-group-addon btn create-follow-menu" style="border-left:0;"><i class="fa fa-plus"></i></span>
-                            @endif
+                            {{--@endif--}}
                             <span class="input-group-addon btn edit-this-content" style="border-left:0;"><i class="fa fa-pencil"></i></span>
                             <span class="input-group-addon btn delete-this-content"><i class="fa fa-trash"></i></span>
                         </div>
@@ -69,7 +69,7 @@
 <div class="row">
     <div class="col-md-12">
         <!-- BEGIN PORTLET-->
-        <div class="box box-info">
+        <div class="box box-info form-container">
 
             <div class="box-header with-border" style="margin:16px 0;">
                 <h3 class="box-title"> @if(empty($encode_id)) 添加内容 @else 编辑目录 @endif </h3>
@@ -83,25 +83,25 @@
 
                     {{csrf_field()}}
                     <input type="hidden" name="operate" value="{{$operate or 'create'}}" readonly>
-                    <input type="hidden" name="course_id" value="{{$data->encode_id or encode(0)}}" readonly>
+                    <input type="hidden" name="item_id" value="{{$data->encode_id or encode(0)}}" readonly>
                     <input type="hidden" name="id" value="{{$encode_id or encode(0)}}" readonly>
 
                     {{--类型--}}
-                    <div class="form-group form-type">
+                    <div class="form-group form-type _none">
                         <label class="control-label col-md-2">类型</label>
                         <div class="col-md-8">
                             <div class="btn-group">
                                 <button type="button" class="btn">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="type" value="1" checked="checked"> 目录
+                                            <input type="radio" name="type-" value="1" checked="checked"> 目录
                                         </label>
                                     </div>
                                 </button>
                                 <button type="button" class="btn">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="type" value="2"> 内容
+                                            <input type="radio" name="type-" value="2"> 内容
                                         </label>
                                     </div>
                                 </button>
@@ -117,7 +117,7 @@
                                 <option value="0">顶级目录</option>
 
                                 @foreach( $data->contents_recursion as $key => $content )
-                                    @if($content->type == 1)
+                                    {{--@if($content->type == 1)--}}
 
                                         <option value="{{ $content->id or '' }}">
                                             @for ($i = 0; $i < $content->level; $i++)
@@ -126,7 +126,7 @@
                                             {{ $content->title or '' }}
                                         </option>
 
-                                    @endif
+                                    {{--@endif--}}
                                 @endforeach
 
                             </select>
@@ -194,7 +194,8 @@
 <script src="https://cdn.bootcss.com/select2/4.0.5/js/select2.min.js"></script>
 <script>
     $(function() {
-        // 修改幻灯片信息
+
+        // 修改
         $("#edit-content-submit").on('click', function() {
             var options = {
                 url: "/home/item/content/edit",
@@ -237,7 +238,7 @@
             $("html, body").animate({ scrollTop: $("#form-edit-content").offset().top }, {duration: 500,easing: "swing"});
         });
 
-        // 在该目录下添加内容
+        // 编辑内容
         $("#content-structure-list").on('click', '.edit-this-content', function () {
             var input_group = $(this).parents('.input-group');
             var id = input_group.attr('data-id');
@@ -264,11 +265,11 @@
                         var ue = UE.getEditor('container');
                         ue.setContent(content);
 
-                        var type = data.data.type;
-                        $("#form-edit-content").find('input[name=type]').prop('checked',null);
-                        $("#form-edit-content").find('input[name=type][value='+type+']').prop('checked',true);
-                        if(type == 1) $("#form-edit-content").find('.form-type').hide();
-                        else $("#form-edit-content").find('.form-type').show();
+//                        var type = data.data.type;
+//                        $("#form-edit-content").find('input[name=type]').prop('checked',null);
+//                        $("#form-edit-content").find('input[name=type][value='+type+']').prop('checked',true);
+//                        if(type == 1) $("#form-edit-content").find('.form-type').hide();
+//                        else $("#form-edit-content").find('.form-type').show();
 
                         $('#menu').find('option').prop('selected',null);
                         $('#menu').find('option[value='+data.data.p_id+']').prop("selected", true);
@@ -293,7 +294,7 @@
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                        "/home/item/content/delete",
+                        "/home/course/content/delete",
                         {
                             _token: $('meta[name="_token"]').attr('content'),
                             id:id
@@ -340,7 +341,7 @@
 
     function reset_form()
     {
-        $("#form-edit-content").find('.form-type').show();
+//        $("#form-edit-content").find('.form-type').show();
 
         $("#form-edit-content").find('input[name=operate]').val("create");
         $("#form-edit-content").find('input[name=id]').val("{{encode(0)}}");

@@ -5,6 +5,7 @@
 @endsection
 
 @section('header')
+    @if($operate == 'create') 添加内容 @else 编辑内容 @endif
 @endsection
 
 @section('description')
@@ -37,54 +38,133 @@
                 <input type="hidden" name="id" value="{{$encode_id or encode(0)}}" readonly>
 
                 {{--类别--}}
-                <div class="form-group form-category _none">
+                <div class="form-group form-category">
                     <label class="control-label col-md-2">类别</label>
                     <div class="col-md-8">
                         <div class="btn-group">
 
-                            <button type="button" class="btn radio">
-                                <div class="">
+                            @if($operate == 'edit')
+                                <button type="button" class="btn radio">
                                     <label>
-                                        <input type="radio" name="category" value="0"
-                                               @if($operate == 'create' || ($operate == 'edit' && $data->category == 0)) checked="checked" @endif> 未定义
+                                        <input type="radio" name="category-" value="{{ $data->category or 0 }}" checked="checked">
+                                        @if($data->category == 1) 一般文本
+                                        @elseif($data->category == 7) 辩题
+                                        @elseif($data->category == 11) 目录类型
+                                        @elseif($data->category == 18) 时间线
+                                        @endif
                                     </label>
-                                </div>
-                            </button>
+                                </button>
+                            @elseif($operate == 'create')
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="category" value="1" checked="checked"> 一般文本
+                                    </label>
+                                </button>
 
-                            <button type="button" class="btn">
-                                <div class="radio">
+                                <button type="button" class="btn radio">
                                     <label>
-                                        <input type="radio" name="category" value="2"
-                                               @if($operate == 'edit' && $data->category == 2) checked="checked" @endif> 关于我们
+                                        <input type="radio" name="category" value="7"> 辩题
                                     </label>
-                                </div>
-                            </button>
+                                </button>
+
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="category" value="11"> 目录类型
+                                    </label>
+                                </button>
+
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="category" value="18"> 时间线
+                                    </label>
+                                </button>
+                            @endif
 
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-2">时间</label>
+                {{--是否选择时间--}}
+                <div class="form-group article-show">
+                    <label class="control-label col-md-2">是否为日程</label>
                     <div class="col-md-8">
                         <div class="btn-group">
 
-                            <button type="button" class="btn checkbox">
-                                <label>
-                                    <input type="checkbox" name="time_type" value="1"
-                                           @if($operate == 'edit' && $data->time_type == 1) checked="checked" @endif> 选择时间
-                                </label>
-                            </button>
+                            {{--<button type="button" class="btn checkbox">--}}
+                                {{--<label>--}}
+                                    {{--<input type="checkbox" name="time_type" value="1"--}}
+                                           {{--@if($operate == 'edit' && $data->time_type == 1) checked="checked" @endif> 选择时间--}}
+                                {{--</label>--}}
+                            {{--</button>--}}
+                            @if($operate == 'edit')
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="time_type-" value="{{ $data->time_type or 0 }}" checked="checked">
+                                        @if($data->time_type == 0) 非日程
+                                        @elseif($data->time_type == 1) 日程
+                                        @endif
+                                    </label>
+                                </button>
+                            @elseif($operate == 'create')
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="time_type" value="0" checked="checked"> 非日程
+                                    </label>
+                                </button>
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="time_type" value="1"> 日程
+                                    </label>
+                                </button>
+                            @endif
 
                         </div>
                     </div>
                 </div>
+                {{--时间选择器--}}
+                <div class="form-group article-show time-show _none">
+                    <label class="control-label col-md-2">选择时间</label>
+                    <div class="col-md-8 ">
+                        <div class="col-md-6" style="padding-left:0;">
+                            <input type="text" class="form-control" name="start_time" placeholder="选择开始时间" value="{{$data->start_time or ''}}">
+                        </div>
+                        <div class="col-md-6" style="padding-right:0;">
+                            <input type="text" class="form-control" name="end_time" placeholder="选择结束时间" value="{{$data->end_time or ''}}">
+                        </div>
+                    </div>
+                </div>
+
+                @if($operate == 'edit' && $data->time_type == 1)
+                    <div class="form-group">
+                        <label class="control-label col-md-2">选择时间</label>
+                        <div class="col-md-8 ">
+                            <div class="col-md-6" style="padding-left:0;">
+                                <input type="text" readonly class="form-control" name="start_time-" value="@if($data->start_time != 0){{ time_show($data->start_time) }}@endif">
+                            </div>
+                            <div class="col-md-6" style="padding-right:0;">
+                                <input type="text" readonly class="form-control" name="end_time-" value="@if($data->end_time != 0){{ time_show($data->end_time) }}@endif">
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 {{--标题--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">标题</label>
                     <div class="col-md-8 ">
                         <div><input type="text" class="form-control" name="title" placeholder="请输入标题" value="{{$data->title or ''}}"></div>
+                    </div>
+                </div>
+                <div class="form-group debate-show _none">
+                    <label class="control-label col-md-2">正方观点</label>
+                    <div class="col-md-8 ">
+                        <div><input type="text" class="form-control" name="custom[positive]" placeholder="正方观点" value="{{$data->custom->positive or ''}}"></div>
+                    </div>
+                </div>
+                <div class="form-group debate-show _none">
+                    <label class="control-label col-md-2">反方观点</label>
+                    <div class="col-md-8 ">
+                        <div><input type="text" class="form-control" name="custom[negative]" placeholder="正方观点" value="{{$data->custom->negative or ''}}"></div>
                     </div>
                 </div>
                 {{--说明--}}
@@ -206,7 +286,8 @@
 @section('js')
 <script>
     $(function() {
-        // 修改幻灯片信息
+
+        // 提交
         $("#edit-item-submit").on('click', function() {
             var options = {
                 url: "/home/item/edit",
@@ -224,6 +305,66 @@
             };
             $("#form-edit-item").ajaxSubmit(options);
         });
+
+
+        // 【选择类别】
+        $("#form-edit-item").on('click', "input[name=category]", function() {
+            var $value = $(this).val();
+
+            if($value == 1) {
+                $('.article-show').show();
+
+                // checkbox
+//                if($("input[name=time_type]").is(':checked')) {
+//                    $('.time-show').show();
+//                } else {
+//                    $('.time-show').hide();
+//                }
+                // radio
+                var $time_type = $("input[name=time_type]:checked").val();
+                if($time_type == 1) {
+                    $('.time-show').show();
+                } else {
+                    $('.time-show').hide();
+                }
+            } else {
+                $('.article-show').hide();
+            }
+
+            if($value == 7) {
+                $('.debate-show').show();
+            } else {
+                $('.debate-show').hide();
+            }
+
+        });
+
+
+        // 【选择时间】
+        $("#form-edit-item").on('click', "input[name=time_type]", function() {
+            // checkbox
+//            if($(this).is(':checked')) {
+//                $('.time-show').show();
+//            } else {
+//                $('.time-show').hide();
+//            }
+            // radio
+            var $value = $(this).val();
+            if($value == 1) {
+                $('.time-show').show();
+            } else {
+                $('.time-show').hide();
+            }
+        });
+
+
+        $('input[name=start_time]').datetimepicker({
+            format:"YYYY-MM-DD HH:mm:ss"
+        });
+        $('input[name=end_time]').datetimepicker({
+            format:"YYYY-MM-DD HH:mm:ss"
+        });
+
     });
 </script>
 @endsection

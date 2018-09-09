@@ -26,9 +26,15 @@ class ItemRepository {
     {
         $user = Auth::user();
         $query = RootItem::select("*")->with(['user'])->where('user_id', $user->id);
+
+        $category = isset($post_data['category']) ? $post_data['category'] : '';
+        if($category == "article") $query->where('category', 1);
+        else if($category == "debase") $query->where('category', 7);
+        else if($category == "menu") $query->where('category', 11);
+        else if($category == "timeline") $query->where('category', 18);
+
         if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
-        if(!empty($post_data['major'])) $query->where('major', 'like', "%{$post_data['major']}%");
-        if(!empty($post_data['nation'])) $query->where('nation', 'like', "%{$post_data['nation']}%");
+
         $total = $query->count();
 
         $draw  = isset($post_data['draw'])  ? $post_data['draw']  : 1;
@@ -43,6 +49,57 @@ class ItemRepository {
             $order_dir = $order['dir'];
 
             $field = $columns[$order_column]["data"];
+            $query->orderBy($field, $order_dir);
+        }
+        else $query->orderBy("updated_at", "desc");
+
+        if($limit == -1) $list = $query->get();
+        else $list = $query->skip($skip)->take($limit)->get();
+
+        foreach ($list as $k => $v)
+        {
+            $list[$k]->encode_id = encode($v->id);
+        }
+        return datatable_response($list, $draw, $total);
+    }
+
+
+
+
+    // 返回列表数据
+    public function get_timeline_list_datatable($post_data)
+    {
+        $item_encode = request("item_id",0);
+        $item_decode = decode($item_encode);
+        if(!$item_decode) return view('home.404');
+
+        $user = Auth::user();
+        $line = Line::find($item_decode);
+        if(!$line || $line->user_id != $user->id) return view('home.404');
+
+        $query = Point::select("*")->with(['user'])->where('line_id', $item_decode);
+        if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+        $total = $query->count();
+
+        $draw  = isset($post_data['draw'])  ? $post_data['draw']  : 1;
+        $skip  = isset($post_data['start'])  ? $post_data['start']  : 0;
+        $limit = isset($post_data['length']) ? $post_data['length'] : 20;
+
+        if(isset($post_data['order']))
+        {
+            $columns = $post_data['columns'];
+            $order = $post_data['order'][0];
+            $order_column = $order['column'];
+            $order_dir = $order['dir'];
+
+            $field = $columns[$order_column]["data"];
+            if($field == "time")
+            {
+                $query->orderByRaw(DB::raw('cast(replace(trim(time)," ","") as SIGNED) '.$order_dir));
+                $query->orderByRaw(DB::raw('cast(replace(trim(time)," ","") as DECIMAL) '.$order_dir));
+                $query->orderByRaw(DB::raw('replace(trim(time)," ","") '.$order_dir));
+                $query->orderBy('time',$order_dir);
+            }
             $query->orderBy($field, $order_dir);
         }
         else $query->orderBy("updated_at", "desc");
@@ -139,10 +196,32 @@ class ItemRepository {
             elseif('edit') // 编辑
             {
                 $mine = RootItem::find($id);
-                if(!$mine) return response_error([],"该课程不存在，刷新页面重试");
+                if(!$mine) return response_error([],"该内容不存在，刷新页面重试");
                 if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
             }
             else throw new Exception("operate--error");
+
+            if(!empty($post_data['custom']))
+            {
+                $post_data['custom'] = json_encode($post_data['custom']);
+            }
+
+            if($operate == 'create' && $post_data['category'] == 1 && $post_data['time_type'] == 1)
+            {
+                if(!empty($post_data['start_time'])) {
+                    $post_data['start_time'] = strtotime($post_data['start_time']);
+                }
+                else $post_data['start_time'] = 0;
+
+                if(!empty($post_data['end_time'])) {
+                    $post_data['end_time'] = strtotime($post_data['end_time']);
+                }
+                else $post_data['end_time'] = 0;
+            }
+            else {
+                unset($post_data['start_time']);
+                unset($post_data['end_time']);
+            }
 
             $bool = $mine->fill($post_data)->save();
             if($bool)

@@ -7,20 +7,78 @@ class RootItem extends Model
     //
     protected $table = "root_items";
     protected $fillable = [
-        'category', 'type', 'sort', 'form', 'active', 'user_id', 'item_id', 'p_id',
+        'category', 'type', 'sort', 'form', 'active', 'user_id', 'item_id', 'p_id', 'version',
         'title', 'subtitle', 'description', 'content', 'custom', 'link_url', 'cover_pic',
-        'time_type', 'start_time', 'end_time', 'order', 'rank',
+        'time_point', 'time_type', 'start_time', 'end_time', 'order', 'rank',
         'is_shared', 'visit_num', 'share_num'
     ];
+
+    // 定义是否默认维护时间，默认是true.改为false，则以下时间相关设定无效
+//    public $timestamps = false;
+
+    // 此属性决定插入和取出数据库的格式，默认datetime格式，'U'是int(10)
     protected $dateFormat = 'U';
 
+    // 应被转换为日期的属性
+//    protected $dates = [];
 //    protected $dates = ['created_at', 'updated_at', 'disabled_at'];
 
-    public function getDates()
-    {
+
+    // 如果数据库存的是datetime或者没定义$dateFormat，又想取出的时候是int...
+//    public function getDates()
+//    {
 //        return array('created_at','updated_at');
-        return array(); // 原形返回；
-    }
+//        return array(); // 原形返回；
+//    }
+
+    // 属性类型转换
+//    protected $casts = [
+//        'created_at' => 'int',
+//        'updated_at' => 'integer',
+//    ];
+
+
+
+
+    /**
+     * 获取当前时间
+     *
+     * @return int
+     */
+//    public function freshTimestamp() {
+//        return time();
+//    }
+
+    /**
+     * 避免转换时间戳为时间字符串
+     *
+     * @param DateTime|int $value
+     * @return DateTime|int
+     */
+//    public function fromDateTime($value) {
+//        return $value;
+//    }
+
+    /**
+     * select的时候避免转换时间为Carbon
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+//    protected function asDateTime($value) {
+//        return $value;
+//    }
+
+    /**
+     * 从数据库获取的为获取时间戳格式
+     *
+     * @return string
+     */
+//    public function getDateFormat() {
+//        return 'U';
+//    }
+
+
 
 
     // 管理员
@@ -33,6 +91,12 @@ class RootItem extends Model
     function items()
     {
         return $this->hasMany('App\Models\RootItem','item_id','id');
+    }
+
+    // 父节点
+    function belong_item()
+    {
+        return $this->belongsTo('App\Models\RootItem','item_id','id');
     }
 
     // 父节点
@@ -50,7 +114,7 @@ class RootItem extends Model
     // 内容
     function contents()
     {
-        return $this->hasMany('App\Models\Content','item_id','id');
+        return $this->hasMany('App\Models\RootItem','item_id','id');
     }
 
     // 评论
