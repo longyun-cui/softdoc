@@ -63,5 +63,6 @@ class Kernel extends HttpKernel
         'home' => \App\Http\Middleware\HomeMiddleware::class,
         'notification' => \App\Http\Middleware\NotificationMiddleware::class,
         'login' => \App\Http\Middleware\LoginMiddleware::class,
+        'login.turn' => \App\Http\Middleware\TurnToLoginMiddleware::class,
     ];
 }

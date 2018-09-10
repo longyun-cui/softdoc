@@ -108,6 +108,7 @@ class WeixinRepository {
         $app_id = env('WECHAT_WEBSITE_DOC_APPID');
         $app_secret = env('WECHAT_WEBSITE_DOC_SECRET');
         $code = $post_data["code"];
+        $state = $post_data["state"];
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$app_id}&secret={$app_secret}&code={$code}&grant_type=authorization_code";
 
         $ch = curl_init();
@@ -138,7 +139,8 @@ class WeixinRepository {
             if($user)
             {
                 Auth::login($user,true);
-                return redirect('/');
+                if($state == '' || $state == "STATE") return redirect('/');
+                else return redirect($state);
             }
             else
             {
@@ -187,7 +189,8 @@ class WeixinRepository {
                         }
                     }
                     //echo $img_content;exit;
-                    return redirect('/');
+                    if($state == '' || $state == "STATE") return redirect('/');
+                    else return redirect($state);
 
                 }
                 else
@@ -204,6 +207,7 @@ class WeixinRepository {
         $app_id = env('WECHAT_APPID');
         $app_secret = env('WECHAT_SECRET');
         $code = $post_data["code"];
+        $state = $post_data["state"];
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$app_id}&secret={$app_secret}&code={$code}&grant_type=authorization_code";
 
         $ch = curl_init();
@@ -234,7 +238,8 @@ class WeixinRepository {
             if($user)
             {
                 Auth::login($user,true);
-                return redirect('/');
+                if($state == '' || $state == "STATE") return redirect('/');
+                else return redirect($state);
             }
             else
             {
@@ -283,7 +288,8 @@ class WeixinRepository {
                         }
                     }
                     //echo $img_content;exit;
-                    return redirect('/');
+                    if($state == '' || $state == "STATE") return redirect('/');
+                    else return redirect($state);
 
                 }
                 else

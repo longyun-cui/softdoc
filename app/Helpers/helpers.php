@@ -931,6 +931,17 @@ if(!function_exists('datatable_response'))
 }
 
 
+// 访问是否来自微信端
+if(!function_exists('is_weixin'))
+{
+    function is_weixin()
+    {
+        if ( strpos($_SERVER['HTTP_USER_AGENT'],'MicroMessenger') !== false ) return true;
+        return false;
+    }
+}
+
+
 
 
 

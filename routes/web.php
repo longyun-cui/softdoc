@@ -76,11 +76,16 @@ Route::group(['namespace' => 'Front'], function () {
 //        });
         Route::get('/', 'RootController@view_root');
 
-        Route::get('/home/todolist', 'RootController@view_home_todolist');
-        Route::get('/home/schedule', 'RootController@view_home_schedule');
+        Route::group(['middleware' => 'login.turn'], function () {
 
-        Route::get('/home/collection', 'RootController@view_home_collection');
-        Route::get('/home/favor', 'RootController@view_home_favor');
+            Route::get('/home/todolist', 'RootController@view_home_todolist');
+            Route::get('/home/schedule', 'RootController@view_home_schedule');
+
+            Route::get('/home/collection', 'RootController@view_home_collection');
+            Route::get('/home/favor', 'RootController@view_home_favor');
+
+        });
+
         Route::get('/home/discovery', 'RootController@view_home_discovery');
         Route::get('/home/circle', 'RootController@view_home_circle');
 
