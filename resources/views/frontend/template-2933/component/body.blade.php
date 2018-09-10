@@ -7,7 +7,7 @@
                 @yield('custom-body-side')
             </div>
 
-            <div class="col-md-9 body-main pull-left">
+            <div class="col-xs-12 col-sm-12 col-md-9 body-main pull-left">
                 @yield('custom-body-main')
             </div>
 

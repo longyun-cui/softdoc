@@ -58,3 +58,18 @@
 
 
 .text-red { color: #ff7676; }
+
+
+
+@media screen and (max-width:768px) {
+    .section-body { margin: 48px 0; }
+    .container { padding-left: 0; padding-right: 0; }
+    .media { padding: 0; }
+
+
+    .item-piece { padding: 16px; }
+    .item-tools-row a { font-size: 12px; }
+    .item-tools-row .pull-left .margin { margin-right: 8px; }
+    .item-tools-row .pull-right .margin { margin-left: 8px; }
+
+}

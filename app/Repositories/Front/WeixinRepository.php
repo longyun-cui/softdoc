@@ -20,6 +20,41 @@ class WeixinRepository {
 
     public function root()
     {
+        $data = '{
+            "button":
+            [
+                {    
+                    "type":"view",
+                    "name":"如未",
+                    "url":"http://softdoc.cn/"
+                },
+                {
+                    "name":"我",
+                    "sub_button":
+                    [
+                        {    
+                            "type":"view",
+                            "name":"待办事",
+                            "url":"http://softdoc.cn/home/todolist"
+                        },
+                        {
+                            "type":"view",
+                            "name":"日程",
+                            "url":"http://softdoc.cn/home/schedule"
+                        },
+                        {
+                            "type":"view",
+                            "name":"收藏",
+                            "url":"http://softdoc.cn/home/collection"
+                        }
+                    ]
+                }
+            ]
+        }';
+        define("ACCESS_TOKEN", TokenManager::getToken());
+        $res = $this->createMenu($data);
+        dd($res);
+
         $info = $this->getInfo("ojBDq06UlHn3OTfJ2TKeaifaHzCc");
         dd($info);
     }
@@ -67,7 +102,7 @@ class WeixinRepository {
         dd(collect($postObj)->toArray());
     }
 
-    //
+    // 微信扫码登录
     public function weixin_login($post_data)
     {
         $app_id = env('WECHAT_WEBSITE_DOC_APPID');
@@ -163,7 +198,7 @@ class WeixinRepository {
         }
     }
 
-    //
+    // 微信公众号授权
     public function weixin_auth($post_data)
     {
         $app_id = env('WECHAT_APPID');
@@ -431,6 +466,7 @@ class WeixinRepository {
     }
 
 
+    // 注册微信用户
     public function register_wx_user($unionid)
     {
         DB::beginTransaction();
