@@ -30,8 +30,8 @@ class ItemRepository {
         $category = isset($post_data['category']) ? $post_data['category'] : '';
         if($category == "article") $query->where('category', 1);
         else if($category == "debase") $query->where('category', 7);
-        else if($category == "menu") $query->where('category', 11);
-        else if($category == "timeline") $query->where('category', 18);
+        else if($category == "menu") $query->where('category', 11)->where('item_id', 0);
+        else if($category == "timeline") $query->where('category', 18)->where('item_id', 0);
 
         if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
 

@@ -685,13 +685,13 @@ jQuery( function ($) {
 function fold()
 {
 
-    var course_active = $('.course-menu-md-container .recursion-course.active');
-    if(course_active.length > 0)
+    var item_active = $('.side-menu-container .recursion-item.active');
+    if(item_active.length > 0)
     {
-        var course_a = course_active.find('a').clone();
+        var item_a = item_active.find('a').clone();
         $('.prev-content').find('.a-box').html('已经是封页了');
 
-        var content_first = $('.course-menu-md-container .recursion-row').first();
+        var content_first = $('.side-menu-container .recursion-row').first();
         $('.next-content').find('.a-box').html(content_first.find('a').clone());
     }
 
@@ -706,8 +706,8 @@ function fold()
 
         if(prev_row.length == 0)
         {
-            var course_a = $('.course-menu-md-container .recursion-course').find('a').clone();
-            $('.prev-content').find('.a-box').html(course_a);
+            var item_a = $('.side-menu-container .recursion-item').find('a').clone();
+            $('.prev-content').find('.a-box').html(item_a);
         }
         else
         {
@@ -724,7 +724,7 @@ function fold()
         }
 
 
-        // console.log(prev_row);
+        console.log(prev_row);
 
         if(this_level == 0)
         {

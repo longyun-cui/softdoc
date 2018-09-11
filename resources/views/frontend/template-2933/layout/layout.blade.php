@@ -29,13 +29,17 @@
         <link href="https://cdn.bootcss.com/lightcase/2.5.0/css/lightcase.min.css" rel="stylesheet">
         <link href="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.css" rel="stylesheet">
         <link href="https://cdn.bootcss.com/Swiper/4.2.2/css/swiper.min.css" rel="stylesheet">
+        <link href="https://cdn.bootcss.com/timelinejs/2.36.0/css/timeline.css" rel="stylesheet">
 
         <link type="text/css" rel="stylesheet" href="{{ asset('common/css/common.css') }}" media="all" />
         <link type="text/css" rel="stylesheet" href="{{ asset('common/css/frontend/index.css') }}" media="all" />
         <link type="text/css" rel="stylesheet" href="{{ asset('common/css/frontend/item.css') }}" media="all" />
+        <link type="text/css" rel="stylesheet" href="{{ asset('common/css/frontend/menu.css') }}" media="all" />
         <link type="text/css" rel="stylesheet" href="{{ asset('common/css/backend/index.css') }}" media="all" />
         <link type="text/css" rel="stylesheet" href="{{ asset('common/css/animate/wicked.css') }}" media="all" />
         <link type="text/css" rel="stylesheet" href="{{ asset('common/css/animate/hover.css') }}" media="all" />
+
+        {{--<link type="text/css" rel="stylesheet" href="{{ asset('css/frontend/index.css') }}" media="all" />--}}
 
         <!--[if lt IE 9]>
         <script src="{{ asset('/templates/moban2933/js/vendor/html5shiv.min.js') }}"></script>
@@ -77,6 +81,7 @@
         <script src="https://cdn.bootcss.com/lightcase/2.5.0/js/lightcase.min.js"></script>
         <script src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.js"></script>
         <script src="https://cdn.bootcss.com/Swiper/4.2.2/js/swiper.min.js"></script>
+        <script src="https://cdn.bootcss.com/timelinejs/2.36.0/js/timeline-min.js"></script>
 
 
         <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>

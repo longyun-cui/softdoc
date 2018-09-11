@@ -323,7 +323,7 @@ class ContentRepository {
 
         $user = Auth::user();
 
-        $post_data["category"] = 51;
+//        $post_data["category"] = 11;
         $item_encode = $post_data["item_id"];
         $item_decode = decode($item_encode);
         if(!$item_decode) return response_error();

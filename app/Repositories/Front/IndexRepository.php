@@ -15,7 +15,7 @@ use Response, Auth, Validator, DB, Exception, Blade;
 use Carbon\Carbon;
 use QrCode;
 
-class RootRepository {
+class IndexRepository {
 
     private $model;
     public function __construct()
@@ -230,6 +230,42 @@ class RootRepository {
         {
             $item->timestamps = false;
             $item->increment('visit_num');
+
+            if($item->category == 11)
+            {
+                if($item->item_id == 0) $parent_item = $item;
+                else $parent_item = RootItem::with(['contents'])->find($item->item_id);
+
+                $contents_recursion = $this->get_recursion($parent_item->contents,0);
+                foreach ($contents_recursion as $v)
+                {
+                    $v->content_show = strip_tags($v->content);
+                    $v->img_tags = get_html_img($v->content);
+                }
+                view()->share(['contents_recursion'=>$contents_recursion]);
+
+                $parent_item->visit_total = $parent_item->visit_num + $parent_item->contents->sum('visit_num');
+                $parent_item->comments_total = $parent_item->comment_num + $parent_item->contents->sum('comment_num');
+                view()->share(['parent_item'=>$parent_item]);
+            }
+            else if($item->category == 18)
+            {
+                if($item->item_id == 0) $parent_item = $item;
+                else $parent_item = RootItem::with(['contents'])->find($item->item_id);
+
+                $time_points = $parent_item->contents;
+                foreach ($time_points as $v)
+                {
+                    $v->content_show = strip_tags($v->content);
+                    $v->img_tags = get_html_img($v->content);
+                }
+                view()->share(['time_points'=>$time_points]);
+
+                $parent_item->visit_total = $parent_item->visit_num + $parent_item->contents->sum('visit_num');
+                $parent_item->comments_total = $parent_item->comment_num + $parent_item->contents->sum('comment_num');
+                view()->share(['parent_item'=>$parent_item]);
+            }
+
         }
         else return view('frontend.errors.404');
 

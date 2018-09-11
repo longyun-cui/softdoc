@@ -1,6 +1,14 @@
+*{margin:0;padding:0;}
+html,body {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
 
 body:before {
-    content: ' ';
+    content: '';
     /*background-color: #000;*/
     /*background-image: url(/common/images/bg.jpg);*/
     /*background-size: cover;*/

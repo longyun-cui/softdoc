@@ -38,11 +38,11 @@
             </li>
 
             <li class="treeview {{$menu_article_list or ''}}">
-                <a href="{{url('/home/item/list?category=article')}}"><i class="fa fa-circle-o text-red"></i> <span>一般文本</span></a>
+                <a href="{{url('/home/item/list?category=article')}}"><i class="fa fa-circle-o text-red"></i> <span>图文类型</span></a>
             </li>
 
             <li class="treeview {{$menu_debase_list or ''}}">
-                <a href="{{url('/home/item/list?category=debase')}}"><i class="fa fa-circle-o text-red"></i> <span>辩题</span></a>
+                <a href="{{url('/home/item/list?category=debase')}}"><i class="fa fa-circle-o text-red"></i> <span>辩题类型</span></a>
             </li>
 
             <li class="treeview {{$menu_menu_list or ''}}">
@@ -50,7 +50,7 @@
             </li>
 
             <li class="treeview {{$menu_timeline_list or ''}}">
-                <a href="{{url('/home/item/list?category=timeline')}}"><i class="fa fa-circle-o text-red"></i> <span>时间线</span></a>
+                <a href="{{url('/home/item/list?category=timeline')}}"><i class="fa fa-circle-o text-red"></i> <span>时间线类型</span></a>
             </li>
 
 

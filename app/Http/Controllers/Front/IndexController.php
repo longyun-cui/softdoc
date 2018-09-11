@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Repositories\Front\RootRepository;
+use App\Repositories\Front\IndexRepository;
 
 
-class RootController extends Controller
+class IndexController extends Controller
 {
     //
     private $repo;
     public function __construct()
     {
-        $this->repo = new RootRepository;
+        $this->repo = new IndexRepository;
     }
 
 

@@ -111,7 +111,7 @@
                 "orderCellsTop": true,
                 "columns": [
                     {
-                        "data": "encode_id",
+                        "data": "id",
                         'orderable': false,
                         render: function(data, type, row, meta) {
                             return '<a target="_blank" href="/item/'+data+'">'+row.title+'</a>';

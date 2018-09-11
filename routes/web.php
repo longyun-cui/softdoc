@@ -41,13 +41,14 @@ Route::group(['prefix' => 'common'], function () {
  */
 Route::group(['namespace' => 'Front'], function () {
 
+    $controller = "IndexController";
 
     /*
      * weixin
      */
     Route::group(['prefix' => 'weixin'], function () {
 
-        $controller = "WeixinController";
+        $wxController = "WeixinController";
 
         Route::match(['get', 'post'],'auth/MP_verify_0m3bPByLDcHKLvIv.txt', function () {
             return "0m3bPByLDcHKLvIv";
@@ -57,13 +58,13 @@ Route::group(['namespace' => 'Front'], function () {
             return "eTPw6Fu85pGY5kiV";
         });
 
-        Route::match(['get', 'post'],'auth', $controller."@weixin_auth");
-        Route::match(['get', 'post'],'login', $controller."@weixin_login");
+        Route::match(['get', 'post'],'auth', $wxController."@weixin_auth");
+        Route::match(['get', 'post'],'login', $wxController."@weixin_login");
 
 
-        Route::match(['get', 'post'],'gongzhonghao', $controller."@gongzhonghao");
-        Route::match(['get', 'post'],'root', $controller."@root");
-        Route::match(['get', 'post'],'test', $controller."@test");
+        Route::match(['get', 'post'],'gongzhonghao', $wxController."@gongzhonghao");
+        Route::match(['get', 'post'],'root', $wxController."@root");
+        Route::match(['get', 'post'],'test', $wxController."@test");
 
     });
 
@@ -71,64 +72,64 @@ Route::group(['namespace' => 'Front'], function () {
 
     Route::group(['middleware' => 'wechat.share'], function () {
 
-//        Route::get('/', function () {
-//            return redirect('/courses');
-//        });
-        Route::get('/', 'RootController@view_root');
+        $controller = "IndexController";
+
+        Route::get('/', $controller.'@view_root');
 
         Route::group(['middleware' => 'login.turn'], function () {
 
-            Route::get('/home/todolist', 'RootController@view_home_todolist');
-            Route::get('/home/schedule', 'RootController@view_home_schedule');
+            $controller = "IndexController";
 
-            Route::get('/home/collection', 'RootController@view_home_collection');
-            Route::get('/home/favor', 'RootController@view_home_favor');
+            Route::get('/home/todolist', $controller.'@view_home_todolist');
+            Route::get('/home/schedule', $controller.'@view_home_schedule');
+
+            Route::get('/home/collection', $controller.'@view_home_collection');
+            Route::get('/home/favor', $controller.'@view_home_favor');
 
         });
 
-        Route::get('/home/discovery', 'RootController@view_home_discovery');
-        Route::get('/home/circle', 'RootController@view_home_circle');
+        Route::get('/home/discovery', $controller.'@view_home_discovery');
+        Route::get('/home/circle', $controller.'@view_home_circle');
 
-        Route::get('item/{id?}', 'RootController@view_item');
+        Route::get('item/{id?}', $controller.'@view_item');
 
-        Route::get('user/{id?}', 'RootController@view_user');
-
-
-
+        Route::get('user/{id?}', $controller.'@view_user');
 
     });
 
 
     Route::group(['middleware' => 'login'], function () {
 
+        $controller = "IndexController";
+
         // 收藏
-        Route::post('item/add/collection', 'RootController@item_add_collection');
-        Route::post('item/remove/collection', 'RootController@item_remove_collection');
+        Route::post('item/add/collection', $controller.'@item_add_collection');
+        Route::post('item/remove/collection', $controller.'@item_remove_collection');
 
         // 点赞
-        Route::post('item/add/favor', 'RootController@item_add_favor');
-        Route::post('item/remove/favor', 'RootController@item_remove_favor');
+        Route::post('item/add/favor', $controller.'@item_add_favor');
+        Route::post('item/remove/favor', $controller.'@item_remove_favor');
 
         // 待办事
-        Route::post('item/add/todolist', 'RootController@item_add_todolist');
-        Route::post('item/remove/todolist', 'RootController@item_remove_todolist');
+        Route::post('item/add/todolist', $controller.'@item_add_todolist');
+        Route::post('item/remove/todolist', $controller.'@item_remove_todolist');
 
         // 日程
-        Route::post('item/add/schedule', 'RootController@item_add_schedule');
-        Route::post('item/remove/schedule', 'RootController@item_remove_schedule');
+        Route::post('item/add/schedule', $controller.'@item_add_schedule');
+        Route::post('item/remove/schedule', $controller.'@item_remove_schedule');
 
 
-        Route::post('item/comment/save', 'RootController@item_comment_save');
-        Route::post('item/reply/save', 'RootController@item_reply_save');
+        Route::post('item/comment/save', $controller.'@item_comment_save');
+        Route::post('item/reply/save', $controller.'@item_reply_save');
 
-        Route::post('item/comment/favor/save', 'RootController@item_comment_favor_save');
-        Route::post('item/comment/favor/cancel', 'RootController@item_comment_favor_cancel');
+        Route::post('item/comment/favor/save', $controller.'@item_comment_favor_save');
+        Route::post('item/comment/favor/cancel', $controller.'@item_comment_favor_cancel');
 
     });
 
-    Route::post('item/comment/get', 'RootController@item_comment_get');
-    Route::post('item/comment/get_html', 'RootController@item_comment_get_html');
-    Route::post('item/reply/get', 'RootController@item_reply_get');
+    Route::post('item/comment/get', $controller.'@item_comment_get');
+    Route::post('item/comment/get_html', $controller.'@item_comment_get_html');
+    Route::post('item/reply/get', $controller.'@item_reply_get');
 
 });
 

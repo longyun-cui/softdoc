@@ -85,6 +85,7 @@
                     <input type="hidden" name="operate" value="{{$operate or 'create'}}" readonly>
                     <input type="hidden" name="item_id" value="{{$data->encode_id or encode(0)}}" readonly>
                     <input type="hidden" name="id" value="{{$encode_id or encode(0)}}" readonly>
+                    <input type="hidden" name="category" value="11" readonly>
 
                     {{--类型--}}
                     <div class="form-group form-type _none">
@@ -161,6 +162,27 @@
                                         ue.execCommand('serverparam', '_token', '{{ csrf_token() }}');//此处为支持laravel5 csrf ,根据实际情况修改,目的就是设置 _token 值.
                                     });
                                 </script>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{--是否启用--}}
+                    <div class="form-group form-active">
+                        <label class="control-label col-md-2">是否启用</label>
+                        <div class="col-md-8">
+                            <div class="btn-group">
+
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="active" value="0" checked="checked"> 不启用
+                                    </label>
+                                </button>
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="active" value="1"> 启用
+                                    </label>
+                                </button>
+
                             </div>
                         </div>
                     </div>

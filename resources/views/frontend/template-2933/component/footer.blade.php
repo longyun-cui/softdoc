@@ -5,7 +5,7 @@
 
             <div class="row mb60">
                 <div class="col-lg-12 col-md-12 section-heading probootstrap-animate-">
-                    <h2 class="module-title title-white">{{ trans('custom.text.contact_title') }}</h2>
+                    <h2 class="module-title title-white">Footer</h2>
                     {{--<p class="module-subtitle lead"><b>{{ trans('custom.text.contact_subtitle') }}</b></p>--}}
                 </div>
             </div>

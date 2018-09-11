@@ -2,7 +2,7 @@
     <div class="panel-default box-default item-entity-container">
 
         <div class="box-body item-title-row">
-            <a href="{{url('/item/'.$item->id)}}"><b>{{ $item->title or '' }}</b></a>
+            <b>{{ $item->title or '' }}</b>
         </div>
 
         <div class="box-body item-info-row text-muted">
@@ -36,7 +36,7 @@
 
             <div class="pull-left _none">
                 <a class="margin" role="button">
-                    {{ time_show($item->created_at) }}
+                    {{--{{ time_show($item->created_at) }}--}}
                 </a>
             </div>
 

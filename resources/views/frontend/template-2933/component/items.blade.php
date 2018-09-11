@@ -35,32 +35,32 @@
         {{--@endif--}}
 
         {{--content--}}
-            <div class="box-body item-content-row">
-                <div class="media">
-                    <div class="media-left">
-                        @if(!empty($item->cover_pic))
-                            <a href="{{ url('/item/'.$item->id) }}">
-                                <img class="media-object" src="{{ url(env('DOMAIN_CDN').'/'.$item->cover_pic )}}">
-                            </a>
+        <div class="box-body item-content-row">
+            <div class="media">
+                <div class="media-left">
+                    @if(!empty($item->cover_pic))
+                        <a href="{{ url('/item/'.$item->id) }}">
+                            <img class="media-object" src="{{ url(env('DOMAIN_CDN').'/'.$item->cover_pic )}}">
+                        </a>
+                    @else
+                        <a href="{{ url('/item/'.$item->id) }}">
+                            <img class="media-object" src="{{ $item->img_tags[2][0] or '' }}">
+                        </a>
+                    @endif
+                </div>
+                <div class="media-body">
+                    <div class="clearfix">
+                        @if(!empty($item->description))
+                            <article class="colo-md-12">{{{ $item->description or '' }}}</article>
                         @else
-                            <a href="{{ url('/item/'.$item->id) }}">
-                                <img class="media-object" src="{{ $item->img_tags[2][0] or '' }}">
-                            </a>
+                            <article class="colo-md-12">{!! $item->content_show or '' !!}</article>
                         @endif
-                    </div>
-                    <div class="media-body">
-                        <div class="clearfix">
-                            @if(!empty($item->description))
-                                <article class="colo-md-12">{{{ $item->description or '' }}}</article>
-                            @else
-                                <article class="colo-md-12">{!! $item->content_show or '' !!}</article>
-                            @endif
 
-                        </div>
                     </div>
                 </div>
-                {{--<article class="colo-md-12"> {!! $item->content or '' !!} </article>--}}
             </div>
+            {{--<article class="colo-md-12"> {!! $item->content or '' !!} </article>--}}
+        </div>
 
         {{--tools--}}
         <div class="box-footer item-tools-row">
