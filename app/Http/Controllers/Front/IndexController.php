@@ -69,6 +69,15 @@ class IndexController extends Controller
 
 
 
+    // 【ajax】【获取日程】
+    public function ajax_get_schedule()
+    {
+        return $this->repo->ajax_get_schedule(request()->all());
+    }
+
+
+
+
     // 【收藏】
     public function item_add_collection()
     {

@@ -31,6 +31,7 @@
         <link href="https://cdn.bootcss.com/Swiper/4.2.2/css/swiper.min.css" rel="stylesheet">
         <link href="https://cdn.bootcss.com/timelinejs/2.36.0/css/timeline.css" rel="stylesheet">
 
+
         <link type="text/css" rel="stylesheet" href="{{ asset('common/css/common.css') }}" media="all" />
         <link type="text/css" rel="stylesheet" href="{{ asset('common/css/frontend/index.css') }}" media="all" />
         <link type="text/css" rel="stylesheet" href="{{ asset('common/css/frontend/item.css') }}" media="all" />
@@ -65,16 +66,18 @@
         @yield('component-footer')
 
 
-        {{--<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>--}}
+        {{--<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>--}}
+        <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
         {{--<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>--}}
-        <script src="{{ asset('/templates/moban2933/js/scripts.min.js') }}"></script>
-        <script src="{{ asset('/templates/moban2933/js/main.min.js') }}"></script>
+        {{--<script src="{{ asset('/templates/moban2933/js/scripts.min.js') }}"></script>--}}
+        {{--<script src="{{ asset('/templates/moban2933/js/main.min.js') }}"></script>--}}
         <script src="{{ asset('/templates/moban2933/js/custom.js') }}"></script>
 
-        <script src="{{ asset('/templates/moban2933/plugins/slick-nav/jquery.slicknav.min.js') }}"></script>
-        <script src="{{ asset('/templates/moban2933/plugins/slick/slick.min.js') }}"></script>
+        {{--<script src="{{ asset('/templates/moban2933/plugins/slick-nav/jquery.slicknav.min.js') }}"></script>--}}
+        {{--<script src="{{ asset('/templates/moban2933/plugins/slick/slick.min.js') }}"></script>--}}
 
-        {{--<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>--}}
+        <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
         <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
         <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.min.js"></script>
         <script src="https://cdn.bootcss.com/layer/3.0.3/layer.min.js"></script>
@@ -122,19 +125,6 @@
                             imgUrl: $.trim("@yield('wx_share_imgUrl')"),
                             success: function () {
                                 // 用户确认分享后执行的回调函数
-                                {{--$.get(--}}
-                                {{--"/share",--}}
-                                {{--{--}}
-                                {{--'_token': $('meta[name="_token"]').attr('content'),--}}
-                                {{--'website': "{{$org->website_name or '0'}}",--}}
-                                {{--'sort': 1,--}}
-                                {{--'module': 0,--}}
-                                {{--'share': 1--}}
-                                {{--},--}}
-                                {{--function(data) {--}}
-                                {{--if(!data.success) layer.msg(data.msg);--}}
-                                {{--}, --}}
-                                {{--'json');--}}
                             },
                             cancel: function () {
                                 // 用户取消分享后执行的回调函数
@@ -147,19 +137,6 @@
                             imgUrl: $.trim("@yield('wx_share_imgUrl')"),
                             success: function () {
                                 // 用户确认分享后执行的回调函数
-                                {{--$.get(--}}
-                                {{--"/share",--}}
-                                {{--{--}}
-                                {{--'_token': $('meta[name="_token"]').attr('content'),--}}
-                                {{--'website': "{{$org->website_name or '0'}}",--}}
-                                {{--'sort': 1,--}}
-                                {{--'module': 0,--}}
-                                {{--'share': 2--}}
-                                {{--},--}}
-                                {{--function(data) {--}}
-                                {{--if(!data.success) layer.msg(data.msg);--}}
-                                {{--}, --}}
-                                {{--'json');--}}
                             },
                             cancel: function () {
                                 // 用户取消分享后执行的回调函数
@@ -172,19 +149,6 @@
                             imgUrl: $.trim("@yield('wx_share_imgUrl')"),
                             success: function () {
                                 // 用户确认分享后执行的回调函数
-                                {{--$.get(--}}
-                                {{--"/share",--}}
-                                {{--{--}}
-                                {{--'_token': $('meta[name="_token"]').attr('content'),--}}
-                                {{--'website': "{{$org->website_name or '0'}}",--}}
-                                {{--'sort': 1,--}}
-                                {{--'module': 0,--}}
-                                {{--'share': 3--}}
-                                {{--},--}}
-                                {{--function(data) {--}}
-                                {{--if(!data.success) layer.msg(data.msg);--}}
-                                {{--}, --}}
-                                {{--'json');--}}
                             },
                             cancel: function () {
                                 // 用户取消分享后执行的回调函数
@@ -197,19 +161,6 @@
                             imgUrl: $.trim("@yield('wx_share_imgUrl')"),
                             success: function () {
                                 // 用户确认分享后执行的回调函数
-                                {{--$.get(--}}
-                                {{--"/share",--}}
-                                {{--{--}}
-                                {{--'_token': $('meta[name="_token"]').attr('content'),--}}
-                                {{--'website': "{{$org->website_name or '0'}}",--}}
-                                {{--'sort': 1,--}}
-                                {{--'module': 0,--}}
-                                {{--'share': 4--}}
-                                {{--},--}}
-                                {{--function(data) {--}}
-                                {{--if(!data.success) layer.msg(data.msg);--}}
-                                {{--}, --}}
-                                {{--'json');--}}
                             },
                             cancel: function () {
                                 // 用户取消分享后执行的回调函数
@@ -222,19 +173,6 @@
                             imgUrl: $.trim("@yield('wx_share_imgUrl')"),
                             success: function () {
                                 // 用户确认分享后执行的回调函数
-                                {{--$.get(--}}
-                                {{--"/share",--}}
-                                {{--{--}}
-                                {{--'_token': $('meta[name="_token"]').attr('content'),--}}
-                                {{--'website': "{{$org->website_name or '0'}}",--}}
-                                {{--'sort': 1,--}}
-                                {{--'module': 0,--}}
-                                {{--'share': 5--}}
-                                {{--},--}}
-                                {{--function(data) {--}}
-                                {{--if(!data.success) layer.msg(data.msg);--}}
-                                {{--}, --}}
-                                {{--'json');--}}
                             },
                             cancel: function () {
                                 // 用户取消分享后执行的回调函数

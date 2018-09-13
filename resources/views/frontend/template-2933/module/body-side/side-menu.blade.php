@@ -5,7 +5,7 @@
             <i class="fa fa-bookmark text-orange"></i>
         </span>
         <span class="recursion-text recursion-item  @if($parent_item->id == $item->id) active @endif">
-            <a href="{{url('/item/'.$parent_item->id)}}">{{ $parent_item->title or '' }}</a>
+            <a href="{{url('/item/'.$parent_item->id)}}"><b>{{ $parent_item->title or '' }}</b></a>
         </span>
     </div>
 

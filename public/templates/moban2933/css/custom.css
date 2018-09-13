@@ -224,5 +224,5 @@
 
 @media (min-width: 992px) and (max-width: 1200px) {
     .probootstrap-logo { padding-left: 4px; }
-    .probootstrap-nav { padding-right: 4px; }
+    .probootstrap-nav { padding-right: 32px; }
 }

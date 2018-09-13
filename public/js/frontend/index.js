@@ -9,16 +9,19 @@ jQuery( function ($) {
         location.href = "/admin/logout";
     });
 
-    $('.course-option').on('click', '.show-menu', function () {
-        var course_option = $(this).parents('.course-option');
-        course_option.find('.menu-container').show();
+
+
+
+    $('.item-option').on('click', '.show-menu', function () {
+        var item_option = $(this).parents('.item-option');
+        item_option.find('.menu-container').show();
         $(this).removeClass('show-menu').addClass('hide-menu');
         $(this).html('隐藏目录');
     });
 
-    $('.course-option').on('click', '.hide-menu', function () {
-        var course_option = $(this).parents('.course-option');
-        course_option.find('.menu-container').hide();
+    $('.item-option').on('click', '.hide-menu', function () {
+        var item_option = $(this).parents('.item-option');
+        item_option.find('.menu-container').hide();
         $(this).removeClass('hide-menu').addClass('show-menu');
         $(this).html('查看目录');
     });
@@ -254,6 +257,69 @@ jQuery( function ($) {
     });
 
 
+    // 添加日程
+    $(".item-option").off("click",".add-this-schedule").on('click', ".add-this-schedule", function() {
+        var that = $(this);
+        var item_option = $(this).parents('.item-option');
+
+        layer.msg('添加日程？', {
+            time: 0
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.post(
+                    "/item/add/schedule",
+                    {
+                        _token: $('meta[name="_token"]').attr('content'),
+                        item_id: item_option.attr('data-item'),
+                        type: 11
+                    },
+                    function(data){
+                        if(!data.success) layer.msg(data.msg);
+                        else
+                        {
+                            layer.msg("添加成功");
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
+
+    });
+    // 移除日程
+    $(".item-option").off("click",".remove-this-schedule").on('click', ".remove-this-schedule", function() {
+        var that = $(this);
+        var item_option = $(this).parents('.item-option');
+
+        layer.msg('移除日程？', {
+            time: 0
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.post(
+                    "/item/remove/schedule",
+                    {
+                        _token: $('meta[name="_token"]').attr('content'),
+                        item_id: item_option.attr('data-item'),
+                        type: 1
+                    },
+                    function(data){
+                        if(!data.success) layer.msg(data.msg);
+                        else
+                        {
+                            layer.closeAll();
+                            layer.msg("");
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
+
+    });
+
+
+
+
     // 显示评论
     $(".item-option").off("click",".comment-toggle").on('click', ".comment-toggle", function() {
         var item_option = $(this).parents('.item-option');
@@ -265,8 +331,7 @@ jQuery( function ($) {
                 "/item/comment/get",
                 {
                     _token: $('meta[name="_token"]').attr('content'),
-                    course_id: item_option.attr('data-course'),
-                    content_id: item_option.attr('data-content'),
+                    item_id: item_option.attr('data-item'),
                     type: 1
                 },
                 function(data){
@@ -321,8 +386,7 @@ jQuery( function ($) {
             "/item/comment/get",
             {
                 _token: $('meta[name="_token"]').attr('content'),
-                course_id: item_option.attr('data-course'),
-                content_id: item_option.attr('data-content'),
+                item_id: item_option.attr('data-item'),
                 type: 1
             },
             function(data){

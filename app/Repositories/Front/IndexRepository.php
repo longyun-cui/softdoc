@@ -116,20 +116,22 @@ class IndexRepository {
             $user_id = $user->id;
 
             // Method 1
-            $query = User::with([
-                'pivot_item'=>function($query) use($user_id) { $query->with([
-                    'user',
-                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-                ])->wherePivot('type',12)->orderby('pivot_user_item.id','desc'); }
-            ])->find($user_id);
-            $items = $query->pivot_item;
+//            $query = User::with([
+//                'pivot_item'=>function($query) use($user_id) { $query->with([
+//                    'user',
+//                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+//                ])->wherePivot('type',12)->orderby('pivot_user_item.id','desc'); }
+//            ])->find($user_id);
+//            $items = $query->pivot_item;
+
+            $items = [];
         }
         else $items = [];
 
         return view('frontend.entrance.schedule')->with(['items'=>$items,'root_schedule_active'=>'active']);
     }
 
-    // 【收藏】
+    // 【收藏内容】
     public function view_home_collection($post_data)
     {
         if(Auth::check())
@@ -151,7 +153,7 @@ class IndexRepository {
         return view('frontend.entrance.collection')->with(['items'=>$items,'root_collection_active'=>'active']);
     }
 
-    // 【点赞】
+    // 【点赞内容】
     public function view_home_favor($post_data)
     {
         if(Auth::check())
@@ -173,7 +175,7 @@ class IndexRepository {
         return view('frontend.entrance.favor')->with(['items'=>$items,'root_favor_active'=>'active']);
     }
 
-    // 【点赞】
+    // 【发现】
     public function view_home_discovery($post_data)
     {
         if(Auth::check())
@@ -191,7 +193,7 @@ class IndexRepository {
         return view('frontend.entrance.discovery')->with(['items'=>$items,'root_discovery_active'=>'active']);
     }
 
-    // 【点赞】
+    // 【好友圈】
     public function view_home_circle($post_data)
     {
         if(Auth::check())
@@ -270,6 +272,68 @@ class IndexRepository {
         else return view('frontend.errors.404');
 
         return view('frontend.entrance.item')->with(['item'=>$item]);
+    }
+
+
+
+    // 【添加】
+    public function ajax_get_schedule($post_data)
+    {
+        if(Auth::check())
+        {
+            $messages = [
+                'year.required' => '参数有误',
+                'month.required' => '参数有误'
+            ];
+            $v = Validator::make($post_data, [
+                'year' => 'required',
+                'month' => 'required'
+            ], $messages);
+            if ($v->fails())
+            {
+                $errors = $v->errors();
+                return response_error([],$errors->first());
+            }
+
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            $year = $post_data['year'];
+            $month = $post_data['month'];
+            $monthStr = $year."-".$month;
+            $start = strtotime($monthStr); // 指定月份月初时间戳
+            $end = mktime(23, 59, 59, date('m', strtotime($monthStr))+1, 00); // 指定月份月末时间戳
+
+            // Method 1
+            $query = User::with([
+                'pivot_item'=>function($query) use($user_id,$start,$end) { $query->with([
+                    'user',
+                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+                ])->wherePivot('type',12)->where(function ($query) use($start,$end) {
+                    $query
+                        ->where(function ($query) use($start,$end) {$query->where('start_time', '>=', $start)->where('start_time', '<=', $end);})
+                        ->orWhere(function ($query) use($start,$end) {$query->where('end_time', '>=', $start)->where('end_time', '<=', $end);})
+                        ->orWhere(function ($query) use($start,$end) {$query->where('start_time', '<=', $start)->where('end_time', '>=', $end);});
+                })->orderby('pivot_user_item.id','desc'); }
+            ])->find($user_id);
+
+//            $query->where(function ($query) use($start_time,$end_time) {
+//                $query
+//                    ->where(function ($query) use($start_time,$end_time) {
+//                        $query->where('start_time', '>=', $start_time)->where('start_time', '<=', $end_time);})
+//                    ->orWhere(function ($query) use($start_time,$end_time) {
+//                        $query->where('end_time', '>=', $start_time)->where('end_time', '<=', $end_time);})
+//                    ->orWhere(function ($query) use($start_time,$end_time) {
+//                        $query->where('start_time', '<=', $start_time)->where('end_time', '>=', $end_time);});
+//            });
+
+            $items = $query->pivot_item;
+
+            $html =  view('frontend.'.env('TEMPLATE').'.component.items')->with(['items'=>$items])->__toString();
+            return response_success(['html'=>$html]);
+
+        }
+        else return response_error([],'请先登录！');
     }
 
 

@@ -35,6 +35,8 @@
 @section('custom-body-side')
     @if($item->category == 11)
         @include('frontend.'.env('TEMPLATE').'.module.body-side.side-menu')
+    @elseif($item->category == 18)
+        @include('frontend.'.env('TEMPLATE').'.module.body-side.side-timeline')
     @else
         @include('frontend.'.env('TEMPLATE').'.module.body-side.side-item')
     @endif
@@ -44,7 +46,7 @@
 {{--custom-content--}}
 @section('custom-body')
 
-    @if($item->category == 11)
+    @if($item->category == 11 || $item->category == 18)
         @include('frontend.'.env('TEMPLATE').'.component.body', ['side'=>4,'main'=>8])
     @else
         @include('frontend.'.env('TEMPLATE').'.component.body')

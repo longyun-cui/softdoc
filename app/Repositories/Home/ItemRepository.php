@@ -235,6 +235,12 @@ class ItemRepository {
                     $user->pivot_item()->attach($mine->id,['type'=>11,'created_at'=>$time,'updated_at'=>$time]);
                 }
 
+                if($operate == 'create' && $post_data['category'] == 1 && $post_data['time_type'] == 1)
+                {
+                    $time = time();
+                    $user->pivot_item()->attach($mine->id,['type'=>12,'created_at'=>$time,'updated_at'=>$time]);
+                }
+
                 // 封面图片
                 if(!empty($post_data["cover"]))
                 {

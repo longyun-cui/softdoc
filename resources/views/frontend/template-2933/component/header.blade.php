@@ -14,10 +14,6 @@
 
         <nav role="navigation" class="probootstrap-nav hidden-xs hidden-sm">
             <ul class="probootstrap-main-nav">
-                <li class="{{ $header_home_active or '' }}"><a href="{{ url('/') }}"></a></li>
-                <li class="{{ $header_about_active or '' }}"><a href="{{ url('/about_us') }}"></a></li>
-                <li class="{{ $header_service_active or '' }}"><a href="{{ url('/services') }}"></a></li>
-                <li class="{{ $header_contact_active or '' }}"><a href="{{ url('/contact') }}"></a></li>
 
                 <li class="header-phone" style="display:none;">
                     <a href="tel:{{ config('company.info.telephone') }}">
@@ -27,34 +23,20 @@
                 </li>
 
                 @if(Auth::check())
-                <li class="header-quote"><a href="{{ url('/home') }}" style="color:#fff">内容管理后台</a></li>
-
-                <li class="header-quote"><a href="{{ url('/logout') }}" style="color:#fff">退出</a></li>
+                <li><a href="{{ url('/home') }}" style="color:#fff">内容管理后台</a></li>
+                <li><a href="{{ url('/logout') }}" style="color:#fff">退出</a></li>
                 @endif
 
                 <li class="header-wechat" role="button">
-                    <a href="javascript:void(0);" style="color:#fff"><i class="fa fa-weixin"></i> <b>微信公众号</b></a>
+                    <a href="javascript:void(0);" style="color:#fff"><i class="fa fa-weixin"></i> 微信公众号</a>
                     <span class="image-box">
-                        <img src="{{ url('/images/qrcode_for_softdoc.jpg') }}" alt="">
+                        <img src="{{ url('/images/qrcode_for_softdoc.jpg') }}" alt="微信公众号">
                     </span>
-                </li>
-
-                <li class="header-language" id="change-language" role="button">
-                    @if(App::isLocale('en'))
-                        <a href="javascript:void(0);" title="切换到中文">
-                            <span class="{{ $english_active or '_none' }}"><b>EN</b>/中文</span>
-                        </a>
-                    @else
-                        <a href="javascript:void(0);" title="Switch languages to English">
-                            <span class="{{ $chinese_active or '_none' }}"><b>中文</b>/EN</span>
-                            {{--<span class="{{ $english_active or '_none' }}" title="切换到中文"><b>EN</b>/中文</span>--}}
-                        </a>
-                    @endif
                 </li>
             </ul>
             <div class="extra-text visible-xs visible-sm">
                 <a href="javascript:void(0);" class="header-burger-menu"><i>Menu</i></a>
-                <h5 class="mb20">{{ trans('custom.text.footer_focus_title') }}</h5>
+                <h5 class="mb20">关注</h5>
                 <ul class="social-buttons header-social">
                     <li><a target="_blank" href="http://www.wechat.com">
                         <img src="{{ asset('/common/images/logo-icon/icon-logo-wechat.png') }}" alt="WeChat Logo">
@@ -68,29 +50,9 @@
                     <li><a target="_blank" href="http://www.smartshanghai.com/venue/15561/keron_international_relocation_and_movers_zhongshan_bei_lu">
                         <img src="{{ asset('/common/images/logo-icon/icon-logo-smart.png') }}" alt="Instagram Logo">
                     </a></li>
-                    <li><a target="_blank" href="http://www.thatsmags.com/shanghai">
-                        <img src="{{ asset('/common/images/logo-icon/icon-logo-thats.png') }}" alt="Instagram Logo">
-                    </a></li>
-                    <li><a target="_blank" href="{{ trans('custom.text.video_url') }}">
-                        <img src="{{ asset('/common/images/logo-icon/icon-logo-youku.png') }}" alt="Instagram Logo">
-                    </a></li>
-                    <li><a target="_blank" href="https://www.baidu.com/">
-                        <img src="{{ asset('/common/images/logo-icon/icon-logo-baidu.png') }}" alt="Instagram Logo">
-                    </a></li>
-                    <li><a target="_blank" href="https://plus.google.com/">
-                        <img src="{{ asset('/common/images/logo-icon/icon-logo-google.png') }}" alt="Google Plus Logo">
-                    </a></li>
-                    <li style="display: none;"><a target="_blank" href="https://www.facebook.com/">
-                        <img src="{{ asset('/common/images/logo-icon/icon-logo-facebook.png') }}" alt="Facebook Logo">
-                    </a></li>
-                    <li style="display: none;"><a target="_blank" href="https://twitter.com/">
-                        <img src="{{ asset('/common/images/logo-icon/icon-logo-twitter.png') }}" alt="Twitter Logo">
-                    </a></li>
-                    <li style="display: none;"><a target="_blank" href="https://instagram.com/">
-                        <img src="{{ asset('/common/images/logo-icon/icon-logo-instagram.png') }}" alt="Instagram Logo">
-                    </a></li>
                 </ul>
-                <p><small>&copy; Copyright©2018. KERON All Rights Reserved.</small></p>
+                <p><small>© 2017-2018 softdoc.cn 版权所有</small></p>
+                <p><small>沪ICP备18011005号-2</small></p>
             </div>
         </nav>
 

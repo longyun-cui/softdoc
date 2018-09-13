@@ -102,6 +102,9 @@ Route::group(['namespace' => 'Front'], function () {
 
         $controller = "IndexController";
 
+        // 获取日程
+        Route::post('ajax/get/schedule', $controller.'@ajax_get_schedule');
+
         // 收藏
         Route::post('item/add/collection', $controller.'@item_add_collection');
         Route::post('item/remove/collection', $controller.'@item_remove_collection');

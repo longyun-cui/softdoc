@@ -45,36 +45,28 @@
         <li class="{{ $root_todolist_active or '' }}">
             <a href="{{url('/home/todolist')}}">
                 <div class="box-body main-side-hover">
-                    <i class="fa fa-check-square-o text-orange"></i> <span> 待办事</span>
+                    <i class="fa fa-check-square-o"></i> <span> 待办事</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_schedule_active or '' }}">
             <a href="{{url('/home/schedule')}}">
                 <div class="box-body main-side-hover">
-                    <i class="fa fa-calendar-plus-o text-orange"></i> <span> 日程</span>
+                    <i class="fa fa-calendar-plus-o"></i> <span> 日程</span>
                 </div>
             </a>
         </li>
-    </ul>
-</div>
-@endif
-
-
-@if(Auth::check())
-<div class="main-side-block">
-    <ul>
         <li class="{{ $root_collection_active or '' }}">
             <a href="{{url('/home/collection')}}">
                 <div class="box-body main-side-hover">
-                    <i class="fa fa-star-o text-orange"></i> <span> 我的收藏</span>
+                    <i class="fa fa-star-o"></i> <span> 我的收藏</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_favor_active or '' }}">
             <a href="{{url('/home/favor')}}">
                 <div class="box-body main-side-hover">
-                    <i class="fa fa-thumbs-o-up text-orange"></i> <span> 我的点赞</span>
+                    <i class="fa fa-thumbs-o-up"></i> <span> 我的点赞</span>
                 </div>
             </a>
         </li>
@@ -88,15 +80,14 @@
         <li class="{{ $root_discovery_active or '' }}">
             <a href="{{url('/home/discovery')}}">
                 <div class="box-body main-side-hover">
-                    <i class="fa fa-globe text-orange"></i> <span> 发现</span>
-
+                    <i class="fa fa-globe"></i> <span> 发现</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_circle_active or '' }}">
             <a href="{{url('/home/circle')}}">
                 <div class="box-body main-side-hover">
-                    <i class="fa fa-globe text-orange"></i> <span> 好友圈</span>
+                    <i class="fa fa-globe"></i> <span> 好友圈</span>
                 </div>
             </a>
         </li>
