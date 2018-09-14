@@ -1,8 +1,5 @@
 
 * { margin: 0; padding: 0; }
-body { margin: 0; padding: 0; background: url('/bg.gif') repeat; }
-.wrapper { margin: 0; padding: 0; background: url('/bg.gif') repeat; }
-.content-wrapper {margin-left: 0; background: url('/bg.gif') repeat;}
 
 .main-header {color:#fff;}
 .container {width:1010px;padding-left:0;padding-right:0;}

@@ -70,7 +70,7 @@
         <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
         {{--<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>--}}
         {{--<script src="{{ asset('/templates/moban2933/js/scripts.min.js') }}"></script>--}}
-        {{--<script src="{{ asset('/templates/moban2933/js/main.min.js') }}"></script>--}}
+        <script src="{{ asset('/templates/moban2933/js/main.min-.js') }}"></script>
         <script src="{{ asset('/templates/moban2933/js/custom.js') }}"></script>
 
         {{--<script src="{{ asset('/templates/moban2933/plugins/slick-nav/jquery.slicknav.min.js') }}"></script>--}}

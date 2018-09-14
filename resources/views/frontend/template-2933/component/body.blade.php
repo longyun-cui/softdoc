@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row-">
 
-            <div class="col-xs-12 col-sm-12 col-md-{{$side or 3}} body-side pull-right">
+            <div class="col-xs-12 col-sm-12 col-md-{{$side or 3}} body-side pull-right hidden-xs">
                 @yield('custom-body-side')
             </div>
 

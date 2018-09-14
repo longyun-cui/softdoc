@@ -69,6 +69,14 @@ class IndexController extends Controller
 
 
 
+    public function view_user($id=0)
+    {
+        return $this->repo->view_user(request()->all(),$id);
+    }
+
+
+
+
     // 【ajax】【获取日程】
     public function ajax_get_schedule()
     {
@@ -134,11 +142,6 @@ class IndexController extends Controller
     public function view_course($id=0)
     {
         return $this->repo->view_course(request()->all(),$id);
-    }
-
-    public function view_user($id=0)
-    {
-        return $this->repo->view_user(request()->all(),$id);
     }
 
 

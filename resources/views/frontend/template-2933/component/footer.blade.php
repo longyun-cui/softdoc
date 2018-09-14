@@ -1,6 +1,6 @@
 {{--<!-- START: footer -->--}}
 <footer role="contentinfo" class="probootstrap-footer background-blue">
-    <div class="site-footer">
+    <div class="site-footer _none">
         <div class="container">
 
             <div class="row mb60">
@@ -175,5 +175,5 @@
     </div>
 </footer>
 
-<a href="javascript:void(0);" class="js-backtotop _none" style="position:fixed; right:32px; bottom:32px;"><i class="fa fa-chevron-up"></i></a>
+{{--<a href="javascript:void(0);" class="js-backtotop" style="position:fixed; right:32px; bottom:32px;"><i class="fa fa-chevron-up"></i></a>--}}
 {{--<!-- END: footer -->--}}

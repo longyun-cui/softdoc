@@ -52,17 +52,18 @@ class IndexRepository {
         return view('frontend.entrance.root')->with(['items'=>$items]);
     }
 
+
     // 内容模板
     public function view_item_html($id)
     {
         if(Auth::check())
         {
-            $user = Auth::user();
-            $user_id = $user->id;
+            $me = Auth::user();
+            $me_id = $me->id;
             $item = RootItem::with([
                 'user',
                 'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); },
-                'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); }
+                'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
             ])->find($id);
         }
         else
@@ -74,6 +75,54 @@ class IndexRepository {
         }
         $items[0] = $item;
         return view('frontend.component.items')->with(['items'=>$items])->__toString();
+    }
+
+
+
+
+    // 用户首页
+    public function view_user($post_data,$id=0)
+    {
+//        $user_encode = $id;
+//        $user_decode = decode($user_encode);
+//        if(!$user_decode) return view('frontend.404');
+
+        $user_id = $id;
+
+        $user = User::with([
+            'items'=>function($query) { $query->orderBy('id','desc'); }
+        ])->withCount('items')->find($user_id);
+
+        if(!$user) return view('frontend.errors.404');
+
+        $user->timestamps = false;
+        $user->increment('visit_num');
+
+        if(Auth::check())
+        {
+            $me = Auth::user();
+            $me_id = $me->id;
+            $items = RootItem::with([
+                'user',
+                'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
+            ])->where('user_id',$user_id)->where('is_shared','>=',99)->orderBy('id','desc')->get();
+        }
+        else
+        {
+            $items = RootItem::with([
+                'user'
+            ])->where('user_id',$user_id)->where('is_shared','>=',99)->orderBy('id','desc')->get();
+        }
+
+        foreach ($items as $item)
+        {
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+//        dd($lines->toArray());
+
+        return view('frontend.entrance.user')
+            ->with(['item_magnitude'=>'item-plural','getType'=>'items','data'=>$user,'items'=>$items]);
     }
 
 
@@ -534,54 +583,6 @@ class IndexRepository {
 
         return view('frontend.templates.adminlte.entrance.contents')
             ->with(['item_magnitude'=>'item-plural','getType'=>'items','contents'=>$contents]);
-    }
-
-
-
-
-    // 用户首页
-    public function view_user($post_data,$id=0)
-    {
-//        $course_encode = $post_data['id'];
-        $user_encode = $id;
-        $user_decode = decode($user_encode);
-        if(!$user_decode) return view('frontend.404');
-
-        $user = User::with([
-            'courses'=>function($query) { $query->orderBy('id','desc'); }
-        ])->withCount('courses')->find($user_decode);
-        $user->timestamps = false;
-        $user->increment('visit_num');
-
-        if(Auth::check())
-        {
-            $me = Auth::user();
-            $me_id = $me->id;
-            $courses = Course::with([
-                'user',
-                'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); },
-                'collections'=>function($query) use ($me_id) { $query->where(['user_id' => $me_id,'content_id' => 0]); },
-                'others'=>function($query) use ($me_id) { $query->where(['user_id' => $me_id,'content_id' => 0]); }
-            ])->where(['user_id'=>$user_decode,'active'=>1])->orderBy('id','desc')->paginate(20);
-        }
-        else
-        {
-            $courses = Course::with([
-                'user',
-                'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); }
-            ])->where(['user_id'=>$user_decode,'active'=>1])->orderBy('id','desc')->paginate(20);
-        }
-
-        foreach ($courses as $item)
-        {
-            $item->content_show = strip_tags($item->content);
-            $img_tags = get_html_img($item->content);
-            $item->img_tags = $img_tags;
-        }
-//        dd($lines->toArray());
-
-        return view('frontend.templates.adminlte.entrance.user')
-            ->with(['item_magnitude'=>'item-plural','getType'=>'items','data'=>$user,'courses'=>$courses]);
     }
 
 
