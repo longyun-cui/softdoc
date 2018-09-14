@@ -85,6 +85,7 @@
         <script src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.js"></script>
         <script src="https://cdn.bootcss.com/Swiper/4.2.2/js/swiper.min.js"></script>
         <script src="https://cdn.bootcss.com/timelinejs/2.36.0/js/timeline-min.js"></script>
+        <script src="https://cdn.bootcss.com/jquery.sticky/1.0.4/jquery.sticky.min.js"></script>
 
 
         <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
