@@ -55,7 +55,7 @@
             <div class="box-footer">
                 <div class="row" style="margin:16px 0;">
                     <div class="col-md-9 col-md-offset-2">
-                        <a href="{{ url('/course/'.$data->encode_id) }}" target="_blank"><button type="button" class="btn btn-primary">预览</button></a>
+                        <a href="{{ url('/item/'.$data->id) }}" target="_blank"><button type="button" class="btn btn-primary">预览</button></a>
                         <button type="button" onclick="history.go(-1);" class="btn btn-default">返回</button>
                     </div>
                 </div>

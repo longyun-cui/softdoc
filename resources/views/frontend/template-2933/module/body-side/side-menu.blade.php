@@ -1,4 +1,4 @@
-<div class="main-side-block main-side-block-padding main-side-menu side-menu side-menu-container pull-left">
+<div class="main-side-block main-side-block-padding main-side-menu side-menu side-menu-container pull-left" style="width:100%;">
 
     <div class="col-md-12" style="padding:0 4px;margin-bottom:4px;">
         <span class="recursion-icon">
@@ -37,10 +37,10 @@
     </div>
 
     <div class="col-md-12 main-side-menu-header" role="button">
-        <div class="col-md-6 fold-button fold-down">
+        <div class="col-xs-6 col-sm-6 col-md-6 fold-button fold-down">
             <i class="fa fa-plus-square"></i> 全部展开
         </div>
-        <div class="col-md-6 fold-button fold-up" role="button">
+        <div class="col-xs-6 col-sm-6 col-md-6 fold-button fold-up" role="button">
             <i class="fa fa-minus-square"></i> 全部折叠
         </div>
     </div>
