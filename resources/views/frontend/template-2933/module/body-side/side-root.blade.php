@@ -1,5 +1,5 @@
 {{--<!-- START: module -->--}}
-<div class="main-side-block">
+<div class="main-side-block main-side-container">
     @if(Auth::check())
     <ul>
         <div class="side-info">
@@ -40,7 +40,7 @@
 
 
 @if(Auth::check())
-<div class="main-side-block">
+<div class="main-side-block main-side-container">
     <ul>
         <li class="{{ $root_todolist_active or '' }}">
             <a href="{{ url('/home/todolist') }}">
@@ -75,7 +75,7 @@
 @endif
 
 
-<div class="main-side-block">
+<div class="main-side-block main-side-container">
     <ul>
         <li class="{{ $root_discovery_active or '' }}">
             <a href="{{url('/home/discovery')}}">

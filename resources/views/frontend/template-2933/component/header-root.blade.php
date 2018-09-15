@@ -26,9 +26,11 @@
                     <li class="visible-xs visible-sm"><a href="{{ url('/home/favor') }}"><i class="fa fa-thumbs-o-up"></i> 我的点赞</a></li>
                 @endif
 
+                <li class="mb10"> &nbsp; </li>
+
                 @if(Auth::check())
-                    <li class="hidden-xs hidden-sm"><a href="{{ url('/home') }}">内容管理后台</a></li>
-                    <li class="hidden-xs hidden-sm"><a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> 退出</a></li>
+                    <li class=""><a href="{{ url('/home') }}">内容管理后台</a></li>
+                    <li class=""><a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> 退出</a></li>
                 @endif
 
                 <li class="header-wechat hidden-xs hidden-sm" role="button">

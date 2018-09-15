@@ -165,7 +165,9 @@ li {list-style: none;}
     height:100%;
     line-height:32px;
     padding:4px 8px;
-    color:#fff;font-size:12px;font-weight:500;
+    color:#fff;
+    font-size:13px;
+    font-weight:500;
     border-bottom:2px solid transparent;
     border:1px solid #888;
     -webkit-border-radius: 2px;
@@ -179,6 +181,7 @@ li {list-style: none;}
 
 @media screen and (max-width:768px){
     .probootstrap-main-nav li a{color:#eee;}
+    .probootstrap-main-nav li a i{ margin-right:4px; }
 }
 
 .probootstrap-mobile-menu-active .probootstrap-main-nav li{margin-bottom:4px;display:block}
