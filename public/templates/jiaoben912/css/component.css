@@ -10,26 +10,26 @@
 } /* Made with http://icomoon.io/ */
 
 .cbp_tmtimeline {
-	margin: 30px 0 0 0;
+	margin: 0;
 	padding: 0;
 	list-style: none;
 	position: relative;
 } 
 
 /* The line */
-.cbp_tmtimeline:before {
+.cbp_tmtimeline::before {
 	content: '';
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	width: 4px;
 	background: #afdcf8;
-	left: 8px;
+	left: 4px;
 }
 
 .cbp_tmtimeline > li {
 	position: relative;
-	margin-bottom:32px;
+	margin-bottom:8px;
 }
 
 /* The date/time */
@@ -38,7 +38,7 @@
 	width: auto;
 	border-radius: 4px;
 	padding: 8px;
-	margin-left: 32px;
+	margin-left: 16px;
 }
 
 .cbp_tmtimeline > li .cbp_tmtime span {
@@ -63,7 +63,7 @@
 
 /* Right content */
 .cbp_tmtimeline > li .cbp_tmlabel {
-	margin: 0 0 15px 5%;
+	margin: 0 0 4px 16px;
 	background: #3594cb;
 	background: #fff;
 	color: #fff;
@@ -113,8 +113,8 @@
 
 /* The icons */
 .cbp_tmtimeline > li .cbp_tmicon {
-	width: 16px;
-	height: 16px;
+	width: 8px;
+	height: 8px;
 	font-family: 'ecoico';
 	speak: none;
 	font-style: normal;
@@ -132,7 +132,7 @@
 	text-align: center;
 	/*left: 20%;*/
 	top: 16px;
-	margin: 0 0 16px 2px;
+	margin: 0 0 8px 2px;
 }
 
 .cbp_tmicon-phone:before {
@@ -154,15 +154,15 @@
 /* Example Media Queries */
 @media screen and (max-width: 65.375em) {
 
-	.cbp_tmtimeline > li .cbp_tmtime span:last-child {
-		font-size: 1.5em;
-	}
+	/*.cbp_tmtimeline > li .cbp_tmtime span:last-child {*/
+		/*font-size: 1.5em;*/
+	/*}*/
 }
 
 @media screen and (max-width: 47.2em) {
 	.cbp_tmtimeline:before {
-		display: none;
-	}
+		/*display: none;*/
+	}、
 
 	.cbp_tmtimeline > li .cbp_tmtime {
 		width: 100%;
@@ -174,31 +174,52 @@
 		text-align: left;
 	}
 
-	.cbp_tmtimeline > li .cbp_tmlabel {
-		margin: 0 0 30px 0;
-		padding: 1em;
-		font-weight: 400;
-		font-size: 95%;
-	}
+	/*.cbp_tmtimeline > li .cbp_tmlabel {*/
+		/*margin: 0 0 30px 0;*/
+		/*padding: 1em;*/
+		/*font-weight: 400;*/
+		/*font-size: 95%;*/
+	/*}*/
 
-	.cbp_tmtimeline > li .cbp_tmlabel:after {
-		right: auto;
-		left: 20px;
-		border-right-color: transparent;
-		border-bottom-color: #3594cb;
-		top: -20px;
-	}
+	/*.cbp_tmtimeline > li .cbp_tmlabel:after {*/
+		/*right: auto;*/
+		/*left: 20px;*/
+		/*border-right-color: transparent;*/
+		/*border-bottom-color: #3594cb;*/
+		/*top: -20px;*/
+	/*}*/
 
-	.cbp_tmtimeline > li:nth-child(odd) .cbp_tmlabel:after {
-		border-right-color: transparent;
-		border-bottom-color: #6cbfee;
-	}
+	/*.cbp_tmtimeline > li:nth-child(odd) .cbp_tmlabel:after {*/
+		/*border-right-color: transparent;*/
+		/*border-bottom-color: #6cbfee;*/
+	/*}*/
 
-	.cbp_tmtimeline > li .cbp_tmicon {
-		position: relative;
-		float: right;
-		left: auto;
-		margin: -55px 5px 0 0px;
-	}	
+	/*.cbp_tmtimeline > li .cbp_tmicon {*/
+		/*position: relative;*/
+		/*float: right;*/
+		/*left: auto;*/
+		/*margin: -55px 5px 0 0px;*/
+	/*}	*/
 }
 
+.main-side-container .cbp_tmtimeline > li .cbp_tmicon {
+	top:10px;
+}
+.main-side-container .cbp_tmtimeline > li .cbp_tmtime span:last-child {
+	font-size:15px;
+}
+.main-side-container .cbp_tmtimeline > li .cbp_tmtime {
+	padding:0 4px;
+}
+.main-side-container .cbp_tmtimeline > li  {
+	margin-bottom:0;
+}
+.main-side-container .cbp_tmtimeline > li .cbp_tmlabel {
+	padding:0 8px;
+	margin:0 0 0 16px;
+}
+.main-side-container .cbp_tmtimeline > li .cbp_tmlabel h2 {
+	padding:4px 0 8px;
+	border-bottom:0;
+	font-size:15px;
+}

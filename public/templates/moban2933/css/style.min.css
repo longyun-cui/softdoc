@@ -50,7 +50,9 @@ li {list-style: none;}
 
 .section-header {
     position:fixed;
-    top:0;left:0;right:0;
+    top:0;
+    left:0;
+    right:0;
     height:64px;
     padding:16px 0;
     border-color: #e7e7e7;
@@ -66,22 +68,56 @@ li {list-style: none;}
 }
 .section-header .full-screen { width:100%;height:32px;line-height:32px; }
 .probootstrap-feature-first{position:relative;background:#ecedee}
-.header-logo{display:block;padding-left:32px;color:#fff;font-size:20px;text-transform:uppercase;font-weight:500;float:left;}
-.header-logo img{height:64px;margin-top:-16px;}
+.header-logo{display:block;padding-left:32px;margin-right:8px;color:#fff;font-size:20px;text-transform:uppercase;font-weight:500;float:left;}
+.header-logo img{height:32px;margin-top:-8px;}
 .header-logo:active,.header-logo:focus,.header-logo:hover{color:#fff}
 @media screen and (max-width:768px){
-    .header-logo{padding-left:0}
+    .header-logo{padding-left:8px}
 }
 .probootstrap-nav{height:100%;padding-right:32px;float:right}
-.probootstrap-mobile-menu-active .probootstrap-nav{
-    position:fixed;display:block!important;overflow-y:auto;
-    top:0;right:0;bottom:0;z-index:9991100;height:100vh;width:300px;
+.probootstrap-mobile-menu-active .probootstrap-nav {
+    position:fixed;
+    display:block!important;
+    overflow-y:auto;
+    top:0;
+    right:0;
+    bottom:0;
+    width:300px;
+    height:100vh;
     background:#000;
     padding:40px;
     -webkit-transition:.3s all ease-out;
-    transition:.3s all ease-out;-webkit-transform:translateX(300px);
-    transform:translateX(300px)
+    transition:.3s all ease-out;
+    -webkit-transform:translateX(300px);
+    transform:translateX(300px);
+    z-index:999999;
 }
+
+.probootstrap-mobile-menu-active .main-side-container {
+    position:fixed;
+    display:block!important;
+    overflow-y:auto;
+    top:0;
+    left:-100vw;
+    bottom:0;
+    width:100vw;
+    height:100vh;
+    background:#fff;
+    padding:32px 4px;
+    -webkit-transition:.3s all ease-out;
+    transition:.3s all ease-out;
+    -webkit-transform:translateX(-100vw);
+    transform:translateX(-100vw);
+    z-index:900;
+}
+.probootstrap-mobile-menu-active.menu .main-side-container{
+    left:0;-webkit-transform:translateX(0);transform:translateX(0);
+}
+
+.main-side-container .side-hidden { position:absolute; top:4px; right:4px; width:40px; height:40px; border:2px solid #aaa; border-radius:2px; background:#fff; z-index:99; }
+.main-side-container .side-hidden i { width:36px; height:36px; margin-right:0; font-size:24px; font-weight:100; text-align:center; color:#222; }
+.main-side-container .side-hidden i:before { width:36px; height:36px; line-height:34px; font-size:24px; font-weight:100; text-align:center; color:#222; }
+
 .probootstrap-mobile-menu-active .probootstrap-nav .extra-text{display:block;float:left;clear:both;margin-top:30px;color:#fff}
 .probootstrap-mobile-menu-active .probootstrap-nav .extra-text .social-buttons{padding:0;margin:0 0 20px}
 .probootstrap-mobile-menu-active .probootstrap-nav .extra-text .social-buttons li{display:inline-block;zoom:1;padding:0;margin:0}
@@ -125,8 +161,10 @@ li {list-style: none;}
 
 
 
-.probootstrap-mobile-menu-active .probootstrap-main-nav li{margin-bottom:4px;display:block}
-.probootstrap-main-nav li a{height:100%;line-height:32px;padding:4px 8px;
+.probootstrap-main-nav li a{
+    height:100%;
+    line-height:32px;
+    padding:4px 8px;
     color:#fff;font-size:12px;font-weight:500;
     border-bottom:2px solid transparent;
     border:1px solid #888;
@@ -134,24 +172,35 @@ li {list-style: none;}
     -moz-border-radius: 2px;
     border-radius: 2px;
 }
-@media screen and (max-width:768px){
-    .probootstrap-main-nav li a{color:#eee;}
-}
 .probootstrap-main-nav li a:hover,.probootstrap-main-nav li.active a,.probootstrap-main-nav li.active a:hover{border-bottom:2px solid #fff}
-.probootstrap-mobile-menu-active .probootstrap-main-nav li a{margin-bottom:10px;padding:2px 0;display:block}
 .probootstrap-main-nav li.probootstrap-cta{margin-left:20px}
 .probootstrap-main-nav li.probootstrap-cta a{border:2px solid #fff;padding-right:20px;padding-left:20px;border-radius:4px}
 .probootstrap-main-nav li.probootstrap-cta a:hover{background:#fff;color:#ff7676}
+
+@media screen and (max-width:768px){
+    .probootstrap-main-nav li a{color:#eee;}
+}
+
+.probootstrap-mobile-menu-active .probootstrap-main-nav li{margin-bottom:4px;display:block}
+.probootstrap-mobile-menu-active .probootstrap-main-nav li a{display:block;padding:2px 8px;margin-bottom:8px;border:0;border-bottom:1px solid #888;}
 .probootstrap-mobile-menu-active .probootstrap-main-nav li.probootstrap-cta{margin-left:0;margin-top:20px}
 .probootstrap-mobile-menu-active .probootstrap-main-nav li.probootstrap-cta a{padding-top:2px;padding-bottom:2px}
+
 .mobile-menu-overlay{z-index:1099;position:fixed;top:0;bottom:0;left:0;right:0;width:100vw;height:100vh;background:rgba(0,0,0,.3);opacity:0;visibility:hidden;-webkit-transition:.3s all ease-out;transition:.3s all ease-out}
 .probootstrap-mobile-menu-active.show .mobile-menu-overlay{opacity:1;visibility:visible}
 
 
 
 
-.section-body { width:100%; padding:32px 0;margin:64px 0; }
-.main-side-block { position:relative;height:auto;padding:0;margin-bottom:16px;background:#fff;box-shadow: 0 0 1px 1px #d4d5d6; }
+.section-body {
+    width:100%;
+    min-height:-webkit-calc(100vh - 160px);
+    min-height:-moz-calc(100vh - 160px);
+    min-height:calc(100vh - 160px);
+    padding:32px 0;
+    margin:64px 0 0;
+}
+.main-side-block { position:relative;width:100%;height:auto;padding:0;margin-bottom:16px;background:#fff;box-shadow: 0 0 1px 1px #d4d5d6; }
 .main-side-block-padding { padding:8px; }
 .main-side-block ul { background-color: #fff; }
 .main-side-block li { padding:8px 16px;border-bottom: 1px solid #eaecee; }
@@ -177,6 +226,9 @@ li {list-style: none;}
 
 
 
+.main-side-container { position:relative;width:100%;height:auto;padding:8px;margin-bottom:16px;background:#fff;box-shadow: 0 0 1px 1px #d4d5d6; }
+.main-side-container a { color:#666; font-size:14px; }
+.main-side-container a:hover { color:#ff7676; }
 
 
 .probootstrap-intro{background-size:cover;background-repeat:no-repeat;position:relative;top:0;height:540px;overflow:hidden}

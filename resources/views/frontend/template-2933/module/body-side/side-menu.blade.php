@@ -1,6 +1,8 @@
-<div class="main-side-block main-side-block-padding main-side-menu side-menu side-menu-container pull-left" style="width:100%;">
+<div class="main-side-block main-side-block-padding side-menu main-side-container pull-left">
 
-    <div class="col-md-12" style="padding:0 4px;margin-bottom:4px;">
+    <a href="javascript:void(0);" class="visible-xs visible-sm header-hide-side side-hidden" role="button"><i class="fa fa-remove"></i></a>
+
+    <div class="col-md-12">
         <span class="recursion-icon">
             <i class="fa fa-bookmark text-orange"></i>
         </span>
@@ -9,7 +11,7 @@
         </span>
     </div>
 
-    <div class="col-md-12" style="padding:0 4px;margin-bottom:4px;">
+    <div class="col-md-12">
         <span class="recursion-icon">
             <i class="fa fa-user text-orange"></i>
         </span>
@@ -18,7 +20,7 @@
         </span>
     </div>
 
-    <div class="col-md-12" style="padding:0 4px;margin-bottom:4px;">
+    <div class="col-md-12" >
         <span class="recursion-icon">
             <i class="fa fa-search text-orange"></i>
         </span>
@@ -27,7 +29,7 @@
         </span>
     </div>
 
-    <div class="col-md-12" style="padding:0 4px;margin-bottom:4px;">
+    <div class="col-md-12">
         <span class="recursion-icon" >
             <i class="fa fa-comment text-orange"></i>
         </span>

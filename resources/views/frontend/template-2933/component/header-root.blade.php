@@ -3,7 +3,7 @@
     <div class="full-screen">
 
         <a href="{{ url('/') }}" class="header-logo">
-            <img src="{{ url('/images/softdoc_white_0.png') }}" alt="如未">
+            <img src="{{ url('/favicon_white_0.png') }}" alt="如未">
         </a>
         <a href="{{ url('/') }}"> 如未科技 </a>
 
@@ -20,15 +20,15 @@
                 </li>
 
                 @if(Auth::check())
-                    <li class="visible-xs visible-sm"><a href="{{ url('/home/todolist') }}">我的待办事</a></li>
-                    <li class="visible-xs visible-sm"><a href="{{ url('/home/schedule') }}">我的日程</a></li>
-                    <li class="visible-xs visible-sm"><a href="{{ url('/home/collection') }}">我的收藏</a></li>
-                    <li class="visible-xs visible-sm"><a href="{{ url('/home/favor') }}">我的点赞</a></li>
+                    <li class="visible-xs visible-sm"><a href="{{ url('/home/todolist') }}"><i class="fa fa-check-square-o"></i> 我的待办事</a></li>
+                    <li class="visible-xs visible-sm"><a href="{{ url('/home/schedule') }}"><i class="fa fa-calendar-plus-o"></i> 我的日程</a></li>
+                    <li class="visible-xs visible-sm"><a href="{{ url('/home/collection') }}"><i class="fa fa-star-o"></i> 我的收藏</a></li>
+                    <li class="visible-xs visible-sm"><a href="{{ url('/home/favor') }}"><i class="fa fa-thumbs-o-up"></i> 我的点赞</a></li>
                 @endif
 
                 @if(Auth::check())
                     <li class="hidden-xs hidden-sm"><a href="{{ url('/home') }}">内容管理后台</a></li>
-                    <li class="hidden-xs hidden-sm"><a href="{{ url('/logout') }}">退出</a></li>
+                    <li class="hidden-xs hidden-sm"><a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> 退出</a></li>
                 @endif
 
                 <li class="header-wechat hidden-xs hidden-sm" role="button">
@@ -45,8 +45,8 @@
                 <h5 class="mb20">关注</h5>
                 <ul class="social-buttons header-social">
                     <li><a target="_blank" href="http://www.wechat.com">
-                        <img src="{{ asset('/common/images/logo-icon/icon-logo-wechat.png') }}" alt="WeChat Logo">
-                    </a></li>
+                            <img src="{{ asset('/common/images/logo-icon/icon-logo-wechat.png') }}" alt="WeChat Logo">
+                        </a></li>
                 </ul>
                 {{--<p><small>© 2017-2018 softdoc.cn 版权所有</small></p>--}}
                 {{--<p><small>沪ICP备18011005号-2</small></p>--}}

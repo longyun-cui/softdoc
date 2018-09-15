@@ -43,28 +43,28 @@
 <div class="main-side-block">
     <ul>
         <li class="{{ $root_todolist_active or '' }}">
-            <a href="{{url('/home/todolist')}}">
+            <a href="{{ url('/home/todolist') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-check-square-o"></i> <span> 待办事</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_schedule_active or '' }}">
-            <a href="{{url('/home/schedule')}}">
+            <a href="{{ url('/home/schedule') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-calendar-plus-o"></i> <span> 日程</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_collection_active or '' }}">
-            <a href="{{url('/home/collection')}}">
+            <a href="{{ url('/home/collection') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-star-o"></i> <span> 我的收藏</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_favor_active or '' }}">
-            <a href="{{url('/home/favor')}}">
+            <a href="{{ url('/home/favor') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-thumbs-o-up"></i> <span> 我的点赞</span>
                 </div>

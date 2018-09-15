@@ -27,13 +27,13 @@
 
 .recursion-row {color:#bbb;padding:0 4px;}
 .recursion-menu {min-height:28px;line-height:28px;margin:0;}
-.recursion-icon {margin-right:0;color:#777;cursor:pointer;}
+.recursion-icon {width:16px !important;height:16px;margin-right:0;color:#777;cursor:pointer;}
 .recursion-icon .fa-file-text {color:#777;}
 /*.recursion-icon .fa-plus-square {color:#3c8dbc;}*/
 /*.recursion-icon .fa-minus-square {color:green;}*/
-.main-side-menu i { margin-right: 0; }
-.main-side-menu i { width: 16px; height: 16px; line-height: 24px; margin-right: 0; color: #666; font-size:13px; }
-.recursion-text { width:calc(100% - 16px);width:-moz-calc(100% - 16px);width:-webkit-calc(100% - 16px);float:right; }
+.main-side-menu i { margin-right:0; }
+.main-side-menu i { width:16px; height:16px; line-height:24px; margin-right:0; color:#666; font-size:13px; }
+.recursion-text { width:calc(100% - 20px);width:-moz-calc(100% - 20px);width:-webkit-calc(100% - 20px);float:right; }
 .recursion-text a { width:100%;padding:6px 8px;line-height:16px;color:#666;font-size:14px;float:right; }
 .container-body-left .recursion-text a {color:#666;}
 .recursion-text a:hover { color:#111;background-color:#ccc; }

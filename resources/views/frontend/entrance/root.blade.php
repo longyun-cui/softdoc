@@ -13,7 +13,7 @@
 
 {{--header--}}
 @section('component-header')
-    @include('frontend.'.env('TEMPLATE').'.component.header')
+    @include('frontend.'.env('TEMPLATE').'.component.header-root')
 @endsection
 
 

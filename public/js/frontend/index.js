@@ -12,6 +12,18 @@ jQuery( function ($) {
 
 
 
+    $('.section-header').on('click', '.header-show-side', function (o) {
+        o.preventDefault();
+        $("body").hasClass("menu") ? ($("body").removeClass("menu")) : ($("body").addClass("menu"));
+    });
+
+    $('.side-menu').on('click', '.header-hide-side', function () {
+        $("body").removeClass("menu");
+    });
+
+
+
+
     $('.item-option').on('click', '.show-menu', function () {
         var item_option = $(this).parents('.item-option');
         item_option.find('.menu-container').show();
@@ -748,6 +760,7 @@ jQuery( function ($) {
 // 初始化展开
 function fold()
 {
+    console.log(123);
 
     var item_active = $('.side-menu-container .recursion-item.active');
     if(item_active.length > 0)
