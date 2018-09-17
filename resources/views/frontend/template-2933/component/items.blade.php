@@ -39,6 +39,7 @@
             </span>
         </div>
 
+
         @if($item->time_type == 1)
         <div class="box-body item-info-row">
             @if(!empty($item->start_time))
@@ -54,6 +55,15 @@
         <div class="box-body item-title-row">
             <a href="{{ url('/item/'.$item->id) }}"><b>{{ $item->title or '' }}</b></a>
         </div>
+
+        @if($item->category == 7)
+            <div class="box-body item-info-row">
+                <b class="text-red">【正方】{{ $item->custom_decode->positive }}</b>
+            </div>
+            <div class="box-body item-info-row">
+                <b class="text-blue">【反方】{{ $item->custom_decode->negative }}</b>
+            </div>
+        @endif
 
         {{--description--}}
         {{--@if(!empty($item->description))--}}

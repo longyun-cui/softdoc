@@ -5,6 +5,9 @@
     <div class="box-body comment-title-container item-info-row">
 
         <a href="{{ url('/user/'.$comment->user->id) }}" target="_blank" class="link">{{ $comment->user->name }}</a>
+        @if($comment->support == 1)<span class="text-red">【支持正方】</span>
+        @elseif($comment->support == 2)<span class="text-blue">【支持反方】</span>
+        @endif
 
         <span class="pull-right text-muted disabled">{{ $comment->created_at->format('n月j日 H:i') }} </span>
 

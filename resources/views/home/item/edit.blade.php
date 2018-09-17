@@ -84,6 +84,7 @@
                     </div>
                 </div>
 
+                @if($operate == 'create' || ($operate == 'edit' && $data->time_type == 1) )
                 {{--是否选择时间--}}
                 <div class="form-group article-show">
                     <label class="control-label col-md-2">是否为日程</label>
@@ -121,6 +122,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 {{--时间选择器--}}
                 <div class="form-group article-show time-show _none">
                     <label class="control-label col-md-2">选择时间</label>

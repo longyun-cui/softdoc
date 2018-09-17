@@ -7,7 +7,7 @@ class Communication extends Model
     //
     protected $table = "root_communications";
     protected $fillable = [
-        'sort', 'type', 'active', 'support', 'user_id', 'item_id', 'content_id', 'is_anonymous', 'reply_id', 'dialog_id', 'order',
+        'sort', 'type', 'active', 'support', 'user_id', 'item_id', 'is_anonymous', 'reply_id', 'dialog_id', 'order',
         'title', 'content',
         'is_shared', 'favor_num', 'comment_num'
     ];

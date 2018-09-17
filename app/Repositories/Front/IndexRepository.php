@@ -49,6 +49,13 @@ class IndexRepository {
             'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
         ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
 
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
         return view('frontend.entrance.root')->with(['items'=>$items]);
     }
 
@@ -116,6 +123,7 @@ class IndexRepository {
 
         foreach ($items as $item)
         {
+            $item->custom_decode = json_decode($item->custom);
             $item->content_show = strip_tags($item->content);
             $item->img_tags = get_html_img($item->content);
         }
@@ -153,6 +161,13 @@ class IndexRepository {
         }
         else $items = [];
 
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
         return view('frontend.entrance.todolist')->with(['items'=>$items,'root_todolist_active'=>'active']);
     }
 
@@ -177,6 +192,13 @@ class IndexRepository {
         }
         else $items = [];
 
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
         return view('frontend.entrance.schedule')->with(['items'=>$items,'root_schedule_active'=>'active']);
     }
 
@@ -198,6 +220,13 @@ class IndexRepository {
             $items = $query->pivot_item;
         }
         else $items = [];
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
 
         return view('frontend.entrance.collection')->with(['items'=>$items,'root_collection_active'=>'active']);
     }
@@ -221,6 +250,13 @@ class IndexRepository {
         }
         else $items = [];
 
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
         return view('frontend.entrance.favor')->with(['items'=>$items,'root_favor_active'=>'active']);
     }
 
@@ -238,6 +274,13 @@ class IndexRepository {
             'user',
             'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
         ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
 
         return view('frontend.entrance.discovery')->with(['items'=>$items,'root_discovery_active'=>'active']);
     }
@@ -257,6 +300,13 @@ class IndexRepository {
             $items = $query->pivot_item;
         }
         else $items = [];
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
 
         return view('frontend.entrance.circle')->with(['items'=>$items,'root_circle_active'=>'active']);
     }
@@ -316,6 +366,8 @@ class IndexRepository {
                 $parent_item->comments_total = $parent_item->comment_num + $parent_item->contents->sum('comment_num');
                 view()->share(['parent_item'=>$parent_item]);
             }
+
+            $item->custom_decode = json_decode($item->custom);
 
         }
         else return view('frontend.errors.404');
@@ -583,6 +635,7 @@ class IndexRepository {
             $insert['user_id'] = $user->id;
             $insert['item_id'] = $item_id;
             $insert['content'] = $post_data['content'];
+            $insert['support'] = $post_data['support'];
 
             DB::beginTransaction();
             try
