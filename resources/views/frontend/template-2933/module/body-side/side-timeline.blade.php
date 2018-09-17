@@ -1,4 +1,4 @@
-<div class="main-side-container pull-left">
+<div class="main-side-block-padding main-side-container pull-left">
 
     <a href="javascript:void(0);" class="visible-xs visible-sm header-hide-side side-hidden" role="button"><i class="fa fa-remove"></i></a>
 

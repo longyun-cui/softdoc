@@ -17,7 +17,7 @@ jQuery( function ($) {
         $("body").hasClass("menu") ? ($("body").removeClass("menu")) : ($("body").addClass("menu"));
     });
 
-    $('.side-menu').on('click', '.header-hide-side', function () {
+    $('.main-side-container').on('click', '.header-hide-side', function () {
         $("body").removeClass("menu");
     });
 
@@ -742,7 +742,6 @@ jQuery( function ($) {
 // 初始化展开
 function fold()
 {
-    console.log(123);
 
     var item_active = $('.side-menu-container .recursion-item.active');
     if(item_active.length > 0)
@@ -783,7 +782,7 @@ function fold()
         }
 
 
-        console.log(prev_row);
+        // console.log(prev_row);
 
         if(this_level == 0)
         {
