@@ -21,6 +21,7 @@ html,body {
     width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
+    overflow-x:hidden;
 }
 
 html{overflow-x:hidden;font-size:1em}
@@ -75,6 +76,7 @@ li {list-style: none;}
 .header-logo:active,.header-logo:focus,.header-logo:hover{color:#fff}
 @media screen and (max-width:768px){
     .header-logo{padding-left:8px}
+    .body-main {padding-left:8px; padding-right:8px;}
 }
 .probootstrap-nav{height:100%;padding-right:32px;float:right}
 .probootstrap-mobile-menu-active .probootstrap-nav {
