@@ -1,13 +1,26 @@
 .item-piece {
+    position:relative;
+    display: block;
     width:100%;
+    height:auto;
     padding:32px;
     margin-bottom:16px;
-    background:#fff;
     color:#444;
+    background:#fff;
 }
 
 .item-piece a { color:#888; }
 .item-piece a:hover { color:#ff7676; }
+.item-piece .pull-left { margin-right:8px; }
+.item-piece .pull-right { margin-left:8px; }
+
+.item-entity-container {
+    position:relative;
+    display: block;
+    width:100%;
+    height:auto;
+}
+.item-row { width:100%; margin-bottom:8px; }
 
 .item-info-row {
     height:16px;
@@ -16,7 +29,7 @@
     color:#aaa;
     font-size:12px;
 }
-.item-info-row a { color:#888; font-size:14px; }
+.item-info-row a { color:#888; font-size:12px; }
 .item-info-row a:hover { color:#ff7676; }
 
 .item-title-row {
@@ -57,8 +70,112 @@
 .item-plus-box:hover .item-plus-list { display:block; }
 
 
+
+
+.comment-container { width:100%;height:auto;padding:4px;}
+.comment-entity-container {margin:4px;}
+.comment-input-container {display:table;width:100%;border-bottom:2px solid #f4f4f4; padding:8px 0;}
+
+.comment-piece {padding:4px 8px;border-bottom:1px solid #f4f4f4;}
+
+.comment-reply-input-container {display:none;padding:2px 0;margin-bottom:16px;border-bottom:1px solid #fff;background:#f4f4f4;}
+
+.reply-piece {padding:16px 8px;border-top:1px solid #dddddd;background:#f4f4f4;}
+.reply-piece:first-child  {border-top:0;}
+.reply-title-container {padding:0 8px 8px}
+.reply-tools-container {padding:0 8px;}
+.reply-container {padding:0;}
+.reply-input-container {display:none;padding:2px 0;margin-top:16px;background:#fff;}
+
+.comment-textarea-box {
+    display: table-cell;
+    width:100%;
+    height:auto;
+    border-radius:2px;
+    font-size:14px;
+    float:left;
+}
+.comment-textarea {
+    width:100%;
+    padding:4px 8px;
+    border:1px solid #ddd;
+    border-radius:2px;
+    font-size:14px;
+}
+.comment-button-box {
+    display: table-cell;
+    width:100%;
+    height:36px;
+    line-height:36px;
+    border-radius:2px;
+    /*background:#009ac1;*/
+    float:right;
+}
+a.comment-button { width:100%; height:100%; line-height:36px;color:#fff; font-size:14px; text-align:center; float:right; }
+
+
+
+.more-box {width:100%;height:36px;line-height:36px;margin-top:16px;padding:0;border:1px solid #eee; border-radius:2px;text-align:center;background:#f4f4f4;}
+.more-box:hover {color:#ff7676;background:#fff;}
+.more-box a {width:100%;height:100%;line-height:36px;text-align: center;float:right;}
+.comment-more-box {margin-top:16px;padding:0;}
+.reply-more-box {width:-webkit-calc(100% - 64px);width:-moz-calc(100% - 64px);width:calc(100% - 64px);margin:8px 32px;padding:0;}
+
+
+
+.items .comment-container {display:none;}
+
+.comment-title-container {padding:4px 0;font-size:12px;}
+.comment-title-container {padding:4px 0}
+.comment-content-container {padding:0;}
+
+.comment-piece {padding:4px 8px;border-bottom:1px solid #f4f4f4;}
+
+.comment-reply-input-container {display:none;padding:2px 0;margin-bottom:16px;border-bottom:1px solid #fff;background:#f4f4f4;}
+
+.reply-piece {padding:16px 8px;border-top:1px solid #dddddd;background:#f4f4f4;}
+.reply-piece:first-child  {border-top:0;}
+.reply-title-container {padding:0 8px 8px}
+.reply-tools-container {padding:0 8px;}
+.reply-container {padding:0;}
+.reply-input-container {display:none;padding:2px 0;margin-top:16px;background:#fff;}
+
+
+a.link { color:#3c8dbc; }
+
+
 .text-red { color:#ff7676; }
 
+
+.input-group {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+}
+.input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+    border-radius: 0;
+}
+.input-group-btn {
+    position: relative;
+    font-size: 0;
+    white-space: nowrap;
+}
+.input-group-addon, .input-group-btn {
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 0;
+}
+
+.input-group-addon, .input-group-btn .btn { border-radius: 0; }
+.input-group .form-control, .input-group-addon, .input-group-btn {
+    display: table-cell;
+}
 
 
 @media screen and (max-width:768px) {
@@ -67,9 +184,11 @@
     .media { padding:0; }
 
 
-    .item-piece { padding:16px; }
+    .item-piece { padding:16px 8px; }
     .item-tools-row a { font-size:12px; }
     .item-tools-row .pull-left .margin { margin-right:8px; }
     .item-tools-row .pull-right .margin { margin-left:8px; }
+
+    .reply-more-box {width:-webkit-calc(100% - 32px);width:-moz-calc(100% - 32px);width:calc(100% - 32px);margin:8px 16px;}
 
 }

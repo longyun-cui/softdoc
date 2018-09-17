@@ -83,6 +83,7 @@
         @if($item->category == 11)
         fold();
         @endif
+        $(".comments-get-default").click();
     });
 </script>
 @endsection

@@ -25,7 +25,7 @@ html,body {
 
 html{overflow-x:hidden;font-size:1em}
 body{
-    font-size:16px;
+    font-size:14px;
     font-weight:300;
     font-family:"Hiragino Sans GB",'Microsoft yahei',Rubik,sans-serif;
     line-height:1.8;
@@ -47,6 +47,7 @@ a:active,a:focus,a:hover{color:#fff;text-decoration:none}
 ul {padding:0;margin:0;}
 li {list-style: none;}
 
+.family-yahei {font-family:'Microsoft yahei';}
 
 .section-header {
     position:fixed;
@@ -68,7 +69,8 @@ li {list-style: none;}
 }
 .section-header .full-screen { width:100%;height:32px;line-height:32px; }
 .probootstrap-feature-first{position:relative;background:#ecedee}
-.header-logo{display:block;padding-left:32px;margin-right:8px;color:#fff;font-size:20px;text-transform:uppercase;font-weight:500;float:left;}
+.header-logo{display:block;padding-left:32px;margin-right:8px;color:#fff;font-size:16px;text-transform:uppercase;font-weight:500;float:left;}
+.header-logo i{font-size:20px;}
 .header-logo img{height:32px;margin-top:-8px;}
 .header-logo:active,.header-logo:focus,.header-logo:hover{color:#fff}
 @media screen and (max-width:768px){
@@ -285,7 +287,7 @@ li {list-style: none;}
 .header-burger-menu.active i::before{top:0;-webkit-transform:rotateZ(45deg);transform:rotateZ(45deg)}
 .header-burger-menu.active i::after{bottom:0;-webkit-transform:rotateZ(-45deg);transform:rotateZ(-45deg)}
 .header-burger-menu{position:absolute;top:16px;right:16px;color:#2d4d9b;}
-.btn{border:none;border-radius:4px;font-size:18px;padding:10px 30px}
+/*.btn{border:none;border-radius:4px;font-size:18px;padding:10px 30px}*/
 .btn:active{-webkit-transition:.2s all;transition:.2s all;-webkit-transform:scale(.95);transform:scale(.95);-webkit-box-shadow:none;box-shadow:none}
 .btn.btn-lg{line-height:1.5;padding-top:20px;padding-bottom:20px}
 .btn.btn-primary{border:1px solid #207eb8;background:#207eb8;color:#fff}

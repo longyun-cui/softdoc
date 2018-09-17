@@ -7,10 +7,10 @@
         @elseif($item->category == 18)
             <a href="javascript:void(0);" class="header-logo visible-xs visible-sm header-show-side"><i class="fa fa-align-left"></i> 查看时间线</a>
         @else
-            <a href="{{ url('/') }}" class="header-logo">
+            <a href="{{ url('/') }}" class="header-logo visible-xs visible-sm">
                 <img src="{{ url('/favicon_white_0.png') }}" alt="如未">
             </a>
-            <a href="{{ url('/') }}"> 如未科技 </a>
+            <a href="{{ url('/') }}" class="visible-xs visible-sm"> 如未科技 </a>
         @endif
 
         {{----}}

@@ -1,5 +1,5 @@
 {{--<!-- START: module -->--}}
-<div class="main-side-block">
+<div class="main-side-block hidden-xs hidden-sm">
 
     <ul>
         <div class="side-info">
@@ -30,7 +30,7 @@
 
 
 
-<div class="main-side-block">
+<div class="main-side-block hidden-xs hidden-sm">
 
     <ul>
         <li>

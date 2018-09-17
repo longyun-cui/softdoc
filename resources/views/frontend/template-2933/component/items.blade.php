@@ -96,7 +96,7 @@
 
             <div class="pull-left">
 
-                <a class="margin" role="button">
+                <a class="" role="button">
                     {{ time_show($item->created_at->timestamp) }}
                     {{--{{ time_show($item->created_at->getTimestamp()) }}--}}
                 </a>
@@ -133,27 +133,24 @@
 
 
         {{--comment--}}
-        <div class="box-body comment-container _none">
+        <div class="item-row comment-container _none">
 
             <input type="hidden" class="comments-get comments-get-default">
 
-            <div class="box-body comment-input-container">
+            <div class="comment-input-container">
                 <form action="" method="post" class="form-horizontal form-bordered item-comment-form">
 
                     {{csrf_field()}}
-                    <input type="hidden" name="course_id" value="{{encode($item->id)}}" readonly>
+                    <input type="hidden" name="item_id" value="{{ $item->id or 0}}" readonly>
                     <input type="hidden" name="type" value="1" readonly>
 
-                    <div class="form-group">
-                        <div class="col-md-9">
-                            <div><textarea class="form-control" name="content" rows="1" placeholder="请输入你的评论"></textarea></div>
+                    <div class="item-row ">
+                        <div class="comment-textarea-box">
+                            <textarea class="comment-textarea" name="content" rows="2" placeholder="请输入你的评论"></textarea>
                         </div>
-                        <div class="col-md-3">
-                            <button type="button" class="btn btn-block btn-primary comment-submit">提交</button>
+                        <div class="comment-button-box">
+                            <a href="javascript:void(0);" class="comment-button comment-submit btn-primary" role="button">发 布</a>
                         </div>
-                    </div>
-
-                    <div class="form-group">
                     </div>
 
                 </form>
@@ -161,14 +158,14 @@
 
 
             {{--评论列表--}}
-            <div class="box-body comment-entity-container">
+            <div class="comment-entity-container">
 
                 <div class="comment-list-container">
                 </div>
 
-                <div class="col-md-12 more-box">
-                    <a href="{{url('/course/'.encode($item->id))}}" target="_blank">
-                        <button type="button" class="btn btn-block btn-flat btn-default item-more"></button>
+                <div class="more-box">
+                    <a href="{{ url('/item/'.$item->id) }}" target="_blank">
+                        <span class="item-more">没有更多了</span>
                     </a>
                 </div>
 

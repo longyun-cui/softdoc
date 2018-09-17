@@ -440,8 +440,7 @@ jQuery( function ($) {
                 "/item/comment/get",
                 {
                     _token: $('meta[name="_token"]').attr('content'),
-                    course_id: item_option.attr('data-course'),
-                    content_id: item_option.attr('data-content'),
+                    item_id: item_option.attr('data-item'),
                     min_id: min_id,
                     type: 1
                 },
@@ -486,8 +485,7 @@ jQuery( function ($) {
         var item_option = $(this).parents('.item-option');
         var comment_option = $(this).parents('.comment-option');
 
-        var course_id = item_option.attr('data-course');
-        var content_id = item_option.attr('data-content');
+        var item_id = item_option.attr('data-item');
         var comment_id = comment_option.attr('data-id');
 
         var content_input = comment_option.find('.comment-reply-content');
@@ -504,8 +502,7 @@ jQuery( function ($) {
             {
                 _token: $('meta[name="_token"]').attr('content'),
                 type: 1,
-                course_id: course_id,
-                content_id: content_id,
+                item_id: item_id,
                 comment_id: comment_id,
                 content: content
             },
@@ -534,8 +531,7 @@ jQuery( function ($) {
         var comment_option = $(this).parents('.comment-option');
         var reply_option = $(this).parents('.reply-option');
 
-        var course_id = item_option.attr('data-course');
-        var content_id = item_option.attr('data-content');
+        var item_id = item_option.attr('data-item');
         var reply_id = reply_option.attr('data-id');
 
         var content_input = reply_option.find('.reply-content');
@@ -552,8 +548,7 @@ jQuery( function ($) {
             {
                 _token: $('meta[name="_token"]').attr('content'),
                 type: 1,
-                course_id: course_id,
-                content_id: content_id,
+                item_id: item_id,
                 comment_id: reply_id,
                 content: content
             },
@@ -587,8 +582,7 @@ jQuery( function ($) {
                 "/item/reply/get",
                 {
                     _token: $('meta[name="_token"]').attr('content'),
-                    course_id: item_option.attr('data-course'),
-                    content_id: item_option.attr('data-content'),
+                    item_id: item_option.attr('data-item'),
                     comment_id: comment_option.attr('data-id'),
                     min_id: min_id,
                     type: 1
@@ -623,15 +617,14 @@ jQuery( function ($) {
     });
 
 
-    // 发布对回复的回复
+    // 发布对回复的点赞
     $(".item-option").off("click",".comment-favor-this").on('click', ".comment-favor-this", function() {
         var that = $(this);
         var that_parent = that.attr('data-parent');
         var reply_option = $(this).parents(that_parent);
         var item_option = $(this).parents('.item-option');
 
-        var course_id = item_option.attr('data-course');
-        var content_id = item_option.attr('data-content');
+        var item_id = item_option.attr('data-item');
         var comment_id = reply_option.attr('data-id');
 
         $.post(
@@ -639,8 +632,7 @@ jQuery( function ($) {
             {
                 _token: $('meta[name="_token"]').attr('content'),
                 type: 5,
-                course_id: course_id,
-                content_id: content_id,
+                item_id: item_id,
                 comment_id: comment_id
             },
             function(data){
@@ -655,7 +647,7 @@ jQuery( function ($) {
                     var num = parseInt(btn.attr('data-num'));
                     num = num + 1;
                     btn.attr('data-num',num);
-                    var html = '<i class="fa fa-thumbs-up text-red"></i> '+num;
+                    var html = '<i class="fa fa-thumbs-up text-red"></i>('+num+')';
                     that.html(html);
                 }
             },
@@ -669,46 +661,36 @@ jQuery( function ($) {
         var reply_option = $(this).parents(that_parent);
         var item_option = $(this).parents('.item-option');
 
-        var course_id = item_option.attr('data-course');
-        var content_id = item_option.attr('data-content');
+        var item_id = item_option.attr('data-item');
         var comment_id = reply_option.attr('data-id');
 
-        layer.msg('取消"点赞"？', {
-            time: 0
-            ,btn: ['确定', '取消']
-            ,yes: function(index){
-                $.post(
-                    "/item/comment/favor/cancel",
-                    {
-                        _token: $('meta[name="_token"]').attr('content'),
-                        type: 5,
-                        course_id: course_id,
-                        content_id: content_id,
-                        comment_id: comment_id
-                    },
-                    function(data){
-                        if(!data.success) layer.msg(data.msg);
-                        else
-                        {
-                            layer.closeAll();
-                            // var index = parent.layer.getFrameIndex(window.name);
-                            // parent.layer.close(index);
+        $.post(
+            "/item/comment/favor/cancel",
+            {
+                _token: $('meta[name="_token"]').attr('content'),
+                type: 5,
+                item_id: item_id,
+                comment_id: comment_id
+            },
+            function(data){
+                if(!data.success) layer.msg(data.msg);
+                else
+                {
+                    layer.msg("取消点赞");
 
-                            that.addClass('comment-favor-this');
-                            that.removeClass('comment-favor-this-cancel');
-                            var btn = that.parents('.comment-favor-btn');
-                            var num = parseInt(btn.attr('data-num'));
-                            num = num - 1;
-                            btn.attr('data-num',num);
-                            if(num == 0) num = '';
-                            var html = '<i class="fa fa-thumbs-o-up"></i> '+num;
-                            that.html(html);
-                        }
-                    },
-                    'json'
-                );
-            }
-        });
+                    that.addClass('comment-favor-this');
+                    that.removeClass('comment-favor-this-cancel');
+                    var btn = that.parents('.comment-favor-btn');
+                    var num = parseInt(btn.attr('data-num'));
+                    num = num - 1;
+                    btn.attr('data-num',num);
+                    // if(num == 0) num = '';
+                    var html = '<i class="fa fa-thumbs-o-up"></i>('+num+')';
+                    that.html(html);
+                }
+            },
+            'json'
+        );
     });
 
 

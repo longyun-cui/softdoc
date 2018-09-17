@@ -15,22 +15,22 @@
 body, html { font-size: 100%; padding: 0; margin: 0;}
 
 /* Clearfix hack by Nicolas Gallagher: http://nicolasgallagher.com/micro-clearfix-hack/ */
-.clearfix:before, .clearfix:after { content: " "; display: table; }
+.clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
 
-body {
-    font-family: 'Lato', Calibri, Arial, sans-serif;
-    color: #47a3da;
-}
+/*body {*/
+    /*font-family: 'Lato', Calibri, Arial, sans-serif;*/
+    /*color: #47a3da;*/
+/*}*/
 
-a {
-	color: #f0f0f0;
-	text-decoration: none;
-}
+/*a {*/
+	/*color: #f0f0f0;*/
+	/*text-decoration: none;*/
+/*}*/
 
-a:hover {
-	color: #000;
-}
+/*a:hover {*/
+	/*color: #000;*/
+/*}*/
 
 .main,
 .container > header {

@@ -325,7 +325,7 @@ class IndexRepository {
 
 
 
-    // 【添加】
+    // 【获取日程】
     public function ajax_get_schedule($post_data)
     {
         if(Auth::check())
@@ -423,6 +423,33 @@ class IndexRepository {
                         $item->timestamps = false;
                         $item->increment('favor_num');
 
+
+//                        $insert['type'] = 3;
+//                        $insert['user_id'] = $user->id;
+//                        $insert['item_id'] = $item_id;
+//
+//                        $communication = new Communication;
+//                        $bool = $communication->fill($insert)->save();
+//                        if(!$bool) throw new Exception("insert--communication--fail");
+//
+////                    通知对方
+//                        if($item->user_id != $user->id)
+//                        {
+//                            $notification_insert['type'] = 8;
+//                            $notification_insert['sort'] = 3;
+//                            $notification_insert['user_id'] = $item->user_id;
+//                            $notification_insert['source_id'] = $user->id;
+//                            $notification_insert['item_id'] = $item_id;
+//                            $notification_insert['comment_id'] = $communication->id;
+//
+//                            $notification = new Notification;
+//                            $bool = $notification->fill($notification_insert)->save();
+//                            if(!$bool) throw new Exception("insert--notification--fail");
+//                        }
+//
+//                        $html['html'] = $this->view_item_html($item_id);
+
+
                         DB::commit();
                         return response_success([]);
                     }
@@ -483,7 +510,18 @@ class IndexRepository {
                         $num = Pivot_User_Item::where(['type'=>$type,'user_id'=>$user->id,'item_id'=>$item_id])->delete();
                         if($num != count($pivots)) throw new Exception("delete--pivots--fail");
 
+                        $item->timestamps = false;
                         $item->decrement('favor_num');
+
+//                        $insert['type'] = 4;
+//                        $insert['user_id'] = $user->id;
+//                        $insert['item_id'] = $item_id;
+//
+//                        $communication = new Communication;
+//                        $bool = $communication->fill($insert)->save();
+//                        if(!$bool) throw new Exception("insert--communication--fail");
+//
+//                        $html['html'] = $this->view_item_html($item_id);
 
                         DB::commit();
                         return response_success([]);
@@ -499,10 +537,10 @@ class IndexRepository {
                 }
                 else
                 {
-                    if($type == 1) $msg = '已经收藏过了';
+                    if($type == 1) $msg = '移除收藏成功';
                     else if($type == 9) $msg = '';
-                    else if($type == 11) $msg = '已经在待办事列表';
-                    else if($type == 12) $msg = '已经在日程列表';
+                    else if($type == 11) $msg = '移除待办事成功';
+                    else if($type == 12) $msg = '移除日程成功';
                     else $msg = '';
                     return response_fail(['reason'=>'exist'],$msg);
                 }
@@ -516,534 +554,17 @@ class IndexRepository {
 
 
 
-    // 平台主页
-    public function view_courses($post_data)
-    {
-        if(Auth::check())
-        {
-            $user = Auth::user();
-            $user_id = $user->id;
-            $courses = RootItem::with([
-                'user',
-                'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); },
-                'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id,'content_id' => 0]); },
-                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id,'content_id' => 0]); }
-            ])->where('active', 1)->orderBy('id','desc')->paginate(20);
-        }
-        else
-        {
-            $courses = RootItem::with([
-                'user',
-                'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); }
-            ])->where('active', 1)->orderBy('id','desc')->paginate(20);
-        }
-
-        foreach ($courses as $item)
-        {
-            $item->content_show = strip_tags($item->content);
-            $img_tags = get_html_img($item->content);
-            $item->img_tags = $img_tags;
-        }
-//        dd($lines->toArray());
-
-        return view('frontend.templates.adminlte.entrance.courses')
-            ->with(['item_magnitude'=>'item-plural','getType'=>'items','courses'=>$courses]);
-    }
-
-    // 平台主页
-    public function view_contents($post_data)
-    {
-        if(Auth::check())
-        {
-            $user = Auth::user();
-            $user_id = $user->id;
-            $contents = Content::with([
-                'user',
-//                'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id,'content_id' => 0]); },
-//                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id,'content_id' => 0]); }
-            ])->whereHas('course', function ($query) { $query->where('active', 1);} )
-                ->orderBy('id','desc')->paginate(20);
-        }
-        else
-        {
-            $contents = Content::with([
-                'user',
-            ])->whereHas('course', function ($query) { $query->where('active', 1);} )
-                ->orderBy('id','desc')->paginate(20);
-        }
-
-
-        foreach ($contents as $item)
-        {
-            $item->content_show = strip_tags($item->content);
-            $img_tags = get_html_img($item->content);
-            $item->img_tags = $img_tags;
-        }
-//        dd($lines->toArray());
-
-        return view('frontend.templates.adminlte.entrance.contents')
-            ->with(['item_magnitude'=>'item-plural','getType'=>'items','contents'=>$contents]);
-    }
-
-
-    // 课程详情
-    public function view_course($post_data,$id=0)
-    {
-//        $course_encode = $post_data['id'];
-        $course_encode = $id;
-        $course_decode = decode($course_encode);
-        if(!$course_decode) return view('frontend.404');
-
-        $content = [];
-        if(!empty($post_data['content']))
-        {
-            $content_encode = $post_data['content'];
-            $content_decode = decode($content_encode);
-            if(!$content_decode) return view('frontend.404');
-
-            if(Auth::check())
-            {
-                $user = Auth::user();
-                $user_id = $user->id;
-                $content = Content::with([
-                    'collections'=>function($query) use ($user_id,$content_decode) { $query->where(['user_id' => $user_id,'content_id' => $content_decode]); },
-                    'others'=>function($query) use ($user_id,$content_decode) { $query->where(['user_id' => $user_id,'content_id' => $content_decode]); }
-                ])->find($content_decode);
-            }
-            else
-            {
-                $content = Content::find($content_decode);
-            }
-            if(!$content) return view('frontend.404');
-
-            $content->encode_id = encode($content->id);
-            $content->user->encode_id = encode($content->user->id);
-
-            $content->timestamps = false;
-            $content->increment('visit_num');
-        }
-
-        if(Auth::check())
-        {
-            $user = Auth::user();
-            $user_id = $user->id;
-            $course = Course::with([
-                'user',
-                'contents'=>function($query) { $query->orderBy('id','asc'); },
-                'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id,'content_id' => 0]); },
-                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id,'content_id' => 0]); }
-            ])->find($course_decode);
-        }
-        else
-        {
-            $course = Course::with([
-                'user',
-                'contents'=>function($query) { $query->orderBy('id','asc'); }
-            ])->find($course_decode);
-        }
-
-        $course->comments_total = $course->comment_num + $course->contents->sum('comment_num');
-
-        $course->timestamps = false;
-        $course->increment('visit_num');
-
-        $author = User::find($course->user_id);
-        $author->timestamps = false;
-        $author->increment('visit_num');
-
-        $course->encode_id = encode($course->id);
-        $course->user->encode_id = encode($course->user->id);
-
-        $course->contents_recursion = $this->get_recursion($course->contents,0);
-
-
-        if(!empty($post_data['content']))
-        {
-            if($content->user_id == $course->user_id) $item = $content;
-            else return view('frontend.404');
-
-        }
-        else $item = $course;
-
-//        return view('frontend.course.course')
-        return view('frontend.templates.adminlte.entrance.course')
-            ->with(['item_magnitude'=>'item-singular','getType'=>'item','course'=>$course,'content'=>$content,'item'=>$item]);
-    }
-
-
-
-
-    // 收藏
-    public function item_collect_save($post_data)
-    {
-        $messages = [
-            'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
-        ];
-        $v = Validator::make($post_data, [
-            'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required'
-        ], $messages);
-        if ($v->fails())
-        {
-            $errors = $v->errors();
-            return response_error([],$errors->first());
-        }
-
-        if(Auth::check())
-        {
-            $course_encode = $post_data['course_id'];
-            $course_decode = decode($course_encode);
-            if(!$course_decode) return response_error([],"参数有误，请重试！");
-
-            $content_encode = $post_data['content_id'];
-            $content_decode = decode($content_encode);
-            if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
-
-            $course = Course::find($course_decode);
-            if($course)
-            {
-                if($content_decode != 0)
-                {
-                    $content = Content::find($content_decode);
-                    if(!$course && $content->course_id != $course_decode) return response_error([],"参数有误，刷新一下试试");
-                }
-
-                DB::beginTransaction();
-                try
-                {
-                    $time = time();
-                    $user = Auth::user();
-                    $user->pivot_collection_courses()->attach($course_decode,['type'=>1,'content_id'=>$content_decode,'created_at'=>$time,'updated_at'=>$time]);
-
-                    if($content_decode == 0)
-                    {
-                        $course->timestamps = false;
-                        $course->increment('collect_num');
-                    }
-                    else
-                    {
-                        $content->timestamps = false;
-                        $content->increment('collect_num');
-                    }
-
-                    $insert['type'] = 11;
-                    $insert['user_id'] = $user->id;
-                    $insert['course_id'] = $course_decode;
-                    $insert['content_id'] = $content_decode;
-
-                    $communication = new Communication;
-                    $bool = $communication->fill($insert)->save();
-                    if(!$bool) throw new Exception("insert--communication--fail");
-
-                    $html['html'] = $this->view_item_html($course_decode);
-
-                    DB::commit();
-                    return response_success($html);
-                }
-                catch (Exception $e)
-                {
-                    DB::rollback();
-//                    exit($e->getMessage());
-//                    $msg = $e->getMessage();
-                    $msg = '添加失败，请重试！';
-                    return response_fail([], $msg);
-                }
-            }
-            else return response_error([],"该话题不存在，刷新一下试试！");
-        }
-        else return response_error([],"请先登录！");
-
-    }
-    // 取消收藏
-    public function item_collect_cancel($post_data)
-    {
-        $messages = [
-            'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
-        ];
-        $v = Validator::make($post_data, [
-            'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required'
-        ], $messages);
-        if ($v->fails())
-        {
-            $errors = $v->errors();
-            return response_error([],$errors->first());
-        }
-
-        if(Auth::check())
-        {
-            $course_encode = $post_data['course_id'];
-            $course_decode = decode($course_encode);
-            if(!$course_decode) return response_error([],"该话题不存在，刷新一下试试！");
-
-            $content_encode = $post_data['content_id'];
-            $content_decode = decode($content_encode);
-            if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
-
-            $course = Course::find($course_decode);
-            if($course)
-            {
-                if($content_decode != 0)
-                {
-                    $content = Content::find($content_decode);
-                    if(!$course && $content->course_id != $course_decode) return response_error([],"参数有误，刷新一下试试");
-                }
-
-                DB::beginTransaction();
-                try
-                {
-                    $user = Auth::user();
-                    $user_id = $user->id;
-
-                    $collections = Pivot_User_Collection::where(['type'=>1,'user_id'=>$user_id,'course_id'=>$course_decode,'content_id'=>$content_decode]);
-                    $count = count($collections->get());
-                    if($count)
-                    {
-                        $num = $collections->delete();
-                        if($num != $count) throw new Exception("delete--pivot--fail");
-
-                        if($content_decode == 0) $course->decrement('collect_num');
-                        else $content->decrement('collect_num');
-                    }
-
-                    $insert['type'] = 12;
-                    $insert['user_id'] = $user->id;
-                    $insert['course_id'] = $course_decode;
-                    $insert['content_id'] = $content_decode;
-
-                    $communication = new Communication;
-                    $bool = $communication->fill($insert)->save();
-                    if(!$bool) throw new Exception("insert--communication--fail");
-
-                    $html['html'] = $this->view_item_html($course_decode);
-
-                    DB::commit();
-                    return response_success($html);
-                }
-                catch (Exception $e)
-                {
-                    DB::rollback();
-//                    exit($e->getMessage());
-//                    $msg = $e->getMessage();
-                    $msg = '操作失败，请重试！';
-                    return response_fail([], $msg);
-                }
-            }
-            else return response_error([],"该话题不存在，刷新一下试试！");
-
-        }
-        else return response_error([],"请先登录！");
-
-    }
-
-
-    // 点赞
-    public function item_favor_save($post_data)
-    {
-        $messages = [
-            'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
-        ];
-        $v = Validator::make($post_data, [
-            'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required'
-        ], $messages);
-        if ($v->fails())
-        {
-            $errors = $v->errors();
-            return response_error([],$errors->first());
-        }
-
-        if(Auth::check())
-        {
-            $course_encode = $post_data['course_id'];
-            $course_decode = decode($course_encode);
-            if(!$course_decode) return response_error([],"参数有误，请重试！");
-
-            $content_encode = $post_data['content_id'];
-            $content_decode = decode($content_encode);
-            if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
-
-            $course = RootItem::find($course_decode);
-            if($course)
-            {
-                if($content_decode != 0)
-                {
-                    $content = Content::find($content_decode);
-                    if(!$course && $content->course_id != $course_decode) return response_error([],"参数有误，刷新一下试试");
-                }
-
-                DB::beginTransaction();
-                try
-                {
-                    $time = time();
-                    $user = Auth::user();
-                    $user->pivot_item_courses()->attach($course_decode,['type'=>1,'content_id'=>$content_decode,'created_at'=>$time,'updated_at'=>$time]);
-
-                    if($content_decode == 0)
-                    {
-                        $course->timestamps = false;
-                        $course->increment('favor_num');
-                    }
-                    else
-                    {
-                        $content->timestamps = false;
-                        $content->increment('favor_num');
-                    }
-
-                    $insert['type'] = 3;
-                    $insert['user_id'] = $user->id;
-                    $insert['course_id'] = $course_decode;
-                    $insert['content_id'] = $content_decode;
-
-                    $communication = new Communication;
-                    $bool = $communication->fill($insert)->save();
-                    if(!$bool) throw new Exception("insert--communication--fail");
-
-//                    通知对方
-                    if($course->user_id != $user->id)
-                    {
-                        $notification_insert['type'] = 8;
-                        $notification_insert['sort'] = 3;
-                        $notification_insert['user_id'] = $course->user_id;
-                        $notification_insert['source_id'] = $user->id;
-                        $notification_insert['course_id'] = $course_decode;
-                        $notification_insert['content_id'] = $content_decode;
-                        $notification_insert['comment_id'] = $communication->id;
-
-                        $notification = new Notification;
-                        $bool = $notification->fill($notification_insert)->save();
-                        if(!$bool) throw new Exception("insert--notification--fail");
-                    }
-
-                    $html['html'] = $this->view_item_html($course_decode);
-
-                    DB::commit();
-                    return response_success($html);
-                }
-                catch (Exception $e)
-                {
-                    DB::rollback();
-//                    exit($e->getMessage());
-//                    $msg = $e->getMessage();
-                    $msg = '添加失败，请重试！';
-                    return response_fail([], $msg);
-                }
-            }
-            else return response_error([],"该话题不存在，刷新一下试试！");
-        }
-        else return response_error([],"请先登录！");
-
-    }
-    // 取消点赞
-    public function item_favor_cancel($post_data)
-    {
-        $messages = [
-            'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
-        ];
-        $v = Validator::make($post_data, [
-            'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required'
-        ], $messages);
-        if ($v->fails())
-        {
-            $errors = $v->errors();
-            return response_error([],$errors->first());
-        }
-
-        if(Auth::check())
-        {
-            $course_encode = $post_data['course_id'];
-            $course_decode = decode($course_encode);
-            if(!$course_decode) return response_error([],"该话题不存在，刷新一下试试！");
-
-            $content_encode = $post_data['content_id'];
-            $content_decode = decode($content_encode);
-            if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
-
-            $course = Course::find($course_decode);
-            if($course)
-            {
-                if($content_decode != 0)
-                {
-                    $content = Content::find($content_decode);
-                    if(!$course && $content->course_id != $course_decode) return response_error([],"参数有误，刷新一下试试");
-                }
-
-                DB::beginTransaction();
-                try
-                {
-                    $user = Auth::user();
-                    $user_id = $user->id;
-
-                    $favors = Pivot_User_Course::where(['type'=>1,'user_id'=>$user_id,'course_id'=>$course_decode,'content_id'=>$content_decode]);
-                    $count = count($favors->get());
-                    if($count)
-                    {
-                        $num = $favors->delete();
-                        if($num != $count) throw new Exception("delete--pivot--fail");
-
-                        if($content_decode == 0) $course->decrement('favor_num');
-                        else $content->decrement('favor_num');
-                    }
-
-                    $insert['type'] = 4;
-                    $insert['user_id'] = $user->id;
-                    $insert['course_id'] = $course_decode;
-                    $insert['content_id'] = $content_decode;
-
-                    $communication = new Communication;
-                    $bool = $communication->fill($insert)->save();
-                    if(!$bool) throw new Exception("insert--communication--fail");
-
-                    $html['html'] = $this->view_item_html($course_decode);
-
-                    DB::commit();
-                    return response_success($html);
-                }
-                catch (Exception $e)
-                {
-                    DB::rollback();
-//                    exit($e->getMessage());
-//                    $msg = $e->getMessage();
-                    $msg = '操作失败，请重试！';
-                    return response_fail([], $msg);
-                }
-            }
-            else return response_error([],"该话题不存在，刷新一下试试！");
-
-        }
-        else return response_error([],"请先登录！");
-
-    }
-
-
-
-
     // 添加评论
     public function item_comment_save($post_data)
     {
         $messages = [
             'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
+            'item_id.required' => '参数有误',
             'content.required' => '内容不能为空',
         ];
         $v = Validator::make($post_data, [
             'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required',
+            'item_id' => 'required',
             'content' => 'required'
         ], $messages);
         if ($v->fails())
@@ -1054,54 +575,36 @@ class IndexRepository {
 
         if(Auth::check())
         {
-            $course_encode = $post_data['course_id'];
-            $course_decode = decode($course_encode);
-            if(!$course_decode) return response_error([],"参数有误，刷新一下试试");
-
-            $content_encode = $post_data['content_id'];
-            $content_decode = decode($content_encode);
-            if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
+            $item_id = $post_data['item_id'];
+            if(!is_numeric($item_id)) return response_error([],"参数有误，刷新一下试试");
 
             $user = Auth::user();
             $insert['type'] = $post_data['type'];
             $insert['user_id'] = $user->id;
-            $insert['course_id'] = $course_decode;
-            $insert['content_id'] = $content_decode;
+            $insert['item_id'] = $item_id;
             $insert['content'] = $post_data['content'];
 
             DB::beginTransaction();
             try
             {
-                $course = Course::find($course_decode);
-                if(!$course) return response_error([],"该课题不存在，刷新一下试试");
+                $item = RootItem::find($item_id);
+                if(!$item) return response_error([],"该内容不存在，刷新一下试试");
 
-                if($content_decode != 0)
-                {
-                    $content = Content::find($content_decode);
-                    if(!$course && $content->course_id != $course_decode) return response_error([],"参数有误，刷新一下试试");
-
-                    $content->timestamps = false;
-                    $content->increment('comment_num');
-                }
-                else
-                {
-                    $course->timestamps = false;
-                    $course->increment('comment_num');
-                }
+                $item->timestamps = false;
+                $item->increment('comment_num');
 
                 $communication = new Communication;
                 $bool = $communication->fill($insert)->save();
                 if(!$bool) throw new Exception("insert--communication--fail");
 
 //                通知对方
-                if($course->user_id != $user->id)
+                if($item->user_id != $user->id)
                 {
                     $notification_insert['type'] = 8;
                     $notification_insert['sort'] = 1;
-                    $notification_insert['user_id'] = $course->user_id;
+                    $notification_insert['user_id'] = $item->user_id;
                     $notification_insert['source_id'] = $user->id;
-                    $notification_insert['course_id'] = $course_decode;
-                    $notification_insert['content_id'] = $content_decode;
+                    $notification_insert['item_id'] = $item_id;
                     $notification_insert['comment_id'] = $communication->id;
 
                     $notification = new Notification;
@@ -1109,7 +612,7 @@ class IndexRepository {
                     if(!$bool) throw new Exception("insert--notification--fail");
                 }
 
-                $html["html"] = view('frontend.component.comment')->with("comment",$communication)->__toString();
+                $html["html"] = view('frontend.'.env('TEMPLATE').'.component.comment')->with("comment",$communication)->__toString();
 
                 DB::commit();
                 return response_success($html);
@@ -1117,9 +620,9 @@ class IndexRepository {
             catch (Exception $e)
             {
                 DB::rollback();
-//                exit($e->getMessage());
-//                $msg = $e->getMessage();
                 $msg = '添加失败，请重试！';
+                $msg = $e->getMessage();
+//                exit($e->getMessage());
                 return response_fail([], $msg);
             }
         }
@@ -1131,13 +634,11 @@ class IndexRepository {
     {
         $messages = [
             'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
+            'item_id.required' => '参数有误'
         ];
         $v = Validator::make($post_data, [
             'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required'
+            'item_id' => 'required'
         ], $messages);
         if ($v->fails())
         {
@@ -1147,13 +648,8 @@ class IndexRepository {
 
         $type = $post_data['type'];
 
-        $course_encode = $post_data['course_id'];
-        $course_decode = decode($course_encode);
-        if(!$course_decode) return response_error([],"参数有误，刷新一下试试");
-
-        $content_encode = $post_data['content_id'];
-        $content_decode = decode($content_encode);
-        if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
+        $item_id = $post_data['item_id'];
+        if(!is_numeric($item_id)) return response_error([],"参数有误，刷新一下试试");
 
         if(Auth::check())
         {
@@ -1169,7 +665,7 @@ class IndexRepository {
 //                ])->orderBy('id','desc'); },
                 'favors'=>function($query) use ($user_id) { $query->where(['type'=>5,'user_id'=>$user_id]); }
             ])->withCount('dialogs')
-            ->where(['type'=>$type,'reply_id'=>0,'course_id'=>$course_decode,'content_id'=>$content_decode]);
+            ->where(['type'=>$type,'reply_id'=>0,'item_id'=>$item_id]);
         }
         else
         {
@@ -1181,7 +677,7 @@ class IndexRepository {
 //                    'reply'=>function($query1) { $query1->with(['user']); }
 //                ])->orderBy('id','desc'); },
             ])->withCount('dialogs')
-            ->where(['type'=>$type,'reply_id'=>0,'course_id'=>$course_decode,'content_id'=>$content_decode]);
+            ->where(['type'=>$type,'reply_id'=>0,'item_id'=>$item_id]);
         }
 
         if(!empty($post_data['min_id']) && $post_data['min_id'] != 0) $comments->where('id', '<', $post_data['min_id']);
@@ -1233,7 +729,7 @@ class IndexRepository {
 
         if(!$comments->isEmpty())
         {
-            $return["html"] = view('frontend.component.comments')->with("communications",$comments)->__toString();
+            $return["html"] = view('frontend.'.env('TEMPLATE').'.component.comments')->with("communications",$comments)->__toString();
             $return["max_id"] = $comments->first()->id;
             $return["min_id"] = $comments->last()->id;
             $return["more"] = ($comments->count() >= 10) ? 'more' : 'none';
@@ -1254,13 +750,11 @@ class IndexRepository {
     {
         $messages = [
             'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
+            'item_id.required' => '参数有误'
         ];
         $v = Validator::make($post_data, [
             'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required'
+            'item_id' => 'required'
         ], $messages);
         if ($v->fails())
         {
@@ -1268,16 +762,12 @@ class IndexRepository {
             return response_error([],$errors->first());
         }
 
-        $course_encode = $post_data['course_id'];
-        $course_decode = decode($course_encode);
-        if(!$course_decode) return response_error([],"参数有误，刷新一下试试");
-
-        $content_encode = $post_data['content_id'];
-        $content_decode = decode($content_encode);
-        if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
+        $item_encode = $post_data['item_id'];
+        $item_decode = decode($item_encode);
+        if(!$item_decode) return response_error([],"参数有误，刷新一下试试");
 
         $communications = Communication::with(['user'])
-            ->where(['course_id'=>$course_decode,'content_id'=>$content_decode])->orderBy('id','desc')->get();
+            ->where(['item_id'=>$item_decode])->orderBy('id','desc')->get();
 
         $html["html"] = view('frontend.component.comments')->with("communications",$communications)->__toString();
         return response_success($html);
@@ -1290,15 +780,13 @@ class IndexRepository {
     {
         $messages = [
             'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
+            'item_id.required' => '参数有误',
             'comment_id.required' => '参数有误',
             'content.required' => '回复不能为空',
         ];
         $v = Validator::make($post_data, [
             'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required',
+            'item_id' => 'required',
             'comment_id' => 'required',
             'content' => 'required'
         ], $messages);
@@ -1310,13 +798,8 @@ class IndexRepository {
 
         if(Auth::check())
         {
-            $course_encode = $post_data['course_id'];
-            $course_decode = decode($course_encode);
-            if(!$course_decode) return response_error([],"该话题不存在，刷新一下试试！");
-
-            $content_encode = $post_data['content_id'];
-            $content_decode = decode($content_encode);
-            if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
+            $item_id = $post_data['item_id'];
+            if(!is_numeric($item_id)) return response_error([],"参数有误，刷新一下试试");
 
             $comment_encode = $post_data['comment_id'];
             $comment_decode = decode($comment_encode);
@@ -1325,30 +808,18 @@ class IndexRepository {
             $user = Auth::user();
             $insert['type'] = $post_data['type'];
             $insert['user_id'] = $user->id;
-            $insert['course_id'] = $course_decode;
-            $insert['content_id'] = $content_decode;
+            $insert['item_id'] = $item_id;
             $insert['reply_id'] = $comment_decode;
             $insert['content'] = $post_data['content'];
 
             DB::beginTransaction();
             try
             {
-                $course = Course::find($course_decode);
-                if(!$course) return response_error([],"该课题不存在，刷新一下试试");
+                $item = RootItem::find($item_id);
+                if(!$item) return response_error([],"该内容不存在，刷新一下试试");
 
-                if($content_decode != 0)
-                {
-                    $content = Content::find($content_decode);
-                    if(!$course && $content->course_id != $course_decode) return response_error([],"参数有误，刷新一下试试");
-
-                    $content->timestamps = false;
-                    $content->increment('comment_num');
-                }
-                else
-                {
-                    $course->timestamps = false;
-                    $course->increment('comment_num');
-                }
+                $item->timestamps = false;
+                $item->increment('comment_num');
 
                 $comment = Communication::find($comment_decode);
                 if(!$comment) return response_error([],"该评论不存在，刷新一下试试！");
@@ -1378,8 +849,7 @@ class IndexRepository {
                     $notification_insert['sort'] = 2;
                     $notification_insert['user_id'] = $comment->user_id;
                     $notification_insert['source_id'] = $user->id;
-                    $notification_insert['course_id'] = $course_decode;
-                    $notification_insert['content_id'] = $content_decode;
+                    $notification_insert['item_id'] = $item_id;
                     $notification_insert['comment_id'] = $communication->id;
                     $notification_insert['reply_id'] = $comment->id;
 
@@ -1388,7 +858,7 @@ class IndexRepository {
                     if(!$bool) throw new Exception("insert--notification--fail");
                 }
 
-                $html["html"] = view('frontend.component.reply')->with("reply",$communication)->__toString();
+                $html["html"] = view('frontend.'.env('TEMPLATE').'.component.reply')->with("reply",$communication)->__toString();
 
                 DB::commit();
                 return response_success($html);
@@ -1396,9 +866,9 @@ class IndexRepository {
             catch (Exception $e)
             {
                 DB::rollback();
-//                exit($e->getMessage());
-//                $msg = $e->getMessage();
                 $msg = '添加失败，请重试！';
+                $msg = $e->getMessage();
+//                exit($e->getMessage());
                 return response_fail([], $msg);
             }
         }
@@ -1410,14 +880,12 @@ class IndexRepository {
     {
         $messages = [
             'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
+            'item_id.required' => '参数有误',
             'comment_id.required' => '参数有误',
         ];
         $v = Validator::make($post_data, [
             'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required',
+            'item_id' => 'required',
             'comment_id' => 'required'
         ], $messages);
         if ($v->fails())
@@ -1428,13 +896,8 @@ class IndexRepository {
 
         $type = $post_data['type'];
 
-        $course_encode = $post_data['course_id'];
-        $course_decode = decode($course_encode);
-        if(!$course_decode) return response_error([],"参数有误，刷新一下试试");
-
-        $content_encode = $post_data['content_id'];
-        $content_decode = decode($content_encode);
-        if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
+        $item_id = $post_data['item_id'];
+        if(!is_numeric($item_id)) return response_error([],"参数有误，刷新一下试试");
 
         $comment_encode = $post_data['comment_id'];
         $comment_decode = decode($comment_encode);
@@ -1448,7 +911,7 @@ class IndexRepository {
                 'user',
                 'reply'=>function($query) { $query->with(['user']); },
                 'favors'=>function($query) use ($user_id) { $query->where(['type'=>5,'user_id'=>$user_id]); }
-            ])->where(['type'=>$type,'course_id'=>$course_decode,'content_id'=>$content_decode,'dialog_id'=>$comment_decode])
+            ])->where(['type'=>$type,'item_id'=>$item_id,'dialog_id'=>$comment_decode])
                 ->where('reply_id','<>',0);
         }
         else
@@ -1456,7 +919,7 @@ class IndexRepository {
             $comments = Communication::with([
                 'user',
                 'reply'=>function($query) { $query->with(['user']); },
-            ])->where(['type'=>$type,'course_id'=>$course_decode,'content_id'=>$content_decode,'dialog_id'=>$comment_decode])
+            ])->where(['type'=>$type,'item_id'=>$item_id,'dialog_id'=>$comment_decode])
                 ->where('reply_id','<>',0);
         }
 
@@ -1466,7 +929,7 @@ class IndexRepository {
 
         if(!$comments->isEmpty())
         {
-            $return["html"] = view('frontend.component.replies')->with("communications",$comments)->__toString();
+            $return["html"] = view('frontend.'.env('TEMPLATE').'.component.replies')->with("communications",$comments)->__toString();
             $return["max_id"] = $comments->first()->id;
             $return["min_id"] = $comments->last()->id;
             $return["more"] = ($comments->count() >= 10) ? 'more' : 'none';
@@ -1489,14 +952,12 @@ class IndexRepository {
     {
         $messages = [
             'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
+            'item_id.required' => '参数有误',
             'comment_id.required' => '参数有误',
         ];
         $v = Validator::make($post_data, [
             'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required',
+            'item_id' => 'required',
             'comment_id' => 'required'
         ], $messages);
         if ($v->fails())
@@ -1507,13 +968,8 @@ class IndexRepository {
 
         if(Auth::check())
         {
-            $course_encode = $post_data['course_id'];
-            $course_decode = decode($course_encode);
-            if(!$course_decode) return response_error([],"该话题不存在，刷新一下试试！");
-
-            $content_encode = $post_data['content_id'];
-            $content_decode = decode($content_encode);
-            if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
+            $item_id = $post_data['item_id'];
+            if(!is_numeric($item_id)) return response_error([],"参数有误，刷新一下试试");
 
             $comment_encode = $post_data['comment_id'];
             $comment_decode = decode($comment_encode);
@@ -1522,29 +978,17 @@ class IndexRepository {
             $user = Auth::user();
             $insert['type'] = $post_data['type'];
             $insert['user_id'] = $user->id;
-            $insert['course_id'] = $course_decode;
-            $insert['content_id'] = $content_decode;
+            $insert['item_id'] = $item_id;
             $insert['reply_id'] = $comment_decode;
 
             DB::beginTransaction();
             try
             {
-                $course = Course::find($course_decode);
-                if(!$course) return response_error([],"该课题不存在，刷新一下试试");
+                $item = RootItem::find($item_id);
+                if(!$item) return response_error([],"该内容不存在，刷新一下试试");
 
-                if($content_decode != 0)
-                {
-                    $content = Content::find($content_decode);
-                    if(!$course && $content->course_id != $course_decode) return response_error([],"参数有误，刷新一下试试");
-
-                    $content->timestamps = false;
-                    $content->increment('favor_num');
-                }
-                else
-                {
-                    $course->timestamps = false;
-                    $course->increment('favor_num');
-                }
+                $item->timestamps = false;
+                $item->increment('favor_num');
 
                 $comment = Communication::find($comment_decode);
                 if(!$comment) return response_error([],"该评论不存在，刷新一下试试！");
@@ -1562,8 +1006,7 @@ class IndexRepository {
                     $notification_insert['sort'] = 5;
                     $notification_insert['user_id'] = $comment->user_id;
                     $notification_insert['source_id'] = $user->id;
-                    $notification_insert['course_id'] = $course_decode;
-                    $notification_insert['content_id'] = $content_decode;
+                    $notification_insert['item_id'] = $item_id;
                     $notification_insert['comment_id'] = $communication->id;
                     $notification_insert['reply_id'] = $comment_decode;
 
@@ -1578,9 +1021,9 @@ class IndexRepository {
             catch (Exception $e)
             {
                 DB::rollback();
-//                exit($e->getMessage());
-//                $msg = $e->getMessage();
                 $msg = '添加失败，请重试！';
+//                $msg = $e->getMessage();
+//                exit($e->getMessage());
                 return response_fail([], $msg);
             }
         }
@@ -1592,14 +1035,12 @@ class IndexRepository {
     {
         $messages = [
             'type.required' => '参数有误',
-            'course_id.required' => '参数有误',
-            'content_id.required' => '参数有误',
+            'item_id.required' => '参数有误',
             'comment_id.required' => '参数有误',
         ];
         $v = Validator::make($post_data, [
             'type' => 'required',
-            'course_id' => 'required',
-            'content_id' => 'required',
+            'item_id' => 'required',
             'comment_id' => 'required'
         ], $messages);
         if ($v->fails())
@@ -1610,13 +1051,8 @@ class IndexRepository {
 
         if(Auth::check())
         {
-            $course_encode = $post_data['course_id'];
-            $course_decode = decode($course_encode);
-            if(!$course_decode) return response_error([],"该话题不存在，刷新一下试试！");
-
-            $content_encode = $post_data['content_id'];
-            $content_decode = decode($content_encode);
-            if(!$content_decode && $content_decode != 0) return response_error([],"参数有误，刷新一下试试");
+            $item_id = $post_data['item_id'];
+            if(!is_numeric($item_id)) return response_error([],"参数有误，刷新一下试试");
 
             $comment_encode = $post_data['comment_id'];
             $comment_decode = decode($comment_encode);
@@ -1633,8 +1069,10 @@ class IndexRepository {
                     $comment->decrement('favor_num');
 
                     $favors = Communication::where([
-                        'type'=>5,'user_id'=>$user_id,
-                        'course_id'=>$course_decode,'content_id'=>$content_decode,'reply_id'=>$comment_decode
+                        'type'=>5,
+                        'user_id'=>$user_id,
+                        'item_id'=>$item_id,
+                        'reply_id'=>$comment_decode
                     ]);
                     $count = count($favors->get());
                     if($count)
@@ -1649,9 +1087,9 @@ class IndexRepository {
                 catch (Exception $e)
                 {
                     DB::rollback();
-//                    exit($e->getMessage());
-//                    $msg = $e->getMessage();
                     $msg = '操作失败，请重试！';
+//                    $msg = $e->getMessage();
+//                    exit($e->getMessage());
                     return response_fail([], $msg);
                 }
 
