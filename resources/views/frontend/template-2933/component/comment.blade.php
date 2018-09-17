@@ -4,7 +4,7 @@
     {{--评论头部--}}
     <div class="box-body comment-title-container item-info-row">
 
-        <a href="{{ url('/user/'.encode($comment->user->id)) }}" target="_blank" class="link">{{ $comment->user->name }}</a>
+        <a href="{{ url('/user/'.$comment->user->id) }}" target="_blank" class="link">{{ $comment->user->name }}</a>
 
         <span class="pull-right text-muted disabled">{{ $comment->created_at->format('n月j日 H:i') }} </span>
 

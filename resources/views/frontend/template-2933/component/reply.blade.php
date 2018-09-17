@@ -3,12 +3,12 @@
     {{--回复头部--}}
     <div class="box-body reply-title-container">
 
-        <a href="{{ url('/user/'.encode($reply->user->id)) }}" class="link">{{ $reply->user->name or '' }}</a>
+        <a href="{{ url('/user/'.$reply->user->id) }}" class="link">{{ $reply->user->name or '' }}</a>
 
         @if($reply->reply_id != $reply->dialog_id)
             @if($reply->reply)
                 <span class="font-12px">回复</span>
-                <a href="{{ url('/user/'.encode($reply->reply->user->id)) }}" class="link">{{ $reply->reply->user->name or '' }}</a> :
+                <a href="{{ url('/user/'.$reply->reply->user->id) }}" class="link">{{ $reply->reply->user->name or '' }}</a> :
             @endif
         @endif
 
