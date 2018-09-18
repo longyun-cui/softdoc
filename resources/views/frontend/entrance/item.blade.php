@@ -2,7 +2,7 @@
 
 
 {{--html.head--}}
-@section('head_title'){{ $item->title or '内容详情' }} | {{ config('website.website_name') }}@endsection
+@section('head_title'){{ $item->title or '内容详情 - '.config('website.website_name') }}@endsection
 @section('meta_author')@endsection
 @section('meta_title')@endsection
 @section('meta_description')@endsection
@@ -11,9 +11,9 @@
 
 
 {{--微信分享--}}
-@section('wx_share_title'){{ $item->title or '内容详情' }} | {{ config('website.website_name') }}@endsection
+@section('wx_share_title'){{ $item->title or '内容详情 - '.config('website.website_name') }}@endsection
 @section('wx_share_desc')如未改变生活@endsection
-@section('wx_share_imgUrl'){{ url('/softdoc_white_0.png') }}@endsection
+@section('wx_share_imgUrl'){{ url('/softdoc_white_1.png') }}@endsection
 
 
 
