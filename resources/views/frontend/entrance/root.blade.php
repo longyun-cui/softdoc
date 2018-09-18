@@ -10,6 +10,13 @@
 
 
 
+{{--微信分享--}}
+@section('wx_share_title')如未@endsection
+@section('wx_share_desc')小秘书@endsection
+@section('wx_share_imgUrl')@endsection
+
+
+
 
 {{--header--}}
 @section('component-header')
