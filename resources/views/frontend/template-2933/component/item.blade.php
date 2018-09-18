@@ -105,6 +105,34 @@
                 </form>
             </div>
 
+            @if($item->category == 7)
+                <div class="item-row mt10 mb10">
+                    <div class="btn-group">
+                        <button type="button" class="btn">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="get-support" value="0" checked="checked"> 全部评论
+                                </label>
+                            </div>
+                        </button>
+                        <button type="button" class="btn">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="get-support" value="1"> 只看正方
+                                </label>
+                            </div>
+                        </button>
+                        <button type="button" class="btn">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="get-support" value="2"> 只看反方
+                                </label>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            @endif
+
 
             {{--评论列表--}}
             <div class="comment-entity-container">
@@ -113,9 +141,7 @@
                 </div>
 
                 <div class="more-box">
-                    <a href="javascript:void(0);">
-                        <span class="item-more">没有更多了</span>
-                    </a>
+                    <a href="javascript:void(0);"><span class="item-more">没有更多了</span></a>
                 </div>
 
             </div>

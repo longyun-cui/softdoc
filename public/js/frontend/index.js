@@ -393,12 +393,14 @@ jQuery( function ($) {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         var getSort = that.attr('data-getSort');
+        var getSupport = item_option.find('input[name=get-support]:checked').val();
 
         $.post(
             "/item/comment/get",
             {
                 _token: $('meta[name="_token"]').attr('content'),
                 item_id: item_option.attr('data-item'),
+                support: getSupport,
                 type: 1
             },
             function(data){
@@ -471,6 +473,14 @@ jQuery( function ($) {
         {
             layer.msg('没有更多评论了', function(){});
         }
+    });
+
+
+    // 选择支持方
+    $(".item-option").off("click","input[name=get-support]").on('click', "input[name=get-support]", function() {
+        var that = $(this);
+        var item_option = $(this).parents('.item-option');
+        item_option.find('.comments-get').click();
     });
 
 

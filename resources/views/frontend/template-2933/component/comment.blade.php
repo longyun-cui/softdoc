@@ -32,7 +32,6 @@
                     <i class="fa fa-thumbs-o-up"></i>({{ $comment->favor_num or 0 }})
                 </span>
             @endif
-
         </span>
 
     </div>

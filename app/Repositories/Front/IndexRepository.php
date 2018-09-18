@@ -735,6 +735,18 @@ class IndexRepository {
 
         if(!empty($post_data['min_id']) && $post_data['min_id'] != 0) $comments->where('id', '<', $post_data['min_id']);
 
+        if(!empty($post_data['support']))
+        {
+            if(in_array($post_data['support'], [0,1,2]))
+            {
+                if($post_data['support'] != 0) $comments->where('support', $post_data['support']);
+            }
+            else
+            {
+                return response_error([],"参数有误");
+            }
+        }
+
         $comments = $comments->orderBy('id','desc')->paginate(10);
 
         foreach ($comments as $comment)
