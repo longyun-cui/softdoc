@@ -29,7 +29,7 @@ class AuthRepository {
         $v = Validator::make($post_data, [
             'captcha' => 'required|captcha',
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:root_users',
             'password' => 'required',
             'password_confirm' => 'required'
         ], $messages);
@@ -69,14 +69,14 @@ class AuthRepository {
                     $bool4 = $verification->fill($verification_create)->save();
                     if($bool4)
                     {
-                        $post_data['host'] = config('common.host.online.root');
+                        $post_data['host'] = env('DOMAIN_ROOT');
                         $post_data['sort'] = 'email_activation';
                         $post_data['type'] = 1;
                         $post_data['user_id'] = encode($user->id);
                         $post_data['code'] = $code;
                         $post_data['target'] = $email;
 
-                        $url = config('common.MailService').'/course/email/activation';
+                        $url = config('common.MailService').'/softdoc/email/activation';
                         $ch = curl_init();
                         curl_setopt($ch, CURLOPT_URL, $url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -101,9 +101,9 @@ class AuthRepository {
             catch (Exception $e)
             {
                 DB::rollback();
-//                exit($e->getMessage());
+                $msg = '注册失败，请重试！';
                 $msg = $e->getMessage();
-//                $msg = '注册失败，请重试！';
+//                exit($e->getMessage());
                 return response_fail([],$msg);
             }
         }

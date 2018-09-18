@@ -11,7 +11,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">用户登录</p>
 
-        <form action="/admin/login" method="post" id="form-admin-login">
+        <form action="/login" method="post" id="form-admin-login">
             {{ csrf_field() }}
             <div class="form-group has-feedback">
                 <input type="email" class="form-control" name="email" placeholder="邮箱">
@@ -53,11 +53,11 @@
     <!-- /.login-box-body -->
 
     <div class="login-box-body" style="display:none;">
-        <a href="{{url('/register')}}"><button type="button" class="btn btn-primary btn-block btn-flat" id="register-submit">注册新用户</button></a>
+        <a href="{{url('/register')}}"><button type="button" class="btn btn-primary btn-block btn-flat">注册新用户</button></a>
     </div>
 
     <div class="login-box-body">
-        <a href="{{url('/')}}"><button type="button" class="btn btn-default btn-block btn-flat" id="register-submit">返回平台主页</button></a>
+        <a href="{{url('/')}}"><button type="button" class="btn btn-default btn-block btn-flat">返回平台主页</button></a>
     </div>
 
 </div>
