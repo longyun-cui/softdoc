@@ -13,7 +13,7 @@
 {{--微信分享--}}
 @section('wx_share_title'){{ $data->name or '如未' }} | {{ config('website.website_name') }}@endsection
 @section('wx_share_desc')如未改变生活@endsection
-@section('wx_share_imgUrl'){{ url(env('DOMAIN_CDN').'/'.Auth::user()->portrait_img) }}@endsection
+@section('wx_share_imgUrl'){{ url(env('DOMAIN_CDN').'/'.$data->portrait_img) }}@endsection
 
 
 
