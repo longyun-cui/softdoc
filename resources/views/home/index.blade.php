@@ -1,7 +1,7 @@
 @extends('home.layout.layout')
 
-@section('title','用户主页 - 三人行')
-@section('header','三人行')
+@section('head_title','内容管理后台')
+@section('header','内容管理后台')
 @section('description','用户主页')
 @section('breadcrumb')
     <li><a href="{{url('/home')}}"><i class="fa fa-dashboard"></i>首页</a></li>

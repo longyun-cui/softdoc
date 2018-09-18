@@ -1,6 +1,6 @@
 @extends('home.layout.layout')
 
-@section('title','编辑个人信息')
+@section('head_title','编辑个人信息')
 @section('header','编辑个人信息')
 @section('description','编辑个人信息')
 @section('breadcrumb')

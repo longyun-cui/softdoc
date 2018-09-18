@@ -1,6 +1,6 @@
 @extends('home.layout.layout')
 
-@section('title','修改密码')
+@section('head_title','修改密码')
 @section('header','修改密码')
 @section('description','修改密码')
 @section('breadcrumb')

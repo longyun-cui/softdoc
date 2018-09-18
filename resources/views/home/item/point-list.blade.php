@@ -1,6 +1,6 @@
 @extends('home.layout.layout')
 
-@section('title'){{ $item->title or '' }}(时间点列表)@endsection
+@section('head_title'){{ $item->title or '' }}(时间点列表)@endsection
 @section('header'){{ $item->title or '' }}@endsection
 @section('description','时间点列表')
 @section('breadcrumb')

@@ -1,6 +1,6 @@
 @extends('home.layout.layout')
 
-@section('title', '内容管理')
+@section('head_title', '内容管理')
 
 @section('header')
     {{$data->title or ''}}
