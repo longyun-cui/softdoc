@@ -10,9 +10,10 @@
 
 
 
+
 {{--微信分享--}}
 @section('wx_share_title'){{ $item->title or '内容详情 - '.config('website.website_name') }}@endsection
-@section('wx_share_desc')如未改变生活@endsection
+@section('wx_share_desc'){{ "@".$item->user->name }}@endsection
 @section('wx_share_imgUrl'){{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}@endsection
 
 

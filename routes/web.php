@@ -12,6 +12,16 @@
 */
 
 Route::get('/', function () {
+
+    echo("【url()->full()】  --:--  ".url()->full().'<br>');
+    echo("【url()->current()】  --:--  ".url()->current().'<br>');
+    echo("【url()->previous()】  --:--  ".url()->previous().'<br>');
+    echo("【request()->url()】  --:--  ".request()->url().'<br>');
+    echo("【request()->path()】  --:--  ".request()->path().'<br>');
+    echo("【request()->getUri()】  --:--  ".request()->getUri().'<br>');
+    echo("【request()->getRequestUri()】  --:--  ".request()->getRequestUri().'<br>');
+    dd();
+
     return view('welcome');
 });
 
@@ -159,7 +169,10 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
         $controller = 'HomeController';
 
+        Route::get('/404', $controller.'@view_404');
+
         Route::get('/', $controller.'@index');
+
 
 
         // 【info】

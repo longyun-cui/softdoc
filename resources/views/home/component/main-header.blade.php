@@ -142,7 +142,7 @@
                             <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                             <p>
-                                {{Auth::user()->name}}
+                                {{ Auth::user()->name }}
                                 <small>Member since Nov. 2012</small>
                             </p>
                         </li>

@@ -5,7 +5,7 @@
 
         {{--header--}}
         <div class="box-body item-info-row text-muted">
-            <span><a href="{{ url('/u/'.encode($item->user->id)) }}">{{ $item->user->name or '' }}</a></span>
+            <span><a href="{{ url('/user/'.$item->user->id) }}">{{ $item->user->name or '' }}</a></span>
             {{--<span> • </span>--}}
             {{--<span>{{ $item->created_at->format('n月j日 H:i') }}</span>--}}
             {{--<span> • </span>--}}

@@ -1,6 +1,6 @@
 @extends('home.layout.layout')
 
-@section('title','404')
+@section('head_title','404')
 @section('header','404')
 @section('description')
     {{ $error or '页面不存在' }}

@@ -12,13 +12,6 @@
         <nav role="navigation" class="probootstrap-nav hidden-xs hidden-sm">
             <ul class="probootstrap-main-nav">
 
-                <li class="header-phone" style="display:none;">
-                    <a href="tel:{{ config('company.info.telephone') }}">
-                        <i class="fa fa-mobile-phone"></i>
-                        <strong>{{ config('company.info.telephone') }}</strong>
-                    </a>
-                </li>
-
                 @if(Auth::check())
                     <li class="visible-xs visible-sm"><a href="{{ url('/home/todolist') }}"><i class="fa fa-check-square-o"></i> 我的待办事</a></li>
                     <li class="visible-xs visible-sm"><a href="{{ url('/home/schedule') }}"><i class="fa fa-calendar-plus-o"></i> 我的日程</a></li>

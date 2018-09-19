@@ -2,7 +2,7 @@
 
 
 {{--html.head--}}
-@section('head_title'){{ $data->name or '如未' }} | {{ config('website.website_name') }}@endsection
+@section('head_title'){{ $data->name or '如未' }} - {{ config('website.website_name') }}@endsection
 @section('meta_author')@endsection
 @section('meta_title')@endsection
 @section('meta_description')@endsection
@@ -10,9 +10,10 @@
 
 
 
+
 {{--微信分享--}}
-@section('wx_share_title'){{ $data->name or '如未' }} | {{ config('website.website_name') }}@endsection
-@section('wx_share_desc')如未改变生活@endsection
+@section('wx_share_title'){{ $data->name or '如未' }}@endsection
+@section('wx_share_desc')欢迎来到我的主页@endsection
 @section('wx_share_imgUrl'){{ url(env('DOMAIN_CDN').'/'.$data->portrait_img) }}@endsection
 
 

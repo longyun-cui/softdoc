@@ -3,7 +3,7 @@
     <div class="full-screen">
 
         <a href="{{ url('/') }}" class="header-logo">
-            <img src="{{ url('/images/softdoc_white_0.png') }}" alt="如未">
+            <img src="{{ url('/favicon_white_0.png') }}" alt="如未">
         </a>
         <a href="{{ url('/') }}"> 如未科技 </a>
 
