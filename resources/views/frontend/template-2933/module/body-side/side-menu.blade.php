@@ -6,8 +6,8 @@
         <span class="recursion-icon">
             <i class="fa fa-bookmark text-orange"></i>
         </span>
-        <span class="recursion-text recursion-item  @if($parent_item->id == $item->id) active @endif">
-            <a href="{{url('/item/'.$parent_item->id)}}"><b>{{ $parent_item->title or '' }}</b></a>
+        <span class="recursion-text recursion-item @if($parent_item->id == $item->id) active @endif">
+            <a href="{{url('/item/'.$parent_item->id)}}">{{ $parent_item->title or '' }}</a>
         </span>
     </div>
 
@@ -49,12 +49,13 @@
 
     @foreach( $contents_recursion as $key => $recursion )
         <div class="col-md-12 recursion-row" data-level="{{$recursion->level or 0}}" data-id="{{$recursion->id or 0}}"
-             style="display:@if($recursion->level != 0) none @endif">
+             {{--style="display:@if($recursion->level != 0) none @endif">--}}
+             style="">
             <div class="recursion-menu" style="margin-left:{{ $recursion->level*16 }}px">
                 <span class="recursion-icon">
                     {{--@if($recursion->type == 1)--}}
                         @if($recursion->has_child == 1)
-                            <i class="fa fa-plus-square recursion-fold"></i>
+                            <i class="fa fa-minus-square recursion-fold"></i>
                         @else
                             <i class="fa fa-file-text"></i>
                         @endif

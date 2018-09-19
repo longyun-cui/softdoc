@@ -753,18 +753,20 @@ jQuery( function ($) {
 function fold()
 {
 
-    var item_active = $('.side-menu-container .recursion-item.active');
+    var item_active = $('.side-menu .recursion-item.active');
     if(item_active.length > 0)
     {
+        console.log(1);
         var item_a = item_active.find('a').clone();
         $('.prev-content').find('.a-box').html('已经是封页了');
 
-        var content_first = $('.side-menu-container .recursion-row').first();
+        var content_first = $('.side-menu .recursion-row').first();
         $('.next-content').find('.a-box').html(content_first.find('a').clone());
     }
 
     $(".recursion-row .active").each(function() {
 
+        console.log(12);
         var this_row = $(this).parents('.recursion-row');
         var this_level = this_row.attr('data-level');
         this_row.find('.recursion-fold').removeClass('fa-plus-square').addClass('fa-minus-square');
@@ -774,7 +776,7 @@ function fold()
 
         if(prev_row.length == 0)
         {
-            var item_a = $('.side-menu-container .recursion-item').find('a').clone();
+            var item_a = $('.side-menu .recursion-item').find('a').clone();
             $('.prev-content').find('.a-box').html(item_a);
         }
         else

@@ -49,9 +49,9 @@
 
 
         @if($item->category == 11)
-        <div class="box-footer">
-            <div class="colo-md-12 prev-content"> 上一篇 : <span class="a-box"></span> </div>
-            <div class="colo-md-12 next-content" style="margin-top:10px;"> 下一篇 : <span class="a-box"></span> </div>
+        <div class="box-footer navigation-box">
+            <div class="colo-md-12 prev-content"><span class="label">上一篇:</span> <span class="a-box"></span> </div>
+            <div class="colo-md-12 next-content"><span class="label">下一篇:</span> <span class="a-box"></span></div>
         </div>
         @endif
 
