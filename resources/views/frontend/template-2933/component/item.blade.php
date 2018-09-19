@@ -47,6 +47,14 @@
             <article class="colo-md-12"> {!! $item->content or '' !!} </article>
         </div>
 
+
+        @if($item->category == 11)
+        <div class="box-footer">
+            <div class="colo-md-12 prev-content"> 上一篇 : <span class="a-box"></span> </div>
+            <div class="colo-md-12 next-content" style="margin-top:10px;"> 下一篇 : <span class="a-box"></span> </div>
+        </div>
+        @endif
+
     </div>
 </div>
 
