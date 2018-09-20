@@ -50,24 +50,30 @@ jQuery( function ($) {
         var $that = $(this);
         var $user_id = $that.attr('data-user-id');
 
-        $.post(
-            "/user/relation/remove",
-            {
-                _token: $('meta[name="_token"]').attr('content'),
-                user_id: $user_id,
-                type: 1
-            },
-            function(data){
-                if(!data.success) layer.msg(data.msg);
-                else
-                {
-                    var html = '<i class="fa fa-plus"></i> 添加关注';
-                    $that.removeClass('follow-remove-it').addClass('follow-add-it');
-                    $that.find('a').html(html);
-                }
-            },
-            'json'
-        );
+        layer.msg('确认"收藏"？', {
+            time: 0
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.post(
+                    "/user/relation/remove",
+                    {
+                        _token: $('meta[name="_token"]').attr('content'),
+                        user_id: $user_id,
+                        type: 1
+                    },
+                    function(data){
+                        if(!data.success) layer.msg(data.msg);
+                        else
+                        {
+                            var html = '<i class="fa fa-plus"></i> 添加关注';
+                            $that.removeClass('follow-remove-it').addClass('follow-add-it');
+                            $that.find('a').html(html);
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
     });
 
 

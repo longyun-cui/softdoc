@@ -5,9 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 class Pivot_User_Relation extends Model
 {
     //
-    protected $table = "pivot_user_relations";
+    protected $table = "pivot_user_relation";
     protected $fillable = [
-        'sort', 'type', 'relation', 'relation_type', 'user_id', 'relation_user_id'
+        'sort', 'type', 'relation', 'relation_type', 'mine_user_id', 'relation_user_id'
     ];
     protected $dateFormat = 'U';
 
@@ -15,7 +15,7 @@ class Pivot_User_Relation extends Model
     // 用户
     function user()
     {
-        return $this->belongsTo('App\User','user_id','id');
+        return $this->belongsTo('App\User','mine_user_id','id');
     }
 
     // 关联人

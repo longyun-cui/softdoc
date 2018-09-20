@@ -26,32 +26,37 @@ class IndexController extends Controller
     }
 
 
-    // 【待办事】
+    // 【我的待办事】
     public function view_home_todolist()
     {
         return $this->repo->view_home_todolist(request()->all());
     }
-    // 【日程】
+    // 【我的日程】
     public function view_home_schedule()
     {
         return $this->repo->view_home_schedule(request()->all());
     }
-    // 【收藏】
+    // 【收藏的内容】
     public function view_home_collection()
     {
         return $this->repo->view_home_collection(request()->all());
     }
-    // 【点赞】
+    // 【点赞的内容】
     public function view_home_favor()
     {
         return $this->repo->view_home_favor(request()->all());
     }
-    // 【收藏】
+    // 【发现】
     public function view_home_discovery()
     {
         return $this->repo->view_home_discovery(request()->all());
     }
-    // 【点赞】
+    // 【我的关注】
+    public function view_home_follow()
+    {
+        return $this->repo->view_home_follow(request()->all());
+    }
+    // 【我的好友圈】
     public function view_home_circle()
     {
         return $this->repo->view_home_circle(request()->all());

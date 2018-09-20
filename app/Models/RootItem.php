@@ -81,10 +81,16 @@ class RootItem extends Model
 
 
 
-    // 管理员
+    // 用户信息
     function user()
     {
         return $this->belongsTo('App\User','user_id','id');
+    }
+
+    // 用户信息（备用）
+    function user_()
+    {
+        return $this->belongsTo('App\User','user_id_','id');
     }
 
     // 子节点

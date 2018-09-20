@@ -13,13 +13,13 @@
         <div class="side-follow">
             <div class="side-follow-box pull-left">
                 <a href="javascript:void(0);">
-                    <span><b>{{ $item->user->follow_num or 0 }}</b></span>
+                    <span><b>{{ Auth::user()->follow_num }}</b></span>
                     <span class="font-12px">关注</span>
                 </a>
             </div>
             <div class="side-follow-box pull-right">
                 <a href="javascript:void(0);">
-                    <span><b>{{ $item->user->fans_num or 0 }}</b></span>
+                    <span><b>{{ Auth::user()->fans_num }}</b></span>
                     <span class="font-12px">被关注</span>
                 </a>
             </div>
@@ -81,6 +81,13 @@
             <a href="{{url('/home/discovery')}}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-globe"></i> <span> 发现</span>
+                </div>
+            </a>
+        </li>
+        <li class="{{ $root_follow_active or '' }}">
+            <a href="{{url('/home/follow')}}">
+                <div class="box-body main-side-hover">
+                    <i class="fa fa-globe"></i> <span> 关注的</span>
                 </div>
             </a>
         </li>

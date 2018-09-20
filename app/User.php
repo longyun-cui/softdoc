@@ -51,5 +51,26 @@ class User extends Authenticatable
             ->withPivot('type')->withTimestamps();
     }
 
+    public function relation_items()
+    {
+//        return $this->hasManyThrough('App\Post', 'App\User');
+//        return $this->hasManyThrough(
+//        'App\Models\RootItem',
+//        'App\Models\Pivot_User_Relation',
+//        'relation_user_id', // 用户表(中间表)外键...
+//        'user_id', // 文章表(关联表)外键...
+//        'id', // 国家表(主表)本地键...
+//        'user_id' // 用户表(中间表)本地键...
+//        );
+        return $this->hasManyThrough(
+            'App\Models\RootItem',
+            'App\Models\Pivot_User_Relation',
+            'mine_user_id', // 用户表(中间表)外键...
+            'user_id', // 文章表(关联表)外键...
+            'id', // 国家表(主表)本地键...
+            'relation_user_id' // 用户表(中间表)本地键...
+        );
+    }
+
 
 }

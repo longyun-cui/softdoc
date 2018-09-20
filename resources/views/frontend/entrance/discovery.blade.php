@@ -2,7 +2,7 @@
 
 
 {{--html.head--}}
-@section('head_title')发现@endsection
+@section('head_title')发现 - {{ config('website.website_name') }}@endsection
 @section('meta_author')@endsection
 @section('meta_title')@endsection
 @section('meta_description')@endsection

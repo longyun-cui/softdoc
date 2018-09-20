@@ -2,7 +2,7 @@
 
 
 {{--html.head--}}
-@section('head_title')我的待办事 | {{ config('website.website_name') }}@endsection
+@section('head_title')我的待办事 - {{ config('website.website_name') }}@endsection
 @section('meta_author')@endsection
 @section('meta_title')@endsection
 @section('meta_description')@endsection

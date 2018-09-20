@@ -96,10 +96,11 @@ Route::group(['namespace' => 'Front'], function () {
             Route::get('/home/collection', $controller.'@view_home_collection');
             Route::get('/home/favor', $controller.'@view_home_favor');
 
-        });
+            Route::get('/home/discovery', $controller.'@view_home_discovery');
+            Route::get('/home/follow', $controller.'@view_home_follow');
+            Route::get('/home/circle', $controller.'@view_home_circle');
 
-        Route::get('/home/discovery', $controller.'@view_home_discovery');
-        Route::get('/home/circle', $controller.'@view_home_circle');
+        });
 
         Route::get('item/{id?}', $controller.'@view_item');
 

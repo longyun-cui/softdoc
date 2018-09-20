@@ -116,7 +116,7 @@ class IndexRepository {
 
             if($user_id != $me_id)
             {
-                $relation = Pivot_User_Relation::where(['user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                $relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
                 view()->share(['relation'=>$relation]);
             }
         }
@@ -165,11 +165,12 @@ class IndexRepository {
             $me_id = $me->id;
 
             $user_id = $post_data['user_id'];
+            $user = User::find($user_id);
 
             DB::beginTransaction();
             try
             {
-                $me_relation = Pivot_User_Relation::where(['user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                $me_relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
                 if($me_relation)
                 {
                     if($me_relation->relation_type == 71) $me_relation->relation_type = 21;
@@ -179,12 +180,15 @@ class IndexRepository {
                 else
                 {
                     $me_relation = new Pivot_User_Relation;
-                    $me_relation->user_id = $me_id;
+                    $me_relation->mine_user_id = $me_id;
                     $me_relation->relation_user_id = $user_id;
                     $me_relation->relation_type = 41;
                     $me_relation->save();
                 }
-                $it_relation = Pivot_User_Relation::where(['user_id'=>$user_id,'relation_user_id'=>$me_id])->first();
+                $me->timestamps = false;
+                $me->increment('follow_num');
+
+                $it_relation = Pivot_User_Relation::where(['mine_user_id'=>$user_id,'relation_user_id'=>$me_id])->first();
                 if($it_relation)
                 {
                     if($it_relation->relation_type == 41) $it_relation->relation_type = 21;
@@ -194,11 +198,13 @@ class IndexRepository {
                 else
                 {
                     $it_relation = new Pivot_User_Relation;
-                    $it_relation->user_id = $user_id;
+                    $it_relation->mine_user_id = $user_id;
                     $it_relation->relation_user_id = $me_id;
                     $it_relation->relation_type = 71;
                     $it_relation->save();
                 }
+                $user->timestamps = false;
+                $user->increment('fans_num');
 
                 DB::commit();
                 return response_success([]);
@@ -237,11 +243,12 @@ class IndexRepository {
             $me_id = $me->id;
 
             $user_id = $post_data['user_id'];
+            $user = User::find($user_id);
 
             DB::beginTransaction();
             try
             {
-                $me_relation = Pivot_User_Relation::where(['user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                $me_relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
                 if($me_relation)
                 {
                     if($me_relation->relation_type == 21) $me_relation->relation_type = 71;
@@ -249,8 +256,10 @@ class IndexRepository {
                     else $me_relation->relation_type = 91;
                     $me_relation->save();
                 }
+                $me->timestamps = false;
+                $me->decrement('follow_num');
 
-                $it_relation = Pivot_User_Relation::where(['user_id'=>$user_id,'relation_user_id'=>$me_id])->first();
+                $it_relation = Pivot_User_Relation::where(['mine_user_id'=>$user_id,'relation_user_id'=>$me_id])->first();
                 if($it_relation)
                 {
                     if($it_relation->relation_type == 21) $it_relation->relation_type = 41;
@@ -258,6 +267,8 @@ class IndexRepository {
                     else $it_relation->relation_type = 92;
                     $it_relation->save();
                 }
+                $user->timestamps = false;
+                $user->decrement('fans_num');
 
                 DB::commit();
                 return response_success([]);
@@ -427,20 +438,66 @@ class IndexRepository {
     }
 
     // 【好友圈】
+    public function view_home_follow($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+        }
+        else $user_id = 0;
+//
+//        $items = RootItem::with([
+//            'user',
+//            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+//        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
+
+        $user = User::with([
+            'relation_items'=>function($query) use($user_id) {$query->with([
+                'user',
+                'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+            ])->where('pivot_user_relation.relation_type','<=', 50)->where('root_items.is_shared','>=', 41); }
+        ])->find($user_id);
+
+        $items = $user->relation_items;
+        $items = $items->sortByDesc('id');
+//        dd($items->toArray());
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
+        return view('frontend.entrance.follow')->with(['items'=>$items,'root_follow_active'=>'active']);
+    }
+
+    // 【好友圈】
     public function view_home_circle($post_data)
     {
         if(Auth::check())
         {
             $user = Auth::user();
             $user_id = $user->id;
-
-            // Method 1
-            $query = User::with([
-                'pivot_item'=>function($query) { $query->with(['user'])->wherePivot('type',9)->orderby('pivot_user_item.id','desc'); }
-            ])->find($user_id);
-            $items = $query->pivot_item;
         }
-        else $items = [];
+        else $user_id = 0;
+//
+//        $items = RootItem::with([
+//            'user',
+//            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+//        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
+
+        $user = User::with([
+            'relation_items'=>function($query) use($user_id) { $query->with([
+                'user_',
+                'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+            ])->where('pivot_user_relation.relation_type',21)->where('root_items.is_shared','>=', 41); }
+        ])->find($user_id);
+
+        $items = $user->relation_items;
+        $items = $items->sortByDesc('id');
+//        dd($items->toArray());
 
         foreach ($items as $item)
         {
