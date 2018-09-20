@@ -21,7 +21,7 @@
 
 {{--header--}}
 @section('component-header')
-    @include('frontend.'.env('TEMPLATE').'.component.header')
+    @include('frontend.'.env('TEMPLATE').'.component.header-user')
 @endsection
 
 
@@ -37,7 +37,7 @@
 @endsection
 {{--custom-content-side--}}
 @section('custom-body-side')
-    @include('frontend.'.env('TEMPLATE').'.module.body-side.side-root')
+    @include('frontend.'.env('TEMPLATE').'.module.body-side.side-user')
 @endsection
 
 

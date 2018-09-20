@@ -14,7 +14,7 @@
 <div class="row">
     <div class="col-md-12">
         <!-- BEGIN PORTLET-->
-        <div class="box box-info">
+        <div class="box box-info form-container">
 
             <div class="box-header with-border" style="margin:8px 0;">
                 <h3 class="box-title">编辑个人信息</h3>
@@ -30,36 +30,58 @@
                 <div class="form-group">
                     <label class="control-label col-md-2">用户名</label>
                     <div class="col-md-8 ">
-                        <div><input type="text" class="form-control" name="name" placeholder="请输入用户名" value="{{$info->name}}"></div>
+                        <div><input type="text" class="form-control" name="name" placeholder="请输入用户名" value="{{ $info->name or '' }}"></div>
                     </div>
                 </div>
                 {{--名称--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">昵称</label>
                     <div class="col-md-8 ">
-                        <div><input type="text" class="form-control" name="nickname" placeholder="请输入昵称" value="{{$info->nickname or ''}}"></div>
+                        <div><input type="text" class="form-control" name="nickname" placeholder="请输入昵称" value="{{ $info->nickname or '' }}"></div>
                     </div>
                 </div>
                 {{--标语 slogan--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">真实姓名</label>
                     <div class="col-md-8 ">
-                        <div><input type="text" class="form-control" name="truename" placeholder="真实姓名" value="{{$info->truename or ''}}"></div>
+                        <div><input type="text" class="form-control" name="truename" placeholder="真实姓名" value="{{ $info->truename or '' }}"></div>
                     </div>
                 </div>
                 {{--描述--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2">描述</label>
+                    <label class="control-label col-md-2">个人签名</label>
                     <div class="col-md-8 ">
-                        <div><input type="text" class="form-control" name="description" placeholder="一句话描述" value="{{$info->description or ''}}"></div>
+                        <div><input type="text" class="form-control" name="description" placeholder="个人签名" value="{{ $info->description or '' }}"></div>
                         {{--<div><textarea name="description" id="" cols="100%" rows="3">{{$info->description or ''}}</textarea></div>--}}
                     </div>
                 </div>
-                {{--portrait--}}
+
+                {{--头像--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2">portrait</label>
-                    <div class="col-md-8 ">
-                        <div><input type="file" name="portrait" placeholder="请上传头像" value="{{$info->portrait or ''}}"></div>
+                    <label class="control-label col-md-2">头像</label>
+                    <div class="col-md-8 fileinput-group">
+
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div class="fileinput-new thumbnail">
+                                @if(!empty($info->portrait_img))
+                                    <img src="{{ url(env('DOMAIN_CDN').'/'.$info->portrait_img) }}" alt="" />
+                                @endif
+                            </div>
+                            <div class="fileinput-preview fileinput-exists thumbnail">
+                            </div>
+                            <div class="btn-tool-group">
+                                <span class="btn-file">
+                                    <button class="btn btn-sm btn-primary fileinput-new">选择图片</button>
+                                    <button class="btn btn-sm btn-warning fileinput-exists">更改</button>
+                                    <input type="file" name="portrait" />
+                                </span>
+                                <span class="">
+                                    <button class="btn btn-sm btn-danger fileinput-exists" data-dismiss="fileinput">移除</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div id="titleImageError" style="color: #a94442"></div>
+
                     </div>
                 </div>
 

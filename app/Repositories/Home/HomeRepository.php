@@ -33,34 +33,31 @@ class HomeRepository {
     public function info_save($post_data)
     {
         $user = Auth::user();
+        $mine = Auth::user();
 
+        // 封面图片
         if(!empty($post_data["portrait"]))
         {
-            $upload = new CommonRepository();
-            $result = $upload->upload($post_data["portrait"], 'user'. $user->id . '-common', 'portrait');
-            if($result["status"]) $post_data["portrait_img"] = $result["data"];
-            else return response_fail();
+            // 删除原封面图片
+            $mine_cover_pic = $mine->portrait_img;
+            if(!empty($mine_cover_pic) && file_exists(storage_path("resource/user{$user->id}/" . $mine_cover_pic)))
+            {
+                unlink(storage_path("resource/" . $mine_cover_pic));
+            }
+
+            $result = upload_storage($post_data["portrait"]);
+            if($result["result"])
+            {
+                $mine->portrait_img = $result["local"];
+                $mine->save();
+            }
+            else throw new Exception("upload-portrait-fail");
         }
         else unset($post_data["portrait"]);
-
-//        // 目标URL
-//        $url = 'http://tinyline.cn/org/'.$admin->website_name;
-//        // 保存位置
-//        $qrcode_path = 'resource/org/'.$admin->id.'/unique/common';
-//        if(!file_exists(storage_path($qrcode_path)))
-//            mkdir(storage_path($qrcode_path), 0777, true);
-//        // qrcode图片文件
-//        $qrcode = $qrcode_path.'/qrcode.png';
-//        QrCode::errorCorrection('H')->format('png')->size(320)->margin(0)->encoding('UTF-8')->generate($url,storage_path($qrcode));
 
         $bool = $user->fill($post_data)->save();
         if($bool)
         {
-//            $name = $qrcode_path.'/qrcode_img.png';
-//            $common = new CommonRepository();
-//            $logo = 'resource/'.$org->logo;
-//            $common->create_root_qrcode($name, $org->name, $qrcode, $logo);
-
             return response_success();
         }
         else return response_fail();

@@ -47,35 +47,35 @@
                                 <button type="button" class="btn radio">
                                     <label>
                                         <input type="radio" name="category-" value="{{ $data->category or 0 }}" checked="checked">
-                                        @if($data->category == 1) 一般文本
-                                        @elseif($data->category == 7) 辩题
-                                        @elseif($data->category == 11) 目录类型
-                                        @elseif($data->category == 18) 时间线
+                                        @if($data->category == 1) 图文类型
+                                        @elseif($data->category == 7) 辩题类型
+                                        @elseif($data->category == 11) 书目类型
+                                        @elseif($data->category == 18) 时间线类型
                                         @endif
                                     </label>
                                 </button>
                             @elseif($operate == 'create')
                                 <button type="button" class="btn radio">
                                     <label>
-                                        <input type="radio" name="category" value="1" checked="checked"> 一般文本
+                                        <input type="radio" name="category" value="1" checked="checked"> 图文类型
                                     </label>
                                 </button>
 
                                 <button type="button" class="btn radio">
                                     <label>
-                                        <input type="radio" name="category" value="7"> 辩题
+                                        <input type="radio" name="category" value="7"> 辩题类型
                                     </label>
                                 </button>
 
                                 <button type="button" class="btn radio">
                                     <label>
-                                        <input type="radio" name="category" value="11"> 目录类型
+                                        <input type="radio" name="category" value="11"> 书目类型
                                     </label>
                                 </button>
 
                                 <button type="button" class="btn radio">
                                     <label>
-                                        <input type="radio" name="category" value="18"> 时间线
+                                        <input type="radio" name="category" value="18"> 时间线类型
                                     </label>
                                 </button>
                             @endif

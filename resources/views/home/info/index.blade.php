@@ -62,7 +62,7 @@
                 </div>
                 {{--描述--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2">个人描述：</label>
+                    <label class="control-label col-md-2">个人签名：</label>
                     <div class="col-md-8 ">
                         <div><label class="">{{$info->description or ''}}</label></div>
                     </div>
@@ -71,14 +71,14 @@
                 <div class="form-group">
                     <label class="control-label col-md-2">头像：</label>
                     <div class="col-md-8 ">
-                        <div style="width:100px;height:100px;"><img src="{{ config('common.host.'.env('APP_ENV').'.cdn').'/'.$info->portrait_img }}" alt=""></div>
+                        <div style="width:100px;height:100px;"><img src="{{ url(env('DOMAIN_CDN').'/'.$info->portrait_img) }}" alt=""></div>
                     </div>
                 </div>
                 {{--qrcode--}}
                 <div class="form-group" style="display:none;">
                     <label class="control-label col-md-2">二维码：</label>
                     <div class="col-md-8 ">
-                        <a class="btn btn-success _left" target="_blank" href="/admin/download_root_qrcode">下载首页二维码</a>
+                        <a class="btn btn-success _left" target="_blank" href="/admin/download/qrcode">下载首页二维码</a>
                     </div>
                 </div>
             </div>
