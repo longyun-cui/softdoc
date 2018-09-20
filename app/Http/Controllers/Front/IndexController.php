@@ -77,6 +77,20 @@ class IndexController extends Controller
 
 
 
+    // 【添加关注】
+    public function user_relation_add()
+    {
+        return $this->repo->user_relation_add(request()->all());
+    }
+    // 【取消关注】
+    public function user_relation_remove()
+    {
+        return $this->repo->user_relation_remove(request()->all());
+    }
+
+
+
+
     // 【ajax】【获取日程】
     public function ajax_get_schedule()
     {

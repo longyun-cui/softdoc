@@ -6,8 +6,8 @@ use App\Models\RootItem;
 use App\Models\Content;
 use App\Models\Communication;
 use App\Models\Notification;
-use App\Models\Pivot_User_Collection;
 use App\Models\Pivot_User_Item;
+use App\Models\Pivot_User_Relation;
 
 use App\Repositories\Common\CommonRepository;
 
@@ -113,6 +113,12 @@ class IndexRepository {
                 'user',
                 'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
             ])->where('user_id',$user_id)->where('is_shared','>=',99)->orderBy('id','desc')->get();
+
+            if($user_id != $me_id)
+            {
+                $relation = Pivot_User_Relation::where(['user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                view()->share(['relation'=>$relation]);
+            }
         }
         else
         {
@@ -131,6 +137,141 @@ class IndexRepository {
 
         return view('frontend.entrance.user')
             ->with(['item_magnitude'=>'item-plural','getType'=>'items','data'=>$user,'items'=>$items]);
+    }
+
+
+
+
+    // 【添加关注】
+    public function user_relation_add($post_data)
+    {
+        $messages = [
+            'user_id.required' => '参数有误',
+            'user_id.numeric' => '参数有误',
+            'user_id.exists' => '参数有误',
+        ];
+        $v = Validator::make($post_data, [
+            'user_id' => 'required|numeric|exists:root_users,id'
+        ], $messages);
+        if ($v->fails())
+        {
+            $errors = $v->errors();
+            return response_error([],$errors->first());
+        }
+
+        if(Auth::check())
+        {
+            $me = Auth::user();
+            $me_id = $me->id;
+
+            $user_id = $post_data['user_id'];
+
+            DB::beginTransaction();
+            try
+            {
+                $me_relation = Pivot_User_Relation::where(['user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                if($me_relation)
+                {
+                    if($me_relation->relation_type == 71) $me_relation->relation_type = 21;
+                    else $me_relation->relation_type = 41;
+                    $me_relation->save();
+                }
+                else
+                {
+                    $me_relation = new Pivot_User_Relation;
+                    $me_relation->user_id = $me_id;
+                    $me_relation->relation_user_id = $user_id;
+                    $me_relation->relation_type = 41;
+                    $me_relation->save();
+                }
+                $it_relation = Pivot_User_Relation::where(['user_id'=>$user_id,'relation_user_id'=>$me_id])->first();
+                if($it_relation)
+                {
+                    if($it_relation->relation_type == 41) $it_relation->relation_type = 21;
+                    else $it_relation->relation_type = 71;
+                    $it_relation->save();
+                }
+                else
+                {
+                    $it_relation = new Pivot_User_Relation;
+                    $it_relation->user_id = $user_id;
+                    $it_relation->relation_user_id = $me_id;
+                    $it_relation->relation_type = 71;
+                    $it_relation->save();
+                }
+
+                DB::commit();
+                return response_success([]);
+            }
+            catch (Exception $e)
+            {
+                DB::rollback();
+                $msg = '添加关注失败，请重试！';
+//                $msg = $e->getMessage();
+//                exit($e->getMessage());、
+                return response_fail([], $msg);
+            }
+        }
+        else return response_error([],"请先登录！");
+    }
+    // 【取消关注】
+    public function user_relation_remove($post_data)
+    {
+        $messages = [
+            'user_id.required' => '参数有误',
+            'user_id.numeric' => '参数有误',
+            'user_id.exists' => '参数有误',
+        ];
+        $v = Validator::make($post_data, [
+            'user_id' => 'required|numeric|exists:root_users,id'
+        ], $messages);
+        if ($v->fails())
+        {
+            $errors = $v->errors();
+            return response_error([],$errors->first());
+        }
+
+        if(Auth::check())
+        {
+            $me = Auth::user();
+            $me_id = $me->id;
+
+            $user_id = $post_data['user_id'];
+
+            DB::beginTransaction();
+            try
+            {
+                $me_relation = Pivot_User_Relation::where(['user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                if($me_relation)
+                {
+                    if($me_relation->relation_type == 21) $me_relation->relation_type = 71;
+                    else if($me_relation->relation_type == 41) $me_relation->relation_type = 91;
+                    else $me_relation->relation_type = 91;
+                    $me_relation->save();
+                }
+
+                $it_relation = Pivot_User_Relation::where(['user_id'=>$user_id,'relation_user_id'=>$me_id])->first();
+                if($it_relation)
+                {
+                    if($it_relation->relation_type == 21) $it_relation->relation_type = 41;
+                    else if($it_relation->relation_type == 71) $it_relation->relation_type = 92;
+                    else $it_relation->relation_type = 92;
+                    $it_relation->save();
+                }
+
+                DB::commit();
+                return response_success([]);
+            }
+            catch (Exception $e)
+            {
+                DB::rollback();
+                $msg = '取消关注失败，请重试！';
+//                $msg = $e->getMessage();
+//                exit($e->getMessage());、
+                return response_fail([], $msg);
+            }
+        }
+        else return response_error([],"请先登录！");
     }
 
 

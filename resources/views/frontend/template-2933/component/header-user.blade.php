@@ -12,20 +12,27 @@
         <nav role="navigation" class="probootstrap-nav hidden-xs hidden-sm">
             <ul class="probootstrap-main-nav">
 
-                @if(Auth::check())
-                    <li class="visible-xs visible-sm"><a href="{{ url('/home/todolist') }}"><i class="fa fa-check-square-o"></i> 我的待办事</a></li>
-                    <li class="visible-xs visible-sm"><a href="{{ url('/home/schedule') }}"><i class="fa fa-calendar-plus-o"></i> 我的日程</a></li>
-                    <li class="visible-xs visible-sm"><a href="{{ url('/home/collection') }}"><i class="fa fa-star-o"></i> 我的收藏</a></li>
-                    <li class="visible-xs visible-sm"><a href="{{ url('/home/favor') }}"><i class="fa fa-thumbs-o-up"></i> 我的点赞</a></li>
-                @endif
-
                 <li class="mb10"> &nbsp; </li>
 
-                <li class=""><a href="javascript:void(0);">关注 Ta</a></li>
-
                 @if(Auth::check())
-                    <li class=""><a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> 退出</a></li>
+                    @if(Auth::user()->id != $data->id)
+                        @if(!empty($relation) && ($relation->relation_type==21 || $relation->relation_type==41) )
+                            <li class="follow-remove-it" data-user-id="{{ $data->id or 0 }}">
+                                <a href="javascript:void(0);"><i class="fa fa-minus"></i> 取消关注</a>
+                            </li>
+                        @else
+                            <li class="follow-add-it" data-user-id="{{ $data->id or 0 }}">
+                                <a href="javascript:void(0);"><i class="fa fa-plus"></i> 添加关注</a>
+                            </li>
+                        @endif
+                    @endif
+                @else
+                    <li class="follow-add-it" data-user-id="{{ $data->id or 0 }}">
+                        <a href="javascript:void(0);"><i class="fa fa-plus"></i> 添加关注</a>
+                    </li>
                 @endif
+
+                <li class=""><a href="{{ url('/') }}"><i class="fa fa-home"></i> 返回首页</a></li>
 
                 <li class="header-wechat hidden-xs hidden-sm" role="button">
                     <a href="javascript:void(0);"><i class="fa fa-weixin"></i> 微信公众号</a>

@@ -138,6 +138,9 @@ Route::group(['namespace' => 'Front'], function () {
         Route::post('item/comment/favor/save', $controller.'@item_comment_favor_save');
         Route::post('item/comment/favor/cancel', $controller.'@item_comment_favor_cancel');
 
+        Route::post('user/relation/add', $controller.'@user_relation_add');
+        Route::post('user/relation/remove', $controller.'@user_relation_remove');
+
     });
 
     Route::post('item/comment/get', $controller.'@item_comment_get');
