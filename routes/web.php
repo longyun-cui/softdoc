@@ -100,11 +100,17 @@ Route::group(['namespace' => 'Front'], function () {
             Route::get('/home/follow', $controller.'@view_home_follow');
             Route::get('/home/circle', $controller.'@view_home_circle');
 
+
+            Route::get('/home/relation/follow', $controller.'@view_relation_follow');
+            Route::get('/home/relation/fans', $controller.'@view_relation_fans');
+
         });
 
         Route::get('item/{id?}', $controller.'@view_item');
 
         Route::get('user/{id?}', $controller.'@view_user');
+        Route::get('user/{id?}/follow', $controller.'@view_user_follow');
+        Route::get('user/{id?}/fans', $controller.'@view_user_fans');
 
     });
 

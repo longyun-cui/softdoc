@@ -12,15 +12,15 @@
         </div>
         <div class="side-follow">
             <div class="side-follow-box pull-left">
-                <a href="javascript:void(0);">
+                <a href="{{ url('/home/relation/follow') }}">
                     <span><b>{{ Auth::user()->follow_num }}</b></span>
                     <span class="font-12px">关注</span>
                 </a>
             </div>
             <div class="side-follow-box pull-right">
-                <a href="javascript:void(0);">
+                <a href="{{ url('/home/relation/fans') }}">
                     <span><b>{{ Auth::user()->fans_num }}</b></span>
-                    <span class="font-12px">被关注</span>
+                    <span class="font-12px">粉丝</span>
                 </a>
             </div>
         </div>

@@ -10,6 +10,11 @@ jQuery( function ($) {
     });
 
 
+    // 默认隐藏事件
+    $(document).on('click', function(){
+        $('.tool-menu-list').hide();
+    });
+
 
 
     $('.section-header').on('click', '.header-show-side', function (o) {
@@ -22,6 +27,7 @@ jQuery( function ($) {
     });
 
 
+    // user.page 用户页面 添加关注
     $('.section-header').on('click', '.follow-add-it', function () {
         var $that = $(this);
         var $user_id = $that.attr('data-user-id');
@@ -46,11 +52,12 @@ jQuery( function ($) {
         );
     });
 
+    // user.page 用户页面 取消关注
     $('.section-header').on('click', '.follow-remove-it', function () {
         var $that = $(this);
         var $user_id = $that.attr('data-user-id');
 
-        layer.msg('确认"收藏"？', {
+        layer.msg('确认"取消"？', {
             time: 0
             ,btn: ['确定', '取消']
             ,yes: function(index){
@@ -68,6 +75,88 @@ jQuery( function ($) {
                             var html = '<i class="fa fa-plus"></i> 添加关注';
                             $that.removeClass('follow-remove-it').addClass('follow-add-it');
                             $that.find('a').html(html);
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
+    });
+
+    // 显示用户操作
+    $('.user-option').on('click', '.tool-set', function (e) {
+        e.stopPropagation();
+        $('.tool-menu-list').hide();
+        var $that = $(this);
+        var $user_option = $that.parents('.user-option');
+        $user_option.find('.tool-menu-list').show();
+    });
+
+    // user.option 添加关注
+    $('.user-option').on('click', '.follow-add-it', function (e) {
+
+        e.stopPropagation();
+
+        var $that = $(this);
+        var $user_option = $that.parents('.user-option');
+        var $user_id = $user_option.attr('data-user');
+        var $relation_type = $user_option.data('type');
+
+        $.post(
+            "/user/relation/add",
+            {
+                _token: $('meta[name="_token"]').attr('content'),
+                user_id: $user_id,
+                type: 1
+            },
+            function(data){
+                if(!data.success) layer.msg(data.msg);
+                else
+                {
+                    var html = '';
+                    console.log(data.data.relation_type);
+                    if(data.data.relation_type == 21) html = '<i class="fa fa-exchange"></i> 相互关注';
+                    else if(data.data.relation_type == 41) html = '<i class="fa fa-check"></i> 已关注';
+                    else html = '';
+                    $user_option.find('.tool-inn.tool-info').removeClass('follow-add-it').html(html);
+
+                    var li_html = '<li class="follow-remove-it">取消关注</li>';
+                    $user_option.find('.tool-menu-list ul').prepend(li_html);
+                }
+            },
+            'json'
+        );
+    });
+
+    // user.option 取消关注
+    $('.user-option').on('click', '.follow-remove-it', function (e) {
+
+        e.stopPropagation();
+
+        var $that = $(this);
+        var $user_option = $that.parents('.user-option');
+        var $user_id = $user_option.attr('data-user');
+        var $relation_type = $user_option.data('type');
+
+        layer.msg('确认"取消"？', {
+            time: 0
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.post(
+                    "/user/relation/remove",
+                    {
+                        _token: $('meta[name="_token"]').attr('content'),
+                        user_id: $user_id,
+                        type: 1
+                    },
+                    function(data){
+                        if(!data.success) layer.msg(data.msg);
+                        else
+                        {
+                            layer.closeAll();
+                            var html = '<i class="fa fa-plus text-yellow"></i> 关注';
+                            $user_option.find('.tool-inn.tool-info').addClass('follow-add-it').html(html);
+                            $that.remove();
                         }
                     },
                     'json'

@@ -17,6 +17,7 @@
                 @else
                     <span class="add-this-favor" title="点赞"><i class="fa fa-thumbs-o-up"></i>(<num>{{ $item->favor_num }}</num>)</span>
                 @endif
+             </a>
         </div>
 
         @if($item->category == 7)

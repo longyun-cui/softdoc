@@ -135,8 +135,94 @@ class IndexRepository {
         }
 //        dd($lines->toArray());
 
-        return view('frontend.entrance.user')
-            ->with(['item_magnitude'=>'item-plural','getType'=>'items','data'=>$user,'items'=>$items]);
+        return view('frontend.entrance.user')->with(['data'=>$user,'items'=>$items]);
+    }
+
+    // 【Ta关注的人】
+    public function view_user_follow($post_data,$id=0)
+    {
+        $Ta = User::withCount('items')->find($id);
+        if(!$Ta) return view('frontend.errors.404');
+
+        $pivot_users = Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$id])->whereIn('relation_type',[21,41])
+            ->orderBy('id','desc')->get();
+
+        if(Auth::check())
+        {
+            $me = Auth::user();
+            $me_id = $me->id;
+
+            if($id != $me_id)
+            {
+                $relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$id])->first();
+                view()->share(['relation'=>$relation]);
+            }
+
+            $me_users = Pivot_User_Relation::where(['mine_user_id'=>$me_id])->get();
+
+            foreach ($pivot_users as $num => $user)
+            {
+                $relationship = $me_users->where('relation_user_id', $user->relation_user_id);
+                if(count($relationship) > 0)
+                {
+                    $user->relation_with_me = $relationship->first()->relation_type;
+//                    if($user->relation_user_id == $me_id) unset($pivot_users[$num]);
+                }
+                else $user->relation_with_me = 0;
+            }
+        }
+        else
+        {
+            foreach ($pivot_users as $user)
+            {
+                $user->relation_with_me = 0;
+            }
+        }
+
+        return view('frontend.entrance.user-follow')->with(['data'=>$Ta,'users'=>$pivot_users]);
+    }
+    // 【关注Ta的人】
+    public function view_user_fans($post_data,$id=0)
+    {
+        $Ta = User::withCount('items')->find($id);
+        if(!$Ta) return view('frontend.errors.404');
+
+        $pivot_users = Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$id])->whereIn('relation_type',[21,71])
+            ->orderBy('id','desc')->get();
+
+        if(Auth::check())
+        {
+            $me = Auth::user();
+            $me_id = $me->id;
+
+            if($id != $me_id)
+            {
+                $relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$id])->first();
+                view()->share(['relation'=>$relation]);
+            }
+
+            $me_users = Pivot_User_Relation::where(['mine_user_id'=>$me_id])->get();
+
+            foreach ($pivot_users as $num => $user)
+            {
+                $relationship = $me_users->where('relation_user_id', $user->relation_user_id);
+                if(count($relationship) > 0)
+                {
+                    $user->relation_with_me = $relationship->first()->relation_type;
+//                    if($user->relation_user_id == $me_id) unset($pivot_users[$num]);
+                }
+                else $user->relation_with_me = 0;
+            }
+        }
+        else
+        {
+            foreach ($pivot_users as $user)
+            {
+                $user->relation_with_me = 0;
+            }
+        }
+
+        return view('frontend.entrance.user-fans')->with(['data'=>$Ta,'users'=>$pivot_users]);
     }
 
 
@@ -207,7 +293,7 @@ class IndexRepository {
                 $user->increment('fans_num');
 
                 DB::commit();
-                return response_success([]);
+                return response_success(['relation_type'=>$me_relation->relation_type]);
             }
             catch (Exception $e)
             {
@@ -271,7 +357,7 @@ class IndexRepository {
                 $user->decrement('fans_num');
 
                 DB::commit();
-                return response_success([]);
+                return response_success(['relation_type'=>$me_relation->relation_type]);
             }
             catch (Exception $e)
             {
@@ -283,6 +369,47 @@ class IndexRepository {
             }
         }
         else return response_error([],"请先登录！");
+    }
+
+
+
+
+    // 【我关注的人】
+    public function view_relation_follow($post_data)
+    {
+        if(Auth::check())
+        {
+            $me = Auth::user();
+            $me_id = $me->id;
+
+            $users = Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$me_id])->whereIn('relation_type',[21,41])->get();
+            foreach ($users as $user)
+            {
+                $user->relation_with_me = $user->relation_type;
+            }
+//            dd($users->toArray());
+        }
+        else return response_error([],"请先登录！");
+
+        return view('frontend.entrance.relation-follow')->with(['users'=>$users]);
+    }
+    // 【关注我的人】
+    public function view_relation_fans($post_data)
+    {
+        if(Auth::check())
+        {
+            $me = Auth::user();
+            $me_id = $me->id;
+
+            $users = Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$me_id])->whereIn('relation_type',[21,71])->get();
+            foreach ($users as $user)
+            {
+                $user->relation_with_me = $user->relation_type;
+            }
+        }
+        else return response_error([],"请先登录！");
+
+        return view('frontend.entrance.relation-fans')->with(['users'=>$users]);
     }
 
 
@@ -320,7 +447,7 @@ class IndexRepository {
             $item->img_tags = get_html_img($item->content);
         }
 
-        return view('frontend.entrance.todolist')->with(['items'=>$items,'root_todolist_active'=>'active']);
+        return view('frontend.entrance.root-todolist')->with(['items'=>$items,'root_todolist_active'=>'active']);
     }
 
     // 【日程】
@@ -351,7 +478,7 @@ class IndexRepository {
             $item->img_tags = get_html_img($item->content);
         }
 
-        return view('frontend.entrance.schedule')->with(['items'=>$items,'root_schedule_active'=>'active']);
+        return view('frontend.entrance.root-schedule')->with(['items'=>$items,'root_schedule_active'=>'active']);
     }
 
     // 【收藏内容】
@@ -380,7 +507,7 @@ class IndexRepository {
             $item->img_tags = get_html_img($item->content);
         }
 
-        return view('frontend.entrance.collection')->with(['items'=>$items,'root_collection_active'=>'active']);
+        return view('frontend.entrance.root-collection')->with(['items'=>$items,'root_collection_active'=>'active']);
     }
 
     // 【点赞内容】
@@ -409,7 +536,7 @@ class IndexRepository {
             $item->img_tags = get_html_img($item->content);
         }
 
-        return view('frontend.entrance.favor')->with(['items'=>$items,'root_favor_active'=>'active']);
+        return view('frontend.entrance.root-favor')->with(['items'=>$items,'root_favor_active'=>'active']);
     }
 
     // 【发现】
@@ -434,7 +561,7 @@ class IndexRepository {
             $item->img_tags = get_html_img($item->content);
         }
 
-        return view('frontend.entrance.discovery')->with(['items'=>$items,'root_discovery_active'=>'active']);
+        return view('frontend.entrance.root-discovery')->with(['items'=>$items,'root_discovery_active'=>'active']);
     }
 
     // 【好友圈】
@@ -470,7 +597,7 @@ class IndexRepository {
             $item->img_tags = get_html_img($item->content);
         }
 
-        return view('frontend.entrance.follow')->with(['items'=>$items,'root_follow_active'=>'active']);
+        return view('frontend.entrance.root-follow')->with(['items'=>$items,'root_follow_active'=>'active']);
     }
 
     // 【好友圈】
@@ -506,7 +633,7 @@ class IndexRepository {
             $item->img_tags = get_html_img($item->content);
         }
 
-        return view('frontend.entrance.circle')->with(['items'=>$items,'root_circle_active'=>'active']);
+        return view('frontend.entrance.root-circle')->with(['items'=>$items,'root_circle_active'=>'active']);
     }
 
 

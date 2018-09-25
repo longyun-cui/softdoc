@@ -78,6 +78,14 @@ class IndexController extends Controller
     {
         return $this->repo->view_user(request()->all(),$id);
     }
+    public function view_user_follow($id=0)
+    {
+        return $this->repo->view_user_follow(request()->all(),$id);
+    }
+    public function view_user_fans($id=0)
+    {
+        return $this->repo->view_user_fans(request()->all(),$id);
+    }
 
 
 
@@ -91,6 +99,20 @@ class IndexController extends Controller
     public function user_relation_remove()
     {
         return $this->repo->user_relation_remove(request()->all());
+    }
+
+
+
+
+    // 【添加关注】
+    public function view_relation_follow()
+    {
+        return $this->repo->view_relation_follow(request()->all());
+    }
+    // 【取消关注】
+    public function view_relation_fans()
+    {
+        return $this->repo->view_relation_fans(request()->all());
     }
 
 
