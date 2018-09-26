@@ -46,8 +46,10 @@ class IndexRepository {
 
         $items = RootItem::with([
             'user',
+            'forward_item'=>function($query) { $query->with('user'); },
             'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
         ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
+//        dd($items->toArray());
 
         foreach ($items as $item)
         {
@@ -111,6 +113,7 @@ class IndexRepository {
             $me_id = $me->id;
             $items = RootItem::with([
                 'user',
+                'forward_item'=>function($query) { $query->with('user'); },
                 'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
             ])->where('user_id',$user_id)->where('is_shared','>=',99)->orderBy('id','desc')->get();
 
@@ -123,7 +126,8 @@ class IndexRepository {
         else
         {
             $items = RootItem::with([
-                'user'
+                'user',
+                'forward_item'=>function($query) { $query->with('user'); }
             ])->where('user_id',$user_id)->where('is_shared','>=',99)->orderBy('id','desc')->get();
         }
 
@@ -427,6 +431,7 @@ class IndexRepository {
             $query = User::with([
                 'pivot_item'=>function($query) use($user_id) { $query->with([
                     'user',
+                    'forward_item'=>function($query) { $query->with('user'); },
                     'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
                 ])->wherePivot('type',11)->orderby('pivot_user_item.id','desc'); }
             ])->find($user_id);
@@ -522,6 +527,7 @@ class IndexRepository {
             $query = User::with([
                 'pivot_item'=>function($query) use($user_id) { $query->with([
                     'user',
+                    'forward_item'=>function($query) { $query->with('user'); },
                     'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
                 ])->wherePivot('type',9)->orderby('pivot_user_item.id','desc'); }
             ])->find($user_id);
@@ -551,6 +557,7 @@ class IndexRepository {
 
         $items = RootItem::with([
             'user',
+            'forward_item'=>function($query) { $query->with('user'); },
             'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
         ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
 
@@ -582,6 +589,7 @@ class IndexRepository {
         $user = User::with([
             'relation_items'=>function($query) use($user_id) {$query->with([
                 'user',
+                'forward_item'=>function($query) { $query->with('user'); },
                 'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
             ])->where('pivot_user_relation.relation_type','<=', 50)->where('root_items.is_shared','>=', 41); }
         ])->find($user_id);
@@ -617,7 +625,8 @@ class IndexRepository {
 
         $user = User::with([
             'relation_items'=>function($query) use($user_id) { $query->with([
-                'user_',
+                'user',
+                'forward_item'=>function($query) { $query->with('user'); },
                 'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
             ])->where('pivot_user_relation.relation_type',21)->where('root_items.is_shared','>=', 41); }
         ])->find($user_id);
@@ -920,6 +929,74 @@ class IndexRepository {
                     else if($type == 12) $msg = '移除日程成功';
                     else $msg = '';
                     return response_fail(['reason'=>'exist'],$msg);
+                }
+            }
+            else return response_fail([],'内容不存在！');
+        }
+        else return response_error([],'请先登录！');
+
+    }
+    // 【转发】
+    public function item_forward($post_data)
+    {
+        if(Auth::check())
+        {
+            $messages = [
+                'type.required' => '参数有误',
+                'item_id.required' => '参数有误'
+            ];
+            $v = Validator::make($post_data, [
+                'type' => 'required',
+                'item_id' => 'required'
+            ], $messages);
+            if ($v->fails())
+            {
+                $errors = $v->errors();
+                return response_error([],$errors->first());
+            }
+
+            $item_id = $post_data['item_id'];
+            $item = RootItem::find($item_id);
+            if($item)
+            {
+                $me = Auth::user();
+                $me_id = $me->id;
+
+                DB::beginTransaction();
+                try
+                {
+                    $mine = new RootItem;
+                    $post_data['user_id'] = $me_id;
+                    $post_data['category'] = 99;
+                    $post_data['is_shared'] = 100;
+                    $bool = $mine->fill($post_data)->save();
+                    if($bool)
+                    {
+                        $item->timestamps = false;
+                        $item->increment('share_num');
+                    }
+                    else throw new Exception("insert--item--fail");
+
+//                        $insert['type'] = 4;
+//                        $insert['user_id'] = $user->id;
+//                        $insert['item_id'] = $item_id;
+//
+//                        $communication = new Communication;
+//                        $bool = $communication->fill($insert)->save();
+//                        if(!$bool) throw new Exception("insert--communication--fail");
+//
+//                        $html['html'] = $this->view_item_html($item_id);
+
+                    DB::commit();
+                    return response_success([]);
+                }
+                catch (Exception $e)
+                {
+                    DB::rollback();
+                    $msg = '操作失败，请重试！';
+//                        $msg = $e->getMessage();
+//                        exit($e->getMessage());
+                    return response_fail([],$msg);
                 }
             }
             else return response_fail([],'内容不存在！');

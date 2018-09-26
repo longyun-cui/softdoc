@@ -474,6 +474,67 @@ jQuery( function ($) {
     });
 
 
+    // 显示转发
+    $(".item-option").off("click",".forward-show").on('click', ".forward-show", function() {
+        var $that = $(this);
+        var $item_option = $(this).parents('.item-option');
+        var $item_id = $item_option.data('item');
+        var $item_user_portrait = $item_option.find('.item-user-portrait img').attr("src");
+        var $item_user_name = $item_option.find('.item-user-name a').html();
+        var $item_title = $item_option.find('.item-title').html();
+
+        $("#modal-forward").find('.forward-item-id').val($item_id);
+        $("#modal-forward").find('.forward-user-portrait').attr("src",$item_user_portrait);
+        $("#modal-forward").find('.forward-user-name').html("@"+$item_user_name);
+        $("#modal-forward").find('.forward-item-title').html($item_title);
+
+        $("#modal-forward").find('.textarea-content').focus();
+    });
+    // 转发到我的主页
+    $("#modal-forward").off("click","#forward-confirm").on('click', "#forward-confirm", function() {
+        var $that = $(this);
+        var $item_id = $("#modal-forward").find('.forward-item-id').val();
+        var $content = $("#modal-forward").find('.forward-content');
+
+        $.post(
+            "/item/forward",
+            {
+                _token: $('meta[name="_token"]').attr('content'),
+                item_id: $item_id,
+                content: $content.val(),
+                type: 1
+            },
+            function(data){
+                if(!data.success) layer.msg(data.msg);
+                else
+                {
+                    layer.msg("转发成功");
+                    $content.val('');
+                    $('#modal-forward').modal('hide');
+                }
+            },
+            'json'
+        );
+
+        // var $form = $('#forward-form');
+        //
+        // var options = {
+        //     url: "/item/forward",
+        //     type: "post",
+        //     dataType: "json",
+        //     success: function (data) {
+        //         if(!data.success) layer.msg(data.msg);
+        //         else
+        //         {
+        //             $form.find('textarea').val('');
+        //         }
+        //     }
+        // };
+        // $form.ajaxSubmit(options);
+
+    });
+
+
 
 
     // 显示评论
@@ -518,7 +579,6 @@ jQuery( function ($) {
             url: "/item/comment/save",
             type: "post",
             dataType: "json",
-            // target: "#div2",
             success: function (data) {
                 if(!data.success) layer.msg(data.msg);
                 else

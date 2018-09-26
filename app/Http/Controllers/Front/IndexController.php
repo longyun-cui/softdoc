@@ -168,22 +168,12 @@ class IndexController extends Controller
     }
 
 
-
-
-
-    public function view_courses()
+    // 【转发】
+    public function item_forward()
     {
-        return $this->repo->view_courses(request()->all());
-    }
-    public function view_contents()
-    {
-        return $this->repo->view_contents(request()->all());
+        return $this->repo->item_forward(request()->all());
     }
 
-    public function view_course($id=0)
-    {
-        return $this->repo->view_course(request()->all(),$id);
-    }
 
 
 
@@ -207,6 +197,8 @@ class IndexController extends Controller
     {
         return $this->repo->item_favor_cancel(request()->all());
     }
+
+
 
 
     // 评论

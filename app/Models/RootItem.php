@@ -7,7 +7,7 @@ class RootItem extends Model
     //
     protected $table = "root_items";
     protected $fillable = [
-        'category', 'type', 'sort', 'form', 'active', 'user_id', 'item_id', 'p_id', 'version',
+        'category', 'type', 'sort', 'form', 'active', 'order', 'user_id', 'item_id', 'p_id', 'version',
         'title', 'subtitle', 'description', 'content', 'custom', 'link_url', 'cover_pic',
         'time_point', 'time_type', 'start_time', 'end_time', 'order', 'rank',
         'is_shared', 'visit_num', 'share_num'
@@ -101,6 +101,12 @@ class RootItem extends Model
 
     // 父节点
     function belong_item()
+    {
+        return $this->belongsTo('App\Models\RootItem','item_id','id');
+    }
+
+    // 转发内容
+    function forward_item()
     {
         return $this->belongsTo('App\Models\RootItem','item_id','id');
     }

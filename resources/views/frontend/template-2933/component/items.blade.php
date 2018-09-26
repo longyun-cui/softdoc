@@ -4,12 +4,14 @@
     <div class="panel-default box-default item-entity-container">
 
         {{--header--}}
-        <div class="box-body item-info-row text-muted">
-            <span><a href="{{ url('/user/'.$item->user->id) }}">{{ $item->user->name or '' }}</a></span>
+        <div class="item-row item-info-row text-muted">
+            <span class="item-user-portrait _none"><img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt=""></span>
+            <span class="item-user-name"><a href="{{ url('/user/'.$item->user->id) }}"><b>{{ $item->user->name or '' }}</b></a></span>
             {{--<span> • </span>--}}
             {{--<span>{{ $item->created_at->format('n月j日 H:i') }}</span>--}}
             {{--<span> • </span>--}}
             {{--<span>{{ time_show($item->created_at) }}</span>--}}
+            @if($item->category != 99)
             <span> • </span>
             <span class="item-plus-box" role="button">
                 <i class="fa fa-plus-square-o item-plus-button"></i>
@@ -28,6 +30,7 @@
                         <li class="add-this-todolist"><i class="fa fa-check-square-o"></i> 添加到待办事</li>
                     @endif
 
+
                     @if($item->time_type == 1)
                         @if(Auth::check() && $item->pivot_item_relation->contains('type', 12))
                             <li class="remove-this-schedule"><i class="fa fa-calendar-plus-o text-red"></i> 移除日程</li>
@@ -35,13 +38,15 @@
                             <li class="add-this-schedule"><i class="fa fa-calendar-plus-o"></i> 添加为日程</li>
                         @endif
                     @endif
+
                 </ul>
             </span>
+            @endif
         </div>
 
 
         @if($item->time_type == 1)
-        <div class="box-body item-info-row">
+        <div class="item-row item-info-row">
             @if(!empty($item->start_time))
                 <b class="text-blue">{{ time_show($item->start_time) }}</b>
             @endif
@@ -52,15 +57,17 @@
         </div>
         @endif
 
-        <div class="box-body item-title-row">
-            <a href="{{ url('/item/'.$item->id) }}"><b>{{ $item->title or '' }}</b></a>
+        @if($item->category != 99)
+        <div class="item-row item-title-row">
+            <a href="{{ url('/item/'.$item->id) }}"><b class="item-title">{{ $item->title or '' }}</b></a>
         </div>
+        @endif
 
         @if($item->category == 7)
-            <div class="box-body item-info-row">
+            <div class="item-row item-info-row">
                 <b class="text-red">【正方】{{ $item->custom_decode->positive }}</b>
             </div>
-            <div class="box-body item-info-row">
+            <div class="item-row item-info-row">
                 <b class="text-blue">【反方】{{ $item->custom_decode->negative }}</b>
             </div>
         @endif
@@ -73,12 +80,12 @@
         {{--@endif--}}
 
         {{--content--}}
-        <div class="box-body item-content-row">
+        <div class="item-row item-content-row">
             <div class="media">
                 <div class="media-left">
                     @if(!empty($item->cover_pic))
                         <a href="{{ url('/item/'.$item->id) }}">
-                            <img class="media-object" src="{{ url(env('DOMAIN_CDN').'/'.$item->cover_pic )}}">
+                            <img class="media-object" src="{{ url(env('DOMAIN_CDN').'/'.$item->cover_pic) }}">
                         </a>
                     @else
                         <a href="{{ url('/item/'.$item->id) }}">
@@ -100,28 +107,47 @@
             {{--<article class="colo-md-12"> {!! $item->content or '' !!} </article>--}}
         </div>
 
-        {{--tools--}}
-        <div class="box-footer item-tools-row">
+        @if($item->category == 99)
+            @if(!empty($item->forward_item))
+            <a href="{{ url('/item/'.$item->forward_item->id) }}" target="_blank">
+                <div class="forward-item-container" role="button">
+                    <div class="portrait-box"><img src="{{ url(env('DOMAIN_CDN').'/'.$item->forward_item->user->portrait_img) }}" alt=""></div>
+                    <div class="text-box">
+                        <div class="text-row forward-item-title">{{ $item->forward_item->title or '' }}</div>
+                        <div class="text-row forward-user-name">{{ '@'.$item->forward_item->user->name }}</div>
+                    </div>
+                </div>
+            </a>
+            @else
+                <div class="forward-item-container" role="button" style="line-height:40px;text-align:center;">
+                    内容被作者删除或取消分享。
+                </div>
+            @endif
+        @endif
 
+        {{--tools--}}
+        <div class="item-row item-tools-row">
 
             <div class="pull-left">
-
                 <a class="" role="button">
                     {{ time_show($item->created_at->timestamp) }}
                     {{--{{ time_show($item->created_at->getTimestamp()) }}--}}
                 </a>
-
             </div>
 
             <div class="pull-right">
 
-                <a class="margin _none" role="button">
-                    ({{ $item->share_num or 0 }})
+                @if($item->category != 99)
+                <a class="margin forward-show" href="javascript:void(0);" data-toggle="modal" data-target="#modal-forward" role="button">
+                    分享({{ $item->share_num or 0 }})
                 </a>
+                @endif
 
+                @if($item->category != 99)
                 <a class="margin" href="{{ url('/item/'.$item->id) }}" role="button" data-num="{{ $item->visit_num or 0 }}">
                     阅读({{ $item->visit_num or 0 }})
                 </a>
+                @endif
 
                 <a class="margin comment-toggle" role="button" data-num="{{ $item->comment_num or 0 }}">
                     评论({{ $item->comment_num or 0 }})

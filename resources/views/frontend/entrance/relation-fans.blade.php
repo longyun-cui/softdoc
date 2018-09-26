@@ -44,8 +44,7 @@
 @section('custom-body')
 
     @include('frontend.'.env('TEMPLATE').'.component.body')
-
-    {{--@include('frontend.'.env('TEMPLATE').'.module.module-service-for-root', ['page_type'=>'root','services'=>$services])--}}
+    @include('frontend.'.env('TEMPLATE').'.component.modal-forward')
 
 @endsection
 

@@ -2,13 +2,18 @@
     <div class="panel-default box-default item-entity-container">
 
         <div class="item-row item-title-row">
-            <b>{{ $item->title or '' }}</b>
+            <span class="item-user-portrait _none"><img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt=""></span>
+            <span class="item-user-name _none"><a href="{{ url('/user/'.$item->user->id) }}">{{ $item->user->name or '' }}</a></span>
+            <b class="item-title">{{ $item->title or '' }}</b>
         </div>
 
         <div class="item-row item-info-row text-muted">
             {{--<span> • {{ $item->created_at->format('n月j日 H:i') }}</span>--}}
             <span>{{ time_show($item->created_at) }}</span>
-            <span> • 阅读({{ $item->visit_num }})</span>
+            <span> • </span>
+            <span>阅读({{ $item->visit_num }})</span>
+            <span> • </span>
+            <a class="forward-show" data-toggle="modal" data-target="#modal-forward" role="button">分享({{ $item->share_num }})</a>
             <span> • </span>
             {{--点赞--}}
             <a class="operate-btn" role="button" data-num="{{ $item->favor_num or 0 }}">
