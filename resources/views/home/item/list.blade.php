@@ -312,7 +312,7 @@
             });
         });
 
-        // 【启动】
+        // 【启用】
         $("#item-list-body").on('click', ".item-enable-submit", function() {
             var that = $(this);
             layer.msg('确定启用？', {

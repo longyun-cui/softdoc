@@ -222,6 +222,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
                 Route::match(['get','post'], 'edit', $controller.'@content_editAction');
                 Route::post('get', $controller.'@content_getAction');
                 Route::post('delete', $controller.'@content_deleteAction');
+                Route::post('enable', $controller.'@content_enableAction');
+                Route::post('disable', $controller.'@content_disableAction');
 
             });
 

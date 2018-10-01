@@ -71,7 +71,7 @@ class IndexRepository {
             $me_id = $me->id;
             $item = RootItem::with([
                 'user',
-                'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); },
+                'contents'=>function($query) { $query->where(['active'=>1,'p_id'=>0])->orderBy('id','asc'); },
                 'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
             ])->find($id);
         }
@@ -79,7 +79,7 @@ class IndexRepository {
         {
             $item = RootItem::with([
                 'user',
-                'contents'=>function($query) { $query->where('p_id',0)->orderBy('id','asc'); }
+                'contents'=>function($query) { $query->where(['active'=>1,'p_id'=>0])->orderBy('id','asc'); }
             ])->find($id);
         }
         $items[0] = $item;
@@ -668,8 +668,16 @@ class IndexRepository {
 
             if($item->category == 11)
             {
-                if($item->item_id == 0) $parent_item = $item;
-                else $parent_item = RootItem::with(['contents'])->find($item->item_id);
+                if($item->item_id == 0)
+                {
+                    $parent_item = $item;
+                    $parent_item->load([
+                        'contents'=>function($query) { $query->where('active',1)->orderBy('rank','asc'); }
+                    ]);
+                }
+                else $parent_item = RootItem::with([
+                    'contents'=>function($query) { $query->where('active',1)->orderBy('rank','asc'); }
+                ])->find($item->item_id);
 
                 $contents_recursion = $this->get_recursion($parent_item->contents,0);
                 foreach ($contents_recursion as $v)

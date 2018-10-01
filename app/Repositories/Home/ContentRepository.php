@@ -248,7 +248,9 @@ class ContentRepository {
         if(!$item_decode) return view('home.404')->with(['error'=>'参数有误']);
         // abort(404);
 
-        $item = RootItem::with(['contents'])->find($item_decode);
+        $item = RootItem::with([
+            'contents'=>function($query) { $query->orderBy('rank','asc'); }
+        ])->find($item_decode);
         if($item)
         {
             $item->encode_id = encode($item->id);
@@ -468,6 +470,62 @@ class ContentRepository {
             return response_fail([],$msg);
         }
 
+    }
+
+    // 内容启用
+    public function content_enable($post_data)
+    {
+        $user = Auth::user();
+        $id = $post_data["id"];
+//        $id = decode($post_data["id"]);
+        if(intval($id) !== 0 && !$id) return response_error([],"该内容不存在，刷新页面试试");
+
+        $mine = RootItem::find($id);
+        if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
+        $update["active"] = 1;
+        DB::beginTransaction();
+        try
+        {
+            $mine->timestamps = false;
+            $bool = $mine->fill($update)->save();
+            if(!$bool) throw new Exception("update--item--fail");
+
+            DB::commit();
+            return response_success([]);
+        }
+        catch (Exception $e)
+        {
+            DB::rollback();
+            return response_fail([],'启用失败，请重试');
+        }
+    }
+
+    // 内容禁用
+    public function content_disable($post_data)
+    {
+        $user = Auth::user();
+        $id = $post_data["id"];
+//        $id = decode($post_data["id"]);
+        if(intval($id) !== 0 && !$id) return response_error([],"该文章不存在，刷新页面试试");
+
+        $mine = RootItem::find($id);
+        if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
+        $update["active"] = 9;
+        DB::beginTransaction();
+        try
+        {
+            $mine->timestamps = false;
+            $bool = $mine->fill($update)->save();
+            if(!$bool) throw new Exception("update--item--fail");
+
+            DB::commit();
+            return response_success([]);
+        }
+        catch (Exception $e)
+        {
+            DB::rollback();
+            return response_fail([],'禁用失败，请重试');
+        }
     }
 
 

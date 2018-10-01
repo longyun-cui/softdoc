@@ -1,6 +1,6 @@
 @extends('home.layout.layout')
 
-@section('title', '内容管理')
+@section('head_title', '内容管理')
 
 @section('header')
     {{$data->title or ''}}
@@ -42,6 +42,14 @@
                             </span>
                             <span class="form-control multi-ellipsis-1">{{ $content->title or '' }}</span>
 
+                            <span class="input-group-addon btn edit-this-content" style="border-left:0;"><b>{{ $content->rank or '0' }}</b></span>
+                            @if($content->active == 0)
+                                <span class="input-group-addon btn enable-this-content" title="启用"><b>未启用</b></span>
+                            @elseif($content->active == 1)
+                                <span class="input-group-addon btn disable-this-content" title="禁用"><b class="text-green">已启用</b></span>
+                            @else
+                                <span class="input-group-addon btn enable-this-content" title="启用"><b class="text-red">已禁用</b></span>
+                            @endif
                             {{--@if($content->type == 1)--}}
                             <span class="input-group-addon btn create-follow-menu" style="border-left:0;"><i class="fa fa-plus"></i></span>
                             {{--@endif--}}
@@ -133,6 +141,13 @@
                             </select>
                         </div>
                     </div>
+                    {{--排序--}}
+                    <div class="form-group">
+                        <label class="control-label col-md-2">排序</label>
+                        <div class="col-md-8 ">
+                            <div><input type="text" class="form-control" name="rank" placeholder="默认排序" value="0"></div>
+                        </div>
+                    </div>
                     {{--标题--}}
                     <div class="form-group">
                         <label class="control-label col-md-2">标题</label>
@@ -172,14 +187,19 @@
                         <div class="col-md-8">
                             <div class="btn-group">
 
-                                <button type="button" class="btn radio">
+                                <button type="button" class="btn radio active-none">
                                     <label>
-                                        <input type="radio" name="active" value="0" checked="checked"> 不启用
+                                        <input type="radio" name="active" value="0"> 不启用
                                     </label>
                                 </button>
                                 <button type="button" class="btn radio">
                                     <label>
-                                        <input type="radio" name="active" value="1"> 启用
+                                        <input type="radio" name="active" value="1" checked="checked"> 启用
+                                    </label>
+                                </button>
+                                <button type="button" class="btn radio active-disable _none">
+                                    <label>
+                                        <input type="radio" name="active" value="9"> 禁用
                                     </label>
                                 </button>
 
@@ -241,6 +261,11 @@
 
             reset_form();
 
+            $("#form-edit-content").find('input[name=rank]').val(0);
+            $("#form-edit-content").find('.active-disable').hide();
+            $("#form-edit-content").find('.active-none').show();
+            $('#form-edit-content').find('input[name=active][value="1"]').prop('checked',true);
+
             $("html, body").animate({ scrollTop: $("#form-edit-content").offset().top }, {duration: 500,easing: "swing"});
 
         });
@@ -255,7 +280,7 @@
 
             reset_form();
 
-            $('#menu').find('option[value='+id+']').attr('selected','selected');
+            $('#menu').find('option[value='+id+']').prop('selected','selected');
 
             $("html, body").animate({ scrollTop: $("#form-edit-content").offset().top }, {duration: 500,easing: "swing"});
         });
@@ -278,6 +303,14 @@
                     {
                         $("#form-edit-content").find('input[name=operate]').val("edit");
                         $("#form-edit-content").find('input[name=id]').val(data.data.encode_id);
+                        $("#form-edit-content").find('input[name=rank]').val(data.data.rank);
+
+                        $("#form-edit-content").find('input[name=active]:checked').prop('checked','');
+                        var $active = data.data.active;
+                        $("#form-edit-content").find('.active-none').hide();
+                        $("#form-edit-content").find('.active-disable').show();
+                        if($active == 0) $("#form-edit-content").find('.active-none').show();
+                        $("#form-edit-content").find('input[name=active][value='+$active+']').prop('checked','checked');
 
                         $("#form-edit-content").find('input[name=title]').val(data.data.title);
                         $("#form-edit-content").find('textarea[name=description]').val(data.data.description);
@@ -316,7 +349,60 @@
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                        "/home/course/content/delete",
+                        "/home/item/content/delete",
+                        {
+                            _token: $('meta[name="_token"]').attr('content'),
+                            id:id
+                        },
+                        function(data){
+                            if(!data.success) layer.msg(data.msg);
+                            else location.reload();
+                        },
+                        'json'
+                    );
+                }
+            });
+        });
+
+
+        // 【启用】
+        $("#content-structure-list").on('click', ".enable-this-content", function() {
+            var that = $(this);
+            var input_group = $(this).parents('.input-group');
+            var id = input_group.attr('data-id');
+            var msg = '确定要删除该"内容"么，该内容下子内容自动进入父节点';
+            layer.msg('启用该内容？', {
+                time: 0
+                ,btn: ['确定', '取消']
+                ,yes: function(index){
+                    $.post(
+                        "/home/item/content/enable",
+                        {
+                            _token: $('meta[name="_token"]').attr('content'),
+                            id:id
+                        },
+                        function(data){
+                            if(!data.success) layer.msg(data.msg);
+                            else location.reload();
+                        },
+                        'json'
+                    );
+                }
+            });
+        });
+
+        // 【禁用】
+        $("#content-structure-list").on('click', ".disable-this-content", function() {
+            var that = $(this);
+            var input_group = $(this).parents('.input-group');
+            var id = input_group.attr('data-id');
+            var msg = '确定要删除该"内容"么，该内容下子内容自动进入父节点';
+            layer.msg('禁用该内容？', {
+                time: 0
+                ,btn: ['确定', '取消']
+                ,yes: function(index){
+                    $.post(
+                        "/home/item/content/disable",
                         {
                             _token: $('meta[name="_token"]').attr('content'),
                             id:id
@@ -367,16 +453,22 @@
 
         $("#form-edit-content").find('input[name=operate]').val("create");
         $("#form-edit-content").find('input[name=id]').val("{{encode(0)}}");
+        $("#form-edit-content").find('input[name=rank]').val(0);
         $("#form-edit-content").find('input[name=title]').val("");
         $("#form-edit-content").find('textarea[name=description]').val("");
         var ue = UE.getEditor('container');
         ue.setContent("");
 
         $("#form-edit-content").find('input[name=type]').prop('checked',null);
-        $("#form-edit-content").find('input[name=type][value=1]').prop('checked',true);
+        $("#form-edit-content").find('input[name=type][value="1"]').prop('checked',true);
 
         $('#menu').find('option').prop('selected',null);
         $('#menu').find('option[value=0]').prop("selected", true);
+
+        $("#form-edit-content").find('.active-disable').hide();
+        $("#form-edit-content").find('.active-none').show();
+        $('#form-edit-content').find('input[name=active][value="1"]').prop('checked',true);
+
     }
 </script>
 @endsection

@@ -80,7 +80,7 @@ class ContentController extends Controller
         else if (request()->isMethod('post')) return $this->repo->content_save(request()->all());
     }
 
-    // 【删除】
+    // 【获取】
     public function content_getAction()
     {
         return $this->repo->content_get(request()->all());
@@ -90,6 +90,18 @@ class ContentController extends Controller
     public function content_deleteAction()
     {
         return $this->repo->content_delete(request()->all());
+    }
+
+    // 【启用】
+    public function content_enableAction()
+    {
+        return $this->repo->content_enable(request()->all());
+    }
+
+    // 【禁用】
+    public function content_disableAction()
+    {
+        return $this->repo->content_disable(request()->all());
     }
 
 
