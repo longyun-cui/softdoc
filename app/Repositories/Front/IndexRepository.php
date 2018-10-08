@@ -693,8 +693,31 @@ class IndexRepository {
             }
             else if($item->category == 18)
             {
-                if($item->item_id == 0) $parent_item = $item;
-                else $parent_item = RootItem::with(['contents'])->find($item->item_id);
+                if($item->item_id == 0)
+                {
+                    $parent_item = $item;
+                    $parent_item->load([
+                        'contents'=>function($query) {
+                            $query->where('active',1);
+                            $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as SIGNED) asc'));
+                            $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as DECIMAL) asc'));
+                            $query->orderByRaw(DB::raw('replace(trim(time_point)," ","") asc'));
+                            $query->orderBy('time_point','asc');
+                        }
+                    ]);
+                }
+                else
+                {
+                    $parent_item = RootItem::with([
+                        'contents'=>function($query) {
+                            $query->where('active',1);
+                            $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as SIGNED) asc'));
+                            $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as DECIMAL) asc'));
+                            $query->orderByRaw(DB::raw('replace(trim(time_point)," ","") asc'));
+                            $query->orderBy('time_point','asc');
+                        }
+                    ])->find($item->item_id);
+                }
 
                 $time_points = $parent_item->contents;
                 foreach ($time_points as $v)
