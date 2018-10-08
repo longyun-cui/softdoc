@@ -205,11 +205,22 @@
 .main-side-container .cbp_tmtimeline > li .cbp_tmicon {
 	top:10px;
 }
-.main-side-container .cbp_tmtimeline > li .cbp_tmtime span:last-child {
-	font-size:15px;
-}
 .main-side-container .cbp_tmtimeline > li .cbp_tmtime {
 	padding:0 4px;
+}
+.main-side-container .cbp_tmtimeline > li .cbp_tmtime span:last-child {
+	font-family:'Microsoft yahei';
+	font-size:14px;
+}
+.main-side-container .cbp_tmtimeline > li .cbp_tmtime span:last-child:hover {
+	color:#ff7676;
+}
+.main-side-container .cbp_tmtimeline > li.active .cbp_tmtime span:last-child {
+	font-size:14px;
+}
+.main-side-container .cbp_tmtimeline > li.active .cbp_tmlabel h2 a {
+	color:#ff7676;
+	font-weight:bold;
 }
 .main-side-container .cbp_tmtimeline > li  {
 	margin-bottom:0;

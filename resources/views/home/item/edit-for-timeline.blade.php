@@ -1,16 +1,18 @@
 @extends('home.layout.layout')
 
-@section('head_title', '内容管理')
-
-@section('header')
-    {{$data->title or ''}}
+@section('head_title')
+    【编辑】{{ $data->title or '' }} - 时间点管理
 @endsection
 
-@section('description', '内容管理')
+@section('header')
+    {{ $data->title or '' }}
+@endsection
+
+@section('description', '【时间点管理】')
 
 @section('breadcrumb')
     <li><a href="{{url('/home')}}"><i class="fa fa-dashboard"></i>首页</a></li>
-    <li><a href="{{url('/home/item/list?category=menu-type')}}"><i class="fa "></i>目录类型列表</a></li>
+    <li><a href="{{url('/home/item/list?category=timeline')}}"><i class="fa "></i>时间线列表</a></li>
     <li><a href="#"><i class="fa "></i>Here</a></li>
 @endsection
 
@@ -22,27 +24,20 @@
         <div class="box box-warning">
 
             <div class="box-header with-border" style="margin:16px 0;">
-                <h3 class="box-title">内容结构图</h3>
+                <h3 class="box-title">时间点</h3>
                 <div class="pull-right">
                     <button type="button" class="btn btn-success pull-right show-create-content"><i class="fa fa-plus"></i> 添加新内容</button>
                 </div>
             </div>
 
             <div class="box-body" id="content-structure-list">
-                @foreach( $data->contents_recursion as $key => $content )
+                @foreach( $data->contents as $key => $content )
                     <div class="col-md-8 col-md-offset-2">
-                        <div class="input-group" data-id='{{$content->id}}'
+                        <div class="input-group" data-id='{{ $content->id }}'
                              style="margin-top:4px; margin-left:{{ $content->level*40 }}px">
-                            <span class="input-group-addon">
-                                @if($content->type == 1)
-                                    <i class="fa fa-list-ul"></i>
-                                @else
-                                    <i class="fa fa-file-text"></i>
-                                @endif
-                            </span>
+                            <span class="input-group-addon"><b>{{ $content->time_point or '' }}</b></span>
                             <span class="form-control multi-ellipsis-1">{{ $content->title or '' }}</span>
 
-                            <span class="input-group-addon btn edit-this-content" style="border-left:0;"><b>{{ $content->rank or '0' }}</b></span>
                             @if($content->active == 0)
                                 <span class="input-group-addon btn enable-this-content" title="启用"><b>未启用</b></span>
                             @elseif($content->active == 1)
@@ -50,9 +45,7 @@
                             @else
                                 <span class="input-group-addon btn enable-this-content" title="启用"><b class="text-red">已禁用</b></span>
                             @endif
-                            {{--@if($content->type == 1)--}}
-                            <span class="input-group-addon btn create-follow-menu" style="border-left:0;"><i class="fa fa-plus"></i></span>
-                            {{--@endif--}}
+
                             <span class="input-group-addon btn edit-this-content" style="border-left:0;"><i class="fa fa-pencil"></i></span>
                             <span class="input-group-addon btn delete-this-content"><i class="fa fa-trash"></i></span>
                         </div>
@@ -93,59 +86,13 @@
                     <input type="hidden" name="operate" value="{{$operate or 'create'}}" readonly>
                     <input type="hidden" name="item_id" value="{{$data->encode_id or encode(0)}}" readonly>
                     <input type="hidden" name="id" value="{{$encode_id or encode(0)}}" readonly>
-                    <input type="hidden" name="category" value="11" readonly>
+                    <input type="hidden" name="category" value="18" readonly>
 
-                    {{--类型--}}
-                    <div class="form-group form-type _none">
-                        <label class="control-label col-md-2">类型</label>
-                        <div class="col-md-8">
-                            <div class="btn-group">
-                                <button type="button" class="btn">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="type-" value="1" checked="checked"> 目录
-                                        </label>
-                                    </div>
-                                </button>
-                                <button type="button" class="btn">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="type-" value="2"> 内容
-                                        </label>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    {{--目录--}}
+                    {{--时间点--}}
                     <div class="form-group">
-                        <label class="control-label col-md-2">目录</label>
+                        <label class="control-label col-md-2">时间点</label>
                         <div class="col-md-8 ">
-                            <select name="p_id" id="menu" style="width:100%;">
-
-                                <option value="0">顶级目录</option>
-
-                                @foreach( $data->contents_recursion as $key => $content )
-                                    {{--@if($content->type == 1)--}}
-
-                                        <option value="{{ $content->id or '' }}">
-                                            @for ($i = 0; $i < $content->level; $i++)
-                                                —
-                                            @endfor
-                                            {{ $content->title or '' }}
-                                        </option>
-
-                                    {{--@endif--}}
-                                @endforeach
-
-                            </select>
-                        </div>
-                    </div>
-                    {{--排序--}}
-                    <div class="form-group">
-                        <label class="control-label col-md-2">排序</label>
-                        <div class="col-md-8 ">
-                            <div><input type="text" class="form-control" name="rank" placeholder="默认排序" value="0"></div>
+                            <div><input type="text" class="form-control" name="time_point" placeholder="时间点" value=""></div>
                         </div>
                     </div>
                     {{--标题--}}
@@ -240,7 +187,7 @@
         // 修改
         $("#edit-content-submit").on('click', function() {
             var options = {
-                url: "/home/item/content/edit",
+                url: "/home/item/content/edit/timeline",
                 type: "post",
                 dataType: "json",
                 // target: "#div2",
@@ -273,17 +220,6 @@
 
 
 
-        // 在该目录下添加内容
-        $("#content-structure-list").on('click', '.create-follow-menu', function () {
-            var input_group = $(this).parents('.input-group');
-            var id = input_group.attr('data-id');
-
-            reset_form();
-
-            $('#menu').find('option[value='+id+']').prop('selected','selected');
-
-            $("html, body").animate({ scrollTop: $("#form-edit-content").offset().top }, {duration: 500,easing: "swing"});
-        });
 
         // 编辑内容
         $("#content-structure-list").on('click', '.edit-this-content', function () {
@@ -303,7 +239,7 @@
                     {
                         $("#form-edit-content").find('input[name=operate]').val("edit");
                         $("#form-edit-content").find('input[name=id]').val(data.data.encode_id);
-                        $("#form-edit-content").find('input[name=rank]').val(data.data.rank);
+                        $("#form-edit-content").find('input[name=time_point]').val(data.data.time_point);
 
                         $("#form-edit-content").find('input[name=active]:checked').prop('checked','');
                         var $active = data.data.active;
@@ -326,9 +262,6 @@
 //                        if(type == 1) $("#form-edit-content").find('.form-type').hide();
 //                        else $("#form-edit-content").find('.form-type').show();
 
-                        $('#menu').find('option').prop('selected',null);
-                        $('#menu').find('option[value='+data.data.p_id+']').prop("selected", true);
-                        var selected_text = $('#menu').find('option[value='+data.data.p_id+']').text();
                         $("html, body").animate({ scrollTop: $("#form-edit-content").offset().top }, {duration: 500,easing: "swing"});
 
                     }
@@ -342,7 +275,7 @@
         $("#content-structure-list").on('click', '.delete-this-content', function () {
             var input_group = $(this).parents('.input-group');
             var id = input_group.attr('data-id');
-            var msg = '确定要删除该"内容"么，该内容下子内容自动进入父节点';
+            var msg = '确定要删除该"内容"么？';
 
             layer.msg(msg, {
                 time: 0
@@ -370,7 +303,7 @@
             var that = $(this);
             var input_group = $(this).parents('.input-group');
             var id = input_group.attr('data-id');
-            var msg = '确定要删除该"内容"么，该内容下子内容自动进入父节点';
+            var msg = '启用该内容？';
             layer.msg('启用该内容？', {
                 time: 0
                 ,btn: ['确定', '取消']
@@ -396,7 +329,7 @@
             var that = $(this);
             var input_group = $(this).parents('.input-group');
             var id = input_group.attr('data-id');
-            var msg = '确定要删除该"内容"么，该内容下子内容自动进入父节点';
+            var msg = '禁用该内容？';
             layer.msg('禁用该内容？', {
                 time: 0
                 ,btn: ['确定', '取消']
@@ -453,7 +386,7 @@
 
         $("#form-edit-content").find('input[name=operate]').val("create");
         $("#form-edit-content").find('input[name=id]').val("{{encode(0)}}");
-        $("#form-edit-content").find('input[name=rank]').val(0);
+        $("#form-edit-content").find('input[name=time_point]').val("");
         $("#form-edit-content").find('input[name=title]').val("");
         $("#form-edit-content").find('textarea[name=description]').val("");
         var ue = UE.getEditor('container');

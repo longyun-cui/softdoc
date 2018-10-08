@@ -10,10 +10,10 @@
 
         <ul class="cbp_tmtimeline">
             @foreach($time_points as $num => $val)
-                <li>
+                <li @if($val->id == $item->id) class="active" @endif>
                     <div class="cbp_tmicon"></div>
                     <time class="cbp_tmtime" datetime="">
-                        <span><b>{{ $val->time_point or '' }}</b></span>
+                        <a href="{{ url('/item/'.$val->id) }}"><span role="button"><b>{{ $val->time_point or '' }}</b></span></a>
                     </time>
                     <div class="cbp_tmlabel">
                         <h2><a href="{{ url('/item/'.$val->id) }}"><b>{{ $val->title or '' }}</b></a></h2>

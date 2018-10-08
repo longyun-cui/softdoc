@@ -1,6 +1,6 @@
 @extends('home.layout.layout')
 
-@section('title')
+@section('head_title')
     @if($operate == 'create') 添加时间点 @else 编辑时间点 @endif
 @endsection
 
@@ -28,7 +28,7 @@
             <div class="box-header with-border" style="margin:16px 0;">
                 <h3 class="box-title">
                     @if($operate == 'create') 添加时间点
-                    @else <a target="_blank" href="{{url('/item/'.$item->id)}}">{{$item->title or '编辑时间点'}}</a>
+                    @else <a target="_blank" href="{{ url('/item/'.$item->id) }}">{{ $item->title or '编辑时间点' }}</a>
                     @endif
                 </h3>
                 <div class="box-tools pull-right">

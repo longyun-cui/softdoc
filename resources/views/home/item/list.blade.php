@@ -161,10 +161,10 @@
                         'orderable': false,
                         render: function(data, type, row, meta) {
                             if(row.category == 11) {
-                                return '<a href="/home/item/content?id='+data+'"><button type="button" class="btn btn-sm bg-purple">内容管理</button></a>';
+                                return '<a href="/home/item/content/menutype?id='+data+'"><button type="button" class="btn btn-sm bg-purple">内容管理</button></a>';
                             }
                             else if(row.category == 18) {
-                                return '<a href="/home/item/point?id='+data+'"><button type="button" class="btn btn-sm bg-purple">时间点管理</button></a>';
+                                return '<a href="/home/item/content/timeline?id='+data+'"><button type="button" class="btn btn-sm bg-purple">时间点管理</button></a>';
                             }
                             else {
                                 return '';
@@ -199,12 +199,12 @@
 
                             var content_html = '';
                             if(row.category == 11) {
-                                content_html = '<li><a href="/home/item/content?id='+data+'">内容管理</a></li>';
+                                content_html = '<li><a href="/home/item/content/menutype?id='+data+'">内容管理</a></li>';
                             }
 
                             var timeline_html = '';
                             if(row.category == 18) {
-                                timeline_html = '<li><a href="/home/item/point?id='+data+'">管理时间点</a></li>';
+                                timeline_html = '<li><a href="/home/item/content/timeline?id='+data+'">管理时间点</a></li>';
                             }
 
                             var html =

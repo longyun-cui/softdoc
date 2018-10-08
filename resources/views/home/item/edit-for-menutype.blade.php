@@ -1,12 +1,14 @@
 @extends('home.layout.layout')
 
-@section('head_title', '内容管理')
+@section('head_title')
+    【编辑】{{ $data->title or '' }} - 内容管理
+@endsection
 
 @section('header')
     {{$data->title or ''}}
 @endsection
 
-@section('description', '内容管理')
+@section('description', '【内容管理】')
 
 @section('breadcrumb')
     <li><a href="{{url('/home')}}"><i class="fa fa-dashboard"></i>首页</a></li>
@@ -31,18 +33,17 @@
             <div class="box-body" id="content-structure-list">
                 @foreach( $data->contents_recursion as $key => $content )
                     <div class="col-md-8 col-md-offset-2">
-                        <div class="input-group" data-id='{{$content->id}}'
-                             style="margin-top:4px; margin-left:{{ $content->level*40 }}px">
+                        <div class="input-group" data-id='{{$content->id}}' style="margin-top:4px; margin-left:{{ $content->level*34 }}px">
                             <span class="input-group-addon">
-                                @if($content->type == 1)
-                                    <i class="fa fa-list-ul"></i>
-                                @else
-                                    <i class="fa fa-file-text"></i>
-                                @endif
+                                {{--@if($content->type == 1)--}}
+                                    {{--<i class="fa fa-list-ul"></i>--}}
+                                {{--@else--}}
+                                    {{--<i class="fa fa-file-text"></i>--}}
+                                {{--@endif--}}
+                                <b>{{ $content->rank or '0' }}</b>
                             </span>
                             <span class="form-control multi-ellipsis-1">{{ $content->title or '' }}</span>
 
-                            <span class="input-group-addon btn edit-this-content" style="border-left:0;"><b>{{ $content->rank or '0' }}</b></span>
                             @if($content->active == 0)
                                 <span class="input-group-addon btn enable-this-content" title="启用"><b>未启用</b></span>
                             @elseif($content->active == 1)
@@ -240,7 +241,7 @@
         // 修改
         $("#edit-content-submit").on('click', function() {
             var options = {
-                url: "/home/item/content/edit",
+                url: "/home/item/content/edit/menutype",
                 type: "post",
                 dataType: "json",
                 // target: "#div2",

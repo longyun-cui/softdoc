@@ -214,13 +214,20 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
             Route::post('enable', $controller.'@enableAction');
             Route::post('disable', $controller.'@disableAction');
 
-            // 书目类型
+
+            // 内容管理
             Route::group(['prefix' => 'content'], function () {
 
-                $controller = 'ContentController';
+                $controller = 'ItemController';
 
                 Route::match(['get','post'], '/', $controller.'@content_viewIndex');
+                Route::match(['get','post'], '/menutype', $controller.'@content_menutype_viewIndex');
+                Route::match(['get','post'], '/timeline', $controller.'@content_timeline_viewIndex');
+
                 Route::match(['get','post'], 'edit', $controller.'@content_editAction');
+                Route::match(['get','post'], 'edit/menutype', $controller.'@content_menutype_editAction');
+                Route::match(['get','post'], 'edit/timeline', $controller.'@content_timeline_editAction');
+
                 Route::post('get', $controller.'@content_getAction');
                 Route::post('delete', $controller.'@content_deleteAction');
                 Route::post('enable', $controller.'@content_enableAction');
