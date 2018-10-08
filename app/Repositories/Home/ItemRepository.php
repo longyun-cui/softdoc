@@ -25,13 +25,13 @@ class ItemRepository {
     public function get_list_datatable($post_data)
     {
         $user = Auth::user();
-        $query = RootItem::select("*")->with(['user'])->where('user_id', $user->id);
+        $query = RootItem::select("*")->with(['user'])->where('user_id', $user->id)->where('item_id', 0);
 
         $category = isset($post_data['category']) ? $post_data['category'] : '';
         if($category == "article") $query->where('category', 1);
         else if($category == "debase") $query->where('category', 7);
-        else if($category == "menu") $query->where('category', 11)->where('item_id', 0);
-        else if($category == "timeline") $query->where('category', 18)->where('item_id', 0);
+        else if($category == "menu") $query->where('category', 11);
+        else if($category == "timeline") $query->where('category', 18);
 
         if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
 
@@ -326,6 +326,35 @@ class ItemRepository {
 
     }
 
+    // 分享
+    public function share($post_data)
+    {
+        $id = decode($post_data["id"]);
+        if(intval($id) !== 0 && !$id) return response_error([],"该内容不存在，刷新页面试试");
+
+        if(!is_numeric($post_data["is_shared"])) return response_error([],"参数有误，刷新页面试试");
+
+        $user = Auth::user();
+        $mine = RootItem::find($id);
+        if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
+        $update["is_shared"] = $post_data["is_shared"];
+        DB::beginTransaction();
+        try
+        {
+            $mine->timestamps = false;
+            $bool = $mine->fill($update)->save();
+            if(!$bool) throw new Exception("update--item--fail");
+
+            DB::commit();
+            return response_success([]);
+        }
+        catch (Exception $e)
+        {
+            DB::rollback();
+            return response_fail([],'分享失败，请重试');
+        }
+    }
+
     // 启用
     public function enable($post_data)
     {
@@ -377,6 +406,10 @@ class ItemRepository {
             return response_fail([],'禁用失败，请重试');
         }
     }
+
+
+
+
 
 
 

@@ -200,7 +200,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
         });
 
 
-        // 作者
+        // 内容
         Route::group(['prefix' => 'item'], function () {
 
             $controller = 'ItemController';
@@ -210,6 +210,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
             Route::match(['get','post'], 'edit', $controller.'@editAction');
             Route::match(['get','post'], 'list', $controller.'@viewList');
             Route::post('delete', $controller.'@deleteAction');
+            Route::post('share', $controller.'@shareAction');
             Route::post('enable', $controller.'@enableAction');
             Route::post('disable', $controller.'@disableAction');
 

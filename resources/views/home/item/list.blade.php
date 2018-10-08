@@ -179,14 +179,27 @@
                             var active_html = '';
                             if(row.active == 1) {
                                 active_html = '<li><a class="item-disable-submit" data-id="'+data+'">禁用</a></li>';
-                            }
-                            else {
+                            } else {
                                 active_html = '<li><a class="item-enable-submit" data-id="'+data+'">启用</a></li>';
+                            }
+
+                            var share_none_html = '<li><a class="item-share-submit" data-id="'+data+'" data-share="11">转为-仅自己可见</a></li>';
+//                            var share_follow_html = '<li><a class="item-share-submit" data-id="'+data+'" data-share="41">转为-关注者可见</a></li>';
+                            var share_follow_html = '';
+                            var share_all_html = '<li><a class="item-share-submit" data-id="'+data+'" data-share="100">转为-所有人可见</a></li>';
+
+                            var shared_html = '';
+                            if(row.is_shared == 11) {
+                                shared_html = share_follow_html + share_all_html;
+                            } else if(row.is_shared == 41) {
+                                shared_html = share_none_html + share_all_html;
+                            } else if(row.is_shared == 100) {
+                                shared_html = share_none_html + share_follow_html;
                             }
 
                             var content_html = '';
                             if(row.category == 11) {
-                                content_html = '<li><a href="/home/item/content?id='+data+'">目录管理</a></li>';
+                                content_html = '<li><a href="/home/item/content?id='+data+'">内容管理</a></li>';
                             }
 
                             var timeline_html = '';
@@ -206,7 +219,8 @@
 //                                '<li><a href="/home/item/content?id='+data+'">内容管理</a></li>'+
                                 content_html+
                                 timeline_html+
-                                active_html+
+                                shared_html+
+//                                active_html+
 //                                '<li><a href="/admin/statistics/page?module=2&id='+data+'">流量统计</a></li>'+
 //                                '<li><a class="download-qrcode" data-id="'+data+'">下载二维码</a></li>'+
                                 '<li><a class="item-delete-submit" data-id="'+data+'" >删除</a></li>'+
@@ -307,6 +321,30 @@
                                 else location.reload();
                             },
                             'json'
+                    );
+                }
+            });
+        });
+
+        // 【分享】
+        $("#item-list-body").on('click', ".item-share-submit", function() {
+            var that = $(this);
+            layer.msg(that.html(), {
+                time: 0
+                ,btn: ['确定', '取消']
+                ,yes: function(index){
+                    $.post(
+                        "/home/item/share",
+                        {
+                            _token: $('meta[name="_token"]').attr('content'),
+                            id:that.attr('data-id'),
+                            is_shared:that.attr('data-share')
+                        },
+                        function(data){
+                            if(!data.success) layer.msg(data.msg);
+                            else location.reload();
+                        },
+                        'json'
                     );
                 }
             });

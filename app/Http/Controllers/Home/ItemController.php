@@ -54,13 +54,19 @@ class ItemController extends Controller
         return $this->repo->delete(request()->all());
     }
 
-    // 【分享】
+    // 【删除】
+    public function shareAction()
+    {
+        return $this->repo->share(request()->all());
+    }
+
+    // 【启用】
     public function enableAction()
     {
         return $this->repo->enable(request()->all());
     }
 
-    // 【取消分享】
+    // 【禁用】
     public function disableAction()
     {
         return $this->repo->disable(request()->all());
