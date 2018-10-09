@@ -82,7 +82,7 @@
 
         var options = {
             language: 'CH', //语言
-            showLunarCalendar: true, //阴历
+            showLunarCalendar: true //阴历
         };
 
         var myCalendar = new SimpleCalendar('#calendar',options);

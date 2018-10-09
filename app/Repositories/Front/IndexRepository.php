@@ -1630,4 +1630,29 @@ class IndexRepository {
 
 
 
+    public function handleScheduleDays($start_time,$end_time)
+    {
+        $data_days = "";
+        $day_start = strtotime(date("Y-n-j",$start_time));
+        for($i=$day_start;$i<=$end_time;$i=$i+(3600*24))
+        {
+            $data_days .= date("Y-m.j",$i)." ";
+        }
+        return $data_days;
+    }
+    public function handleScheduleWeeks($start_time,$end_time)
+    {
+        $data_year_weeks = "";
+        $day_start = strtotime(date("Y-n-j",$start_time));
+        $year_week_start = $day_start - ((date("N",$start_time)-1)*3600*24);
+        for($i=$year_week_start;$i<=$end_time;$i=$i+(3600*24*7))
+        {
+            $data_year_weeks .= date("Y.W",$i)." ";
+        }
+        return $data_year_weeks;
+    }
+
+
+
+
 }

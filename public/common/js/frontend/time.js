@@ -1,7 +1,5 @@
 jQuery( function ($) {
 
-    console.log("time.js");
-
     $("#calendar").on("click", ".sc-item:not(.sc-othermenth)", function() {
         $(".sc-item").removeClass("sc-active-day");
         $(this).addClass("sc-active-day");
@@ -14,7 +12,7 @@ jQuery( function ($) {
 
 function getMonthSchedule($year,$month)
 {
-    console.log($year+"-"+$month);
+    // console.log($year+"-"+$month);
     var result;
     jQuery.ajax
     ({
@@ -32,6 +30,7 @@ function getMonthSchedule($year,$month)
         success:function(data) {
             //result = $.trim(data);
             result = data;//layer.msg(result);
+            console.log(result);
         },
         error: function(xhr, status, error) {
             console.log(xhr);
