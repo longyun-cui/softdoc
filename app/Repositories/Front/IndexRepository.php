@@ -794,6 +794,10 @@ class IndexRepository {
 //            });
 
             $items = $query->pivot_item;
+            foreach ($items as $item)
+            {
+                $item->calendar_days = $this->handleScheduleDays($item->start_time, $item->end_time);
+            }
 
             $html =  view('frontend.'.env('TEMPLATE').'.component.items')->with(['items'=>$items])->__toString();
             return response_success(['html'=>$html]);
@@ -1633,10 +1637,18 @@ class IndexRepository {
     public function handleScheduleDays($start_time,$end_time)
     {
         $data_days = "";
-        $day_start = strtotime(date("Y-n-j",$start_time));
-        for($i=$day_start;$i<=$end_time;$i=$i+(3600*24))
+        if(($start_time != 0) && ($end_time != 0))
         {
-            $data_days .= date("Y-m.j",$i)." ";
+            $day_start = strtotime(date("Y-n-j",$start_time));
+            for($i=$day_start;$i<=$end_time;$i=$i+(3600*24))
+            {
+                $data_days .= "calendar-day-".date("Y-m-j",$i)." ";
+            }
+        }
+        else if(($start_time == 0) || ($end_time == 0))
+        {
+            if($end_time == 0) $data_days .= "calendar-day-".date("Y-m-j", $start_time)." ";
+            if($start_time == 0) $data_days .= "calendar-day-".date("Y-m-j", $end_time)." ";
         }
         return $data_days;
     }
@@ -1647,7 +1659,7 @@ class IndexRepository {
         $year_week_start = $day_start - ((date("N",$start_time)-1)*3600*24);
         for($i=$year_week_start;$i<=$end_time;$i=$i+(3600*24*7))
         {
-            $data_year_weeks .= date("Y.W",$i)." ";
+            $data_year_weeks .= "calendar-week-".date("Y.W",$i)." ";
         }
         return $data_year_weeks;
     }

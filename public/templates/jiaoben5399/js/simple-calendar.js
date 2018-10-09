@@ -363,10 +363,16 @@ var SimpleCalendar = function () {
 
                 // custom 获取日程
                 var $day = $("#calendar").attr('data-day');
+                if(typeof($day) == "undefined")
+                {
+                    $(".sc-today").addClass("sc-active-day");
+                    $("#calendar").attr('data-today',$(".sc-today .day").html());
+                }
                 $(".sc-item:not(.sc-othermenth):contains("+$day+")").addClass("sc-active-day");
 
                 // custom 获取日程
                 var $schedule_id = year+"-"+month;
+                $("#calendar").attr('data-calendar', $schedule_id);
                 if($(".schedule-container").is("#"+$schedule_id))
                 {
                     console.log("is");
@@ -391,6 +397,8 @@ var SimpleCalendar = function () {
                     $(".schedule-container").hide();
                     $schedule_container.show();
                 }
+
+                $(".sc-active-day").find('.day').click();
             }
         },
         {
@@ -733,6 +741,7 @@ var SimpleCalendar = function () {
                 returntoday.onclick = function () {
                     selectYear.value = calendar.tyear;
                     selectMonth.value = calendar.tmonth;
+                    $('#calendar').attr('data-day',$('#calendar').attr('data-today'));
                     calendar.update();
                 };
             }

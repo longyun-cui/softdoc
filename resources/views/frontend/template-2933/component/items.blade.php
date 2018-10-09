@@ -1,5 +1,8 @@
 @foreach($items as $num => $item)
-<div class="item-piece item-option" data-item="{{ $item->id }}">
+<div class="item-piece item-option"
+     data-item="{{ $item->id }}"
+     data-calendar-days="{{ $item->calendar_days or '' }}"
+>
     <!-- BEGIN PORTLET-->
     <div class="panel-default box-default item-entity-container">
 

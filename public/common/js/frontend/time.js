@@ -5,6 +5,12 @@ jQuery( function ($) {
         $(this).addClass("sc-active-day");
         var $day = $(this).find('.day').html();
         $("#calendar").attr('data-day', $day);
+
+        $calendar_id = $("#calendar").attr('data-calendar');
+        console.log($calendar_id);
+
+        $("#"+$calendar_id).find(".item-option").hide();
+        $("#"+$calendar_id).find(".item-option[data-calendar-days*='calendar-day-"+$calendar_id+"-"+$day+"']").show();
     });
 
 });
@@ -30,7 +36,6 @@ function getMonthSchedule($year,$month)
         success:function(data) {
             //result = $.trim(data);
             result = data;//layer.msg(result);
-            console.log(result);
         },
         error: function(xhr, status, error) {
             console.log(xhr);
