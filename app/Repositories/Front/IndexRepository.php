@@ -1072,7 +1072,7 @@ class IndexRepository {
             $insert['user_id'] = $user->id;
             $insert['item_id'] = $item_id;
             $insert['content'] = $post_data['content'];
-            $insert['support'] = $post_data['support'];
+            $insert['support'] = !empty($post_data['support']) ? $post_data['support'] : 0;
 
             DB::beginTransaction();
             try
