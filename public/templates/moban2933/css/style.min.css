@@ -29,7 +29,7 @@ body{
     font-size:14px;
     font-weight:300;
     font-family:"Hiragino Sans GB",'Microsoft yahei',Rubik,sans-serif;
-    line-height:1.8;
+    line-height:1.4;
     color:#7e8890;
     background:#dfdfe1;
     background-image: url(/common/images/bg/background-image.png);
@@ -47,6 +47,7 @@ a{-webkit-transition:.3s all;transition:.3s all;color:#ff7676}
 a:active,a:focus,a:hover{color:#fff;text-decoration:none}
 ul {padding:0;margin:0;}
 li {list-style: none;}
+p {margin: 0 0 4px;}
 
 .family-yahei {font-family:'Microsoft yahei';}
 

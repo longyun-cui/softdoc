@@ -2,7 +2,7 @@
 
 
     {{--评论头部--}}
-    <div class="box-body comment-title-container item-info-row">
+    <div class="item-row comment-title-container">
 
         <a href="{{ url('/user/'.$comment->user->id) }}" target="_blank" class="link">{{ $comment->user->name }}</a>
         @if($comment->support == 1)<span class="text-red">【支持正方】</span>
@@ -38,13 +38,13 @@
 
 
     {{--评论内容--}}
-    <div class="box-body comment-content-container">
-        <p> {{ $comment->content or '' }} </p>
+    <div class="item-row comment-content-container">
+        {{ $comment->content or '' }}
     </div>
 
 
     {{--回复评论--}}
-    <div class="box-body comment-reply-input-container">
+    <div class="item-row comment-reply-input-container">
 
         <div class="input-group margin-10">
             <input type="text" class="form-control comment-reply-content">
@@ -58,7 +58,7 @@
 
 
     {{--回复内容--}}
-    <div class="box-body reply-container">
+    <div class="item-row reply-container">
 
         <div class="reply-list-container">
             {{--@if(count($comment->dialogs))--}}

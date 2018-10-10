@@ -188,31 +188,31 @@
                             <textarea class="comment-textarea" name="content" rows="2" placeholder="请输入你的评论"></textarea>
                         </div>
                         @if($item->category == 7)
-                            <div class="">
-                                <div class="btn-group">
-                                    <button type="button" class="btn">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="support" value="0" checked="checked"> 只评论
-                                            </label>
-                                        </div>
-                                    </button>
-                                    <button type="button" class="btn">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="support" value="1"> 支持正方
-                                            </label>
-                                        </div>
-                                    </button>
-                                    <button type="button" class="btn">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="support" value="2"> 支持反方
-                                            </label>
-                                        </div>
-                                    </button>
-                                </div>
+                        <div class="item-row ">
+                            <div class="btn-group">
+                                <button type="button" class="btn">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="support" value="0" checked="checked"> 只评论
+                                        </label>
+                                    </div>
+                                </button>
+                                <button type="button" class="btn">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="support" value="1"> 支持正方
+                                        </label>
+                                    </div>
+                                </button>
+                                <button type="button" class="btn">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="support" value="2"> 支持反方
+                                        </label>
+                                    </div>
+                                </button>
                             </div>
+                        </div>
                         @endif
                         <div class="comment-button-box">
                             <a href="javascript:void(0);" class="comment-button comment-submit btn-primary" role="button">发 布</a>
