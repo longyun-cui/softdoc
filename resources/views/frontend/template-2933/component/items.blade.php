@@ -21,14 +21,14 @@
                 <ul class="item-plus-list">
 
                     @if(Auth::check() && $item->pivot_item_relation->contains('type', 1))
-                        <li class="remove-this-collection"><i class="fa fa-star-o text-red"></i> 移除收藏</li>
+                        <li class="remove-this-collection"><i class="fa fa-star-o text-red"></i> 移出收藏</li>
                     @else
                         <li class="add-this-collection"><i class="fa fa-star-o"></i> 收藏</li>
                     @endif
 
 
                     @if(Auth::check() && $item->pivot_item_relation->contains('type', 11))
-                        <li class="remove-this-todolist"><i class="fa fa-check-square-o text-red"></i> 移除待办事</li>
+                        <li class="remove-this-todolist"><i class="fa fa-check-square-o text-red"></i> 移出待办事</li>
                     @else
                         <li class="add-this-todolist"><i class="fa fa-check-square-o"></i> 添加到待办事</li>
                     @endif
@@ -36,7 +36,7 @@
 
                     @if($item->time_type == 1)
                         @if(Auth::check() && $item->pivot_item_relation->contains('type', 12))
-                            <li class="remove-this-schedule"><i class="fa fa-calendar-plus-o text-red"></i> 移除日程</li>
+                            <li class="remove-this-schedule"><i class="fa fa-calendar-plus-o text-red"></i> 移出日程</li>
                         @else
                             <li class="add-this-schedule"><i class="fa fa-calendar-plus-o"></i> 添加为日程</li>
                         @endif

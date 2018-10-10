@@ -185,92 +185,6 @@ jQuery( function ($) {
 
 
 
-    // 收藏自己
-    $(".section-body").off("click",".collect-mine").on('click', ".collect-mine", function() {
-        layer.msg('不能收藏自己的', function(){});
-    });
-    // 收藏
-    $(".section-body").off("click",".add-this-collection").on('click', ".add-this-collection", function() {
-        var that = $(this);
-        var item_option = $(this).parents('.item-option');
-
-        layer.msg('确认"收藏"？', {
-            time: 0
-            ,btn: ['确定', '取消']
-            ,yes: function(index){
-                $.post(
-                    "/item/add/collection",
-                    {
-                        _token: $('meta[name="_token"]').attr('content'),
-                        item_id: item_option.attr('data-item'),
-                        type: 1
-                    },
-                    function(data){
-                        if(!data.success) layer.msg(data.msg);
-                        else
-                        {
-                            layer.msg("收藏成功");
-
-                            // var btn = that.parents('.collect-btn');
-                            // var num = parseInt(btn.attr('data-num'));
-                            // num = num + 1;
-                            // btn.attr('data-num',num);
-                            // var html = '<span class="collect-this-cancel"><i class="fa fa-heart text-red"></i> '+num+'</span>';
-                            // btn.html(html);
-                            //
-                            // // item_option.html(data.data.html);
-                        }
-                    },
-                    'json'
-                );
-            }
-        });
-
-    });
-    // 取消收藏
-    $(".section-body").off("click",".remove-this-collection").on('click', ".remove-this-collection", function() {
-        var that = $(this);
-        var item_option = $(this).parents('.item-option');
-
-        layer.msg('取消"收藏"？', {
-            time: 0
-            ,btn: ['确定', '取消']
-            ,yes: function(index){
-                $.post(
-                    "/item/remove/collection",
-                    {
-                        _token: $('meta[name="_token"]').attr('content'),
-                        item_id: item_option.attr('data-item'),
-                        type: 1
-                    },
-                    function(data){
-                        if(!data.success) layer.msg(data.msg);
-                        else
-                        {
-                            layer.closeAll();
-
-                            // var index = parent.layer.getFrameIndex(window.name);
-                            // parent.layer.close(index);
-                            //
-                            // var btn = that.parents('.collect-btn');
-                            // var num = parseInt(btn.attr('data-num'));
-                            // num = num - 1;
-                            // btn.attr('data-num',num);
-                            // if(num == 0) num = '';
-                            // var html = '<span class="collect-this"><i class="fa fa-heart-o"> '+num+'</span>';
-                            // btn.html(html);
-                            //
-                            // // item_option.html(data.data.html);
-                        }
-                    },
-                    'json'
-                );
-            }
-        });
-
-    });
-
-
     // 点赞
     $(".section-body").off("click",".add-this-favor").on('click', ".add-this-favor", function() {
         var that = $(this);
@@ -352,12 +266,104 @@ jQuery( function ($) {
     });
 
 
+    // 收藏自己
+    $(".section-body").off("click",".collect-mine").on('click', ".collect-mine", function() {
+        layer.msg('不能收藏自己的', function(){});
+    });
+    // 收藏
+    $(".section-body").off("click",".add-this-collection").on('click', ".add-this-collection", function() {
+        var that = $(this);
+        var item_option = $(this).parents('.item-option');
+
+        layer.msg('确认"收藏"？', {
+            time: 0
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.post(
+                    "/item/add/collection",
+                    {
+                        _token: $('meta[name="_token"]').attr('content'),
+                        item_id: item_option.attr('data-item'),
+                        type: 1
+                    },
+                    function(data){
+                        if(!data.success) layer.msg(data.msg);
+                        else
+                        {
+                            layer.closeAll();
+                            layer.msg("收藏成功");
+                            that.addClass('remove-this-collection').removeClass('add-this-collection');
+                            that.html('<i class="fa fa-star-o text-red"></i> 移出收藏');
+
+                            // var btn = that.parents('.collect-btn');
+                            // var num = parseInt(btn.attr('data-num'));
+                            // num = num + 1;
+                            // btn.attr('data-num',num);
+                            // var html = '<span class="collect-this-cancel"><i class="fa fa-heart text-red"></i> '+num+'</span>';
+                            // btn.html(html);
+                            //
+                            // // item_option.html(data.data.html);
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
+
+    });
+    // 移出收藏
+    $(".section-body").off("click",".remove-this-collection").on('click', ".remove-this-collection", function() {
+        var that = $(this);
+        var item_option = $(this).parents('.item-option');
+
+        layer.msg('移出"收藏"？', {
+            time: 0
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.post(
+                    "/item/remove/collection",
+                    {
+                        _token: $('meta[name="_token"]').attr('content'),
+                        item_id: item_option.attr('data-item'),
+                        type: 1
+                    },
+                    function(data){
+                        if(!data.success) layer.msg(data.msg);
+                        else
+                        {
+                            layer.closeAll();
+                            layer.msg("移出收藏成功");
+                            that.addClass('add-this-collection').removeClass('remove-this-collection');
+                            that.html('<i class="fa fa-star-o"></i> 收藏');
+
+                            // var index = parent.layer.getFrameIndex(window.name);
+                            // parent.layer.close(index);
+                            //
+                            // var btn = that.parents('.collect-btn');
+                            // var num = parseInt(btn.attr('data-num'));
+                            // num = num - 1;
+                            // btn.attr('data-num',num);
+                            // if(num == 0) num = '';
+                            // var html = '<span class="collect-this"><i class="fa fa-heart-o"> '+num+'</span>';
+                            // btn.html(html);
+                            //
+                            // // item_option.html(data.data.html);
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
+
+    });
+
+
     // 添加待办事
     $(".section-body").off("click",".add-this-todolist").on('click', ".add-this-todolist", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
-        layer.msg('添加待办事？', {
+        layer.msg('添加到"我的待办事"？', {
             time: 0
             ,btn: ['确定', '取消']
             ,yes: function(index){
@@ -372,7 +378,10 @@ jQuery( function ($) {
                         if(!data.success) layer.msg(data.msg);
                         else
                         {
-                            layer.msg("添加成功");
+                            layer.closeAll();
+                            layer.msg("添加待办事成功");
+                            that.addClass('remove-this-todolist').removeClass('add-this-todolist');
+                            that.html('<i class="fa fa-check-square-o text-red"></i> 移出待办事');
                         }
                     },
                     'json'
@@ -381,12 +390,12 @@ jQuery( function ($) {
         });
 
     });
-    // 移除待办事
+    // 移出待办事
     $(".section-body").off("click",".remove-this-todolist").on('click', ".remove-this-todolist", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
-        layer.msg('移除待办事？', {
+        layer.msg('移出"我的待办事"？', {
             time: 0
             ,btn: ['确定', '取消']
             ,yes: function(index){
@@ -402,7 +411,9 @@ jQuery( function ($) {
                         else
                         {
                             layer.closeAll();
-                            layer.msg("");
+                            layer.msg("移出待办事成功");
+                            that.addClass('add-this-todolist').removeClass('remove-this-todolist');
+                            that.html('<i class="fa fa-check-square-o"></i> 添加到待办事');
                         }
                     },
                     'json'
@@ -418,7 +429,7 @@ jQuery( function ($) {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
-        layer.msg('添加日程？', {
+        layer.msg('添加到"我的日程"？', {
             time: 0
             ,btn: ['确定', '取消']
             ,yes: function(index){
@@ -433,7 +444,10 @@ jQuery( function ($) {
                         if(!data.success) layer.msg(data.msg);
                         else
                         {
-                            layer.msg("添加成功");
+                            layer.closeAll();
+                            layer.msg("添加日程成功");
+                            that.addClass('remove-this-schedule').removeClass('add-this-schedule');
+                            that.html('<i class="fa fa-calendar-plus-o text-red"></i> 移出日程');
                         }
                     },
                     'json'
@@ -442,13 +456,13 @@ jQuery( function ($) {
         });
 
     });
-    // 移除日程
+    // 移出日程
     $(".section-body").off("click",".remove-this-schedule").on('click', ".remove-this-schedule", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         console.log(2);
 
-        layer.msg('移除日程？', {
+        layer.msg('移出"我的日程"？', {
             time: 0
             ,btn: ['确定', '取消']
             ,yes: function(index){
@@ -464,7 +478,9 @@ jQuery( function ($) {
                         else
                         {
                             layer.closeAll();
-                            layer.msg("");
+                            layer.msg("移出日程成功");
+                            that.addClass('add-this-schedule').removeClass('remove-this-schedule');
+                            that.html('<i class="fa fa-calendar-plus-o"></i> 添加为日程');
                         }
                     },
                     'json'
