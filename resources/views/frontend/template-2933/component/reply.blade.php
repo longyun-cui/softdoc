@@ -1,7 +1,7 @@
-<div class="colo-md-12 box-body reply-piece reply-option" data-id="{{ encode($reply->id) }}">
+<div class="item-row col-md-12 box-body reply-piece reply-option" data-id="{{ encode($reply->id) }}">
 
     {{--回复头部--}}
-    <div class="box-body reply-title-container">
+    <div class="item-row reply-title-container">
 
         <a href="{{ url('/user/'.$reply->user->id) }}" class="link">{{ $reply->user->name or '' }}</a>
 
@@ -18,7 +18,7 @@
 
 
     {{--回复工具--}}
-    <div class="box-body reply-tools-container item-info-row">
+    <div class="item-row reply-tools-container item-info-row">
 
         <span class="pull-left text-muted disabled">{{ $reply->created_at->format('n月j日 H:i') }}</span>
 
@@ -48,7 +48,7 @@
 
 
     {{--回复输入框--}}
-    <div class="box-body reply-input-container">
+    <div class="item-row reply-input-container">
 
         <div class="input-group margin-10">
             <input type="text" class="form-control reply-content">

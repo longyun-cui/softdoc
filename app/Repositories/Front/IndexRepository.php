@@ -83,7 +83,7 @@ class IndexRepository {
             ])->find($id);
         }
         $items[0] = $item;
-        return view('frontend.component.items')->with(['items'=>$items])->__toString();
+        return view('frontend.'.env('TEMPLATE').'.component.items')->with(['items'=>$items])->__toString();
     }
 
 
@@ -433,7 +433,7 @@ class IndexRepository {
                     'user',
                     'forward_item'=>function($query) { $query->with('user'); },
                     'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-                ])->wherePivot('type',11)->orderby('pivot_user_item.id','desc'); }
+                ])->wherePivot('type',31)->orderby('pivot_user_item.id','desc'); }
             ])->find($user_id);
             $items = $query->pivot_item;
 
@@ -499,7 +499,7 @@ class IndexRepository {
                 'pivot_item'=>function($query) use($user_id) { $query->with([
                     'user',
                     'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-                ])->wherePivot('type',1)->orderby('pivot_user_item.id','desc'); }
+                ])->wherePivot('type',21)->orderby('pivot_user_item.id','desc'); }
             ])->find($user_id);
             $items = $query->pivot_item;
         }
@@ -529,7 +529,7 @@ class IndexRepository {
                     'user',
                     'forward_item'=>function($query) { $query->with('user'); },
                     'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-                ])->wherePivot('type',9)->orderby('pivot_user_item.id','desc'); }
+                ])->wherePivot('type',11)->orderby('pivot_user_item.id','desc'); }
             ])->find($user_id);
             $items = $query->pivot_item;
         }
@@ -647,6 +647,49 @@ class IndexRepository {
 
 
 
+
+    // 【好友圈】
+    public function view_home_notification($post_data)
+    {
+        if(Auth::check())
+        {
+            $me = Auth::user();
+            $me_id = $me->id;
+        }
+        else $me_id = 0;
+
+        $notifications = Notification::with([
+            'source',
+            'item'=>function($query) {
+                $query->with([
+                    'user',
+                    'forward_item'=>function($query) { $query->with('user'); }
+                ]);
+            },
+            'communication'=>function($query) { $query->with(['user']); },
+            'reply'=>function($query) {
+                $query->with([
+                    'user',
+                    'reply'=>function($query) { $query->with('user'); }
+                ]);
+            }
+        ])->where(['type'=>11,'user_id'=>$me_id])->orderBy('id','desc')->get();
+
+//        dd($notifications->toArray());
+
+//        foreach ($items as $item)
+//        {
+//            $item->custom_decode = json_decode($item->custom);
+//            $item->content_show = strip_tags($item->content);
+//            $item->img_tags = get_html_img($item->content);
+//        }
+//
+        return view('frontend.entrance.root-notification')->with(['notifications'=>$notifications,'root_notification_active'=>'active']);
+    }
+
+
+
+
     // 【内容详情】
     public function view_item($post_data,$id=0)
     {
@@ -742,6 +785,7 @@ class IndexRepository {
 
 
 
+
     // 【获取日程】
     public function ajax_get_schedule($post_data)
     {
@@ -775,7 +819,7 @@ class IndexRepository {
                 'pivot_item'=>function($query) use($user_id,$start,$end) { $query->with([
                     'user',
                     'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-                ])->wherePivot('type',12)->where(function ($query) use($start,$end) {
+                ])->wherePivot('type',32)->where(function ($query) use($start,$end) {
                     $query
                         ->where(function ($query) use($start,$end) {$query->where('start_time', '>=', $start)->where('start_time', '<=', $end);})
                         ->orWhere(function ($query) use($start,$end) {$query->where('end_time', '>=', $start)->where('end_time', '<=', $end);})
@@ -808,6 +852,7 @@ class IndexRepository {
 
 
 
+
     // 【添加】
     public function item_add_this($post_data,$type=0)
     {
@@ -831,45 +876,83 @@ class IndexRepository {
             $item = RootItem::find($item_id);
             if($item)
             {
-                $user = Auth::user();
-                $pivot = Pivot_User_Item::where(['type'=>$type,'user_id'=>$user->id,'item_id'=>$item_id])->first();
+                $me = Auth::user();
+                $pivot = Pivot_User_Item::where(['type'=>$type,'user_id'=>$me->id,'item_id'=>$item_id])->first();
                 if(!$pivot)
                 {
                     DB::beginTransaction();
                     try
                     {
                         $time = time();
-                        $user->pivot_item()->attach($item_id,['type'=>$type,'created_at'=>$time,'updated_at'=>$time]);
+                        $me->pivot_item()->attach($item_id,['type'=>$type,'created_at'=>$time,'updated_at'=>$time]);
+//
 
-                        $item->timestamps = false;
-                        $item->increment('favor_num');
+                        // 记录机制 Communication
+                        if($type == 11)
+                        {
+                            // 点赞
+                            $item->timestamps = false;
+                            $item->increment('favor_num');
+                            $communication_insert['type'] = 11;
+                            $communication_insert['sort'] = 1;
+                        }
+                        else if($type == 21)
+                        {
+                            // 添加收藏
+                            $item->timestamps = false;
+                            $item->increment('collection_num');
+                            $communication_insert['type'] = 21;
+                            $communication_insert['sort'] = 1;
+                        }
+                        else if($type == 31)
+                        {
+                            // 添加待办
+                            $item->timestamps = false;
+                            $item->increment('working_num');
+                            $communication_insert['type'] = 31;
+                            $communication_insert['sort'] = 1;
+                        }
+                        else if($type == 32)
+                        {
+                            // 添加日程
+                            $item->timestamps = false;
+                            $item->increment('agenda_num');
+                            $communication_insert['type'] = 32;
+                            $communication_insert['sort'] = 1;
+                        }
+
+                        $communication_insert['user_id'] = $item->user_id;
+                        $communication_insert['source_id'] = $me->id;
+                        $communication_insert['item_id'] = $item_id;
+
+                        $communication = new Communication;
+                        $bool = $communication->fill($communication_insert)->save();
+                        if(!$bool) throw new Exception("insert--communication--fail");
 
 
-//                        $insert['type'] = 3;
-//                        $insert['user_id'] = $user->id;
-//                        $insert['item_id'] = $item_id;
-//
-//                        $communication = new Communication;
-//                        $bool = $communication->fill($insert)->save();
-//                        if(!$bool) throw new Exception("insert--communication--fail");
-//
-////                    通知对方
-//                        if($item->user_id != $user->id)
-//                        {
-//                            $notification_insert['type'] = 8;
-//                            $notification_insert['sort'] = 3;
-//                            $notification_insert['user_id'] = $item->user_id;
-//                            $notification_insert['source_id'] = $user->id;
-//                            $notification_insert['item_id'] = $item_id;
-//                            $notification_insert['comment_id'] = $communication->id;
-//
-//                            $notification = new Notification;
-//                            $bool = $notification->fill($notification_insert)->save();
-//                            if(!$bool) throw new Exception("insert--notification--fail");
-//                        }
-//
+                        // 通知机制 Communication
+                        if($type == 11)
+                        {
+                            // 点赞
+                            if($item->user_id != $me->id)
+                            {
+                                $notification_insert['type'] = 11;
+                                $notification_insert['sort'] = 11;
+                                $notification_insert['user_id'] = $item->user_id;
+                                $notification_insert['source_id'] = $me->id;
+                                $notification_insert['item_id'] = $item_id;
+
+                                $notification_once = Notification::where($notification_insert)->first();
+                                if(!$notification_once)
+                                {
+                                    $notification = new Notification;
+                                    $bool = $notification->fill($notification_insert)->save();
+                                    if(!$bool) throw new Exception("insert--notification--fail");
+                                }
+                            }
+                        }
+
 //                        $html['html'] = $this->view_item_html($item_id);
-
 
                         DB::commit();
                         return response_success([]);
@@ -878,17 +961,17 @@ class IndexRepository {
                     {
                         DB::rollback();
                         $msg = '操作失败，请重试！';
-//                        $msg = $e->getMessage();
+                        $msg = $e->getMessage();
 //                        exit($e->getMessage());
                         return response_fail([],$msg);
                     }
                 }
                 else
                 {
-                    if($type == 1) $msg = '已经收藏过了';
-                    else if($type == 9) $msg = '成功点赞';
-                    else if($type == 11) $msg = '已经在待办事列表';
-                    else if($type == 12) $msg = '已经在日程列表';
+                    if($type == 11) $msg = '成功点赞';
+                    else if($type == 21) $msg = '已经收藏过了';
+                    else if($type == 31) $msg = '已经在待办事列表';
+                    else if($type == 32) $msg = '已经在日程列表';
                     else $msg = '';
                     return response_fail(['reason'=>'exist'],$msg);
                 }
@@ -921,26 +1004,58 @@ class IndexRepository {
             $item = RootItem::find($item_id);
             if($item)
             {
-                $user = Auth::user();
-                $pivots = Pivot_User_Item::where(['type'=>$type,'user_id'=>$user->id,'item_id'=>$item_id])->get();
+                $me = Auth::user();
+                $pivots = Pivot_User_Item::where(['type'=>$type,'user_id'=>$me->id,'item_id'=>$item_id])->get();
                 if(count($pivots) > 0)
                 {
                     DB::beginTransaction();
                     try
                     {
-                        $num = Pivot_User_Item::where(['type'=>$type,'user_id'=>$user->id,'item_id'=>$item_id])->delete();
+                        $num = Pivot_User_Item::where(['type'=>$type,'user_id'=>$me->id,'item_id'=>$item_id])->delete();
                         if($num != count($pivots)) throw new Exception("delete--pivots--fail");
 
-                        $item->timestamps = false;
-                        $item->decrement('favor_num');
+                        // 记录机制 Communication
+                        if($type == 11)
+                        {
+                            // 移除点赞
+                            $item->timestamps = false;
+                            $item->decrement('favor_num');
+                            $communication_insert['type'] = 11;
+                            $communication_insert['sort'] = 9;
+                        }
+                        else if($type == 21)
+                        {
+                            // 移除收藏
+                            $item->timestamps = false;
+                            $item->decrement('collection_num');
+                            $communication_insert['type'] = 21;
+                            $communication_insert['sort'] = 9;
+                        }
+                        else if($type == 31)
+                        {
+                            // 移除待办
+                            $item->timestamps = false;
+                            $item->decrement('working_num');
+                            $communication_insert['type'] = 31;
+                            $communication_insert['sort'] = 9;
+                        }
+                        else if($type == 32)
+                        {
+                            // 移除日程
+                            $item->timestamps = false;
+                            $item->decrement('agenda_num');
+                            $communication_insert['type'] = 32;
+                            $communication_insert['sort'] = 9;
+                        }
 
-//                        $insert['type'] = 4;
-//                        $insert['user_id'] = $user->id;
-//                        $insert['item_id'] = $item_id;
-//
-//                        $communication = new Communication;
-//                        $bool = $communication->fill($insert)->save();
-//                        if(!$bool) throw new Exception("insert--communication--fail");
+                        $communication_insert['user_id'] = $item->user_id;
+                        $communication_insert['source_id'] = $me->id;
+                        $communication_insert['item_id'] = $item_id;
+
+                        $communication = new Communication;
+                        $bool = $communication->fill($communication_insert)->save();
+                        if(!$bool) throw new Exception("insert--communication--fail");
+
 //
 //                        $html['html'] = $this->view_item_html($item_id);
 
@@ -958,10 +1073,10 @@ class IndexRepository {
                 }
                 else
                 {
-                    if($type == 1) $msg = '移除收藏成功';
-                    else if($type == 9) $msg = '';
-                    else if($type == 11) $msg = '移除待办事成功';
-                    else if($type == 12) $msg = '移除日程成功';
+                    if($type == 11) $msg = '';
+                    else if($type == 21) $msg = '移除收藏成功';
+                    else if($type == 31) $msg = '移除待办事成功';
+                    else if($type == 32) $msg = '移除日程成功';
                     else $msg = '';
                     return response_fail(['reason'=>'exist'],$msg);
                 }
@@ -1043,6 +1158,7 @@ class IndexRepository {
 
 
 
+
     // 添加评论
     public function item_comment_save($post_data)
     {
@@ -1064,15 +1180,17 @@ class IndexRepository {
 
         if(Auth::check())
         {
+            $me = Auth::user();
+            $me_id = $me->id;
+
             $item_id = $post_data['item_id'];
             if(!is_numeric($item_id)) return response_error([],"参数有误，刷新一下试试");
 
-            $user = Auth::user();
-            $insert['type'] = $post_data['type'];
-            $insert['user_id'] = $user->id;
-            $insert['item_id'] = $item_id;
-            $insert['content'] = $post_data['content'];
-            $insert['support'] = !empty($post_data['support']) ? $post_data['support'] : 0;
+            $communication_insert['type'] = 1;
+            $communication_insert['user_id'] = $me_id;
+            $communication_insert['item_id'] = $item_id;
+            $communication_insert['content'] = $post_data['content'];
+            $communication_insert['support'] = !empty($post_data['support']) ? $post_data['support'] : 0;
 
             DB::beginTransaction();
             try
@@ -1084,18 +1202,18 @@ class IndexRepository {
                 $item->increment('comment_num');
 
                 $communication = new Communication;
-                $bool = $communication->fill($insert)->save();
+                $bool = $communication->fill($communication_insert)->save();
                 if(!$bool) throw new Exception("insert--communication--fail");
 
-//                通知对方
-                if($item->user_id != $user->id)
+                // 通知对方
+                if($item->user_id != $me_id)
                 {
-                    $notification_insert['type'] = 8;
+                    $notification_insert['type'] = 11;
                     $notification_insert['sort'] = 1;
                     $notification_insert['user_id'] = $item->user_id;
-                    $notification_insert['source_id'] = $user->id;
+                    $notification_insert['source_id'] = $me_id;
                     $notification_insert['item_id'] = $item_id;
-                    $notification_insert['comment_id'] = $communication->id;
+                    $notification_insert['communication_id'] = $communication->id;
 
                     $notification = new Notification;
                     $bool = $notification->fill($notification_insert)->save();
@@ -1111,8 +1229,8 @@ class IndexRepository {
             {
                 DB::rollback();
                 $msg = '添加失败，请重试！';
-                $msg = $e->getMessage();
-//                exit($e->getMessage());
+//                $msg = $e->getMessage();
+//                exit($e->getMessage());、
                 return response_fail([], $msg);
             }
         }
@@ -1151,9 +1269,9 @@ class IndexRepository {
 //                'dialogs'=>function($query) use ($user_id) { $query->with([
 //                    'user',
 //                    'reply'=>function($query1) { $query1->with(['user']); },
-//                    'favors'=>function($query) use ($user_id)  { $query->where(['type'=>5,'user_id'=>$user_id]); }
+//                    'favors'=>function($query) use ($user_id)  { $query->where(['type'=>11,'user_id'=>$user_id]); }
 //                ])->orderBy('id','desc'); },
-                'favors'=>function($query) use ($user_id) { $query->where(['type'=>5,'user_id'=>$user_id]); }
+                'favors'=>function($query) use ($user_id) { $query->where(['type'=>11,'user_id'=>$user_id]); }
             ])->withCount('dialogs')
             ->where(['type'=>$type,'reply_id'=>0,'item_id'=>$item_id]);
         }
@@ -1300,6 +1418,9 @@ class IndexRepository {
 
         if(Auth::check())
         {
+            $me = Auth::user();
+            $me_id = $me->id;
+
             $item_id = $post_data['item_id'];
             if(!is_numeric($item_id)) return response_error([],"参数有误，刷新一下试试");
 
@@ -1307,12 +1428,11 @@ class IndexRepository {
             $comment_decode = decode($comment_encode);
             if(!$comment_decode) return response_error([],"参数有误，刷新一下试试！");
 
-            $user = Auth::user();
-            $insert['type'] = $post_data['type'];
-            $insert['user_id'] = $user->id;
-            $insert['item_id'] = $item_id;
-            $insert['reply_id'] = $comment_decode;
-            $insert['content'] = $post_data['content'];
+            $communication_insert['type'] = 1;
+            $communication_insert['user_id'] = $me_id;
+            $communication_insert['item_id'] = $item_id;
+            $communication_insert['reply_id'] = $comment_decode;
+            $communication_insert['content'] = $post_data['content'];
 
             DB::beginTransaction();
             try
@@ -1330,29 +1450,29 @@ class IndexRepository {
 
                 if($comment->dialog_id)
                 {
-                    $insert['dialog_id'] = $comment->dialog_id;
-                    $dialog = Communication::find($insert['dialog_id']);
+                    $communication_insert['dialog_id'] = $comment->dialog_id;
+                    $dialog = Communication::find($communication_insert['dialog_id']);
                     $dialog->timestamps = false;
                     $dialog->increment('comment_num');
                 }
                 else
                 {
-                    $insert['dialog_id'] = $comment_decode;
+                    $communication_insert['dialog_id'] = $comment_decode;
                 }
 
                 $communication = new Communication;
-                $bool = $communication->fill($insert)->save();
+                $bool = $communication->fill($communication_insert)->save();
                 if(!$bool) throw new Exception("insert--communication--fail");
 
-//                通知对方
-                if($comment->user_id != $user->id)
+                // 通知对方
+                if($comment->user_id != $me_id)
                 {
-                    $notification_insert['type'] = 8;
+                    $notification_insert['type'] = 11;
                     $notification_insert['sort'] = 2;
                     $notification_insert['user_id'] = $comment->user_id;
-                    $notification_insert['source_id'] = $user->id;
+                    $notification_insert['source_id'] = $me_id;
                     $notification_insert['item_id'] = $item_id;
-                    $notification_insert['comment_id'] = $communication->id;
+                    $notification_insert['communication_id'] = $communication->id;
                     $notification_insert['reply_id'] = $comment->id;
 
                     $notification = new Notification;
@@ -1369,7 +1489,7 @@ class IndexRepository {
             {
                 DB::rollback();
                 $msg = '添加失败，请重试！';
-                $msg = $e->getMessage();
+//                $msg = $e->getMessage();
 //                exit($e->getMessage());
                 return response_fail([], $msg);
             }
@@ -1412,7 +1532,7 @@ class IndexRepository {
             $comments = Communication::with([
                 'user',
                 'reply'=>function($query) { $query->with(['user']); },
-                'favors'=>function($query) use ($user_id) { $query->where(['type'=>5,'user_id'=>$user_id]); }
+                'favors'=>function($query) use ($user_id) { $query->where(['type'=>11,'user_id'=>$user_id]); }
             ])->where(['type'=>$type,'item_id'=>$item_id,'dialog_id'=>$comment_decode])
                 ->where('reply_id','<>',0);
         }
@@ -1470,6 +1590,9 @@ class IndexRepository {
 
         if(Auth::check())
         {
+            $me = Auth::user();
+            $me_id = $me->id;
+
             $item_id = $post_data['item_id'];
             if(!is_numeric($item_id)) return response_error([],"参数有误，刷新一下试试");
 
@@ -1477,11 +1600,10 @@ class IndexRepository {
             $comment_decode = decode($comment_encode);
             if(!$comment_decode) return response_error([],"参数有误，刷新一下试试！");
 
-            $user = Auth::user();
-            $insert['type'] = $post_data['type'];
-            $insert['user_id'] = $user->id;
-            $insert['item_id'] = $item_id;
-            $insert['reply_id'] = $comment_decode;
+            $communication_insert['type'] = 11;
+            $communication_insert['user_id'] = $me_id;
+            $communication_insert['item_id'] = $item_id;
+            $communication_insert['reply_id'] = $comment_decode;
 
             DB::beginTransaction();
             try
@@ -1489,27 +1611,25 @@ class IndexRepository {
                 $item = RootItem::find($item_id);
                 if(!$item) return response_error([],"该内容不存在，刷新一下试试");
 
-                $item->timestamps = false;
-                $item->increment('favor_num');
-
                 $comment = Communication::find($comment_decode);
                 if(!$comment) return response_error([],"该评论不存在，刷新一下试试！");
+
                 $comment->timestamps = false;
                 $comment->increment('favor_num');
 
                 $communication = new Communication;
-                $bool = $communication->fill($insert)->save();
+                $bool = $communication->fill($communication_insert)->save();
                 if(!$bool) throw new Exception("insert--communication--fail");
 
 //                通知对方
-                if($comment->user_id != $user->id)
+                if($comment->user_id != $me_id)
                 {
-                    $notification_insert['type'] = 8;
-                    $notification_insert['sort'] = 5;
+                    $notification_insert['type'] = 11;
+                    $notification_insert['sort'] = 12;
                     $notification_insert['user_id'] = $comment->user_id;
-                    $notification_insert['source_id'] = $user->id;
+                    $notification_insert['source_id'] = $me_id;
                     $notification_insert['item_id'] = $item_id;
-                    $notification_insert['comment_id'] = $communication->id;
+                    $notification_insert['communication_id'] = $communication->id;
                     $notification_insert['reply_id'] = $comment_decode;
 
                     $notification = new Notification;
@@ -1553,6 +1673,9 @@ class IndexRepository {
 
         if(Auth::check())
         {
+            $me = Auth::user();
+            $me_id = $me->id;
+
             $item_id = $post_data['item_id'];
             if(!is_numeric($item_id)) return response_error([],"参数有误，刷新一下试试");
 
@@ -1560,40 +1683,37 @@ class IndexRepository {
             $comment_decode = decode($comment_encode);
             if(!$comment_decode) return response_error([],"参数有误，刷新一下试试！");
 
-                DB::beginTransaction();
-                try
+            DB::beginTransaction();
+            try
+            {
+                $comment = Communication::find($comment_decode);
+                if(!$comment && $comment->user_id != $me_id) return response_error([],"参数有误，刷新一下试试");
+                $comment->decrement('favor_num');
+
+                $favors = Communication::where([
+                    'type'=>11,
+                    'user_id'=>$me_id,
+                    'item_id'=>$item_id,
+                    'reply_id'=>$comment_decode
+                ]);
+                $count = count($favors->get());
+                if($count)
                 {
-                    $user = Auth::user();
-                    $user_id = $user->id;
-
-                    $comment = Communication::find($comment_decode);
-                    if(!$comment && $comment->user_id != $user_id) return response_error([],"参数有误，刷新一下试试");
-                    $comment->decrement('favor_num');
-
-                    $favors = Communication::where([
-                        'type'=>5,
-                        'user_id'=>$user_id,
-                        'item_id'=>$item_id,
-                        'reply_id'=>$comment_decode
-                    ]);
-                    $count = count($favors->get());
-                    if($count)
-                    {
-                        $num = $favors->delete();
-                        if($num != $count) throw new Exception("delete--commnucation--fail");
-                    }
-
-                    DB::commit();
-                    return response_success();
+                    $num = $favors->delete();
+                    if($num != $count) throw new Exception("delete--commnucation--fail");
                 }
-                catch (Exception $e)
-                {
-                    DB::rollback();
-                    $msg = '操作失败，请重试！';
+
+                DB::commit();
+                return response_success();
+            }
+            catch (Exception $e)
+            {
+                DB::rollback();
+                $msg = '操作失败，请重试！';
 //                    $msg = $e->getMessage();
 //                    exit($e->getMessage());
-                    return response_fail([], $msg);
-                }
+                return response_fail([], $msg);
+            }
 
         }
         else return response_error([],"请先登录！");
@@ -1652,6 +1772,7 @@ class IndexRepository {
         }
         return $data_days;
     }
+
     public function handleScheduleWeeks($start_time,$end_time)
     {
         $data_year_weeks = "";

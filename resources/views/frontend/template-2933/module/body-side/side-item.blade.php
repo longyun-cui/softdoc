@@ -3,7 +3,7 @@
 
     <ul>
         <div class="side-info">
-            <a href="{{ url('/user/'.encode($item->user->id)) }}">
+            <a href="{{ url('/user/'.$item->user->id) }}">
                 <div class="box-body main-side-hover">
                     <img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt="">
                     <span><b>{{ $item->user->name or '' }}</b></span>

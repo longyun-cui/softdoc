@@ -100,4 +100,17 @@
         </li>
     </ul>
 </div>
+
+
+<div class="main-side-block main-side-container">
+    <ul>
+        <li class="{{ $root_notification_active or '' }}">
+            <a href="{{url('/home/notification')}}">
+                <div class="box-body main-side-hover">
+                    <i class="fa fa-bell"></i> <span> 消息</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
 {{--<!-- END: module -->--}}

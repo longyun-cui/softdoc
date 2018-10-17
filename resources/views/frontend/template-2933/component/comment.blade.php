@@ -1,4 +1,4 @@
-<div class="colo-md-12 box-body comment-piece comment-option" style="padding:8px 8px;" data-id="{{encode($comment->id)}}">
+<div class="item-row col-md-12 box-body comment-piece comment-option" style="padding:8px 8px;" data-id="{{encode($comment->id)}}">
 
 
     {{--评论头部--}}
@@ -38,7 +38,7 @@
 
 
     {{--评论内容--}}
-    <div class="item-row comment-content-container">
+    <div class="item-row comment-content-container margin-bottom-8">
         {{ $comment->content or '' }}
     </div>
 
@@ -60,7 +60,7 @@
     {{--回复内容--}}
     <div class="item-row reply-container">
 
-        <div class="reply-list-container">
+        <div class="item-row reply-list-container">
             {{--@if(count($comment->dialogs))--}}
                 {{--@foreach($comment->dialogs as $reply)--}}
                     {{--@component('frontend.component.reply',['reply'=>$reply])--}}
@@ -70,7 +70,7 @@
         </div>
 
         @if($comment->dialogs_count)
-            <div class="box-body more-box reply-more-box replies-more" role="button"
+            <div class="item-row more-box reply-more-box replies-more" role="button"
                     data-more="{{$comment->dialog_more}}"
                     data-maxId="{{$comment->dialog_max_id}}"
                     data-minId="{{$comment->dialog_min_id}}"

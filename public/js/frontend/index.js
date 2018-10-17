@@ -862,7 +862,7 @@ jQuery( function ($) {
             "/item/comment/favor/save",
             {
                 _token: $('meta[name="_token"]').attr('content'),
-                type: 5,
+                type: 11,
                 item_id: item_id,
                 comment_id: comment_id
             },
@@ -899,7 +899,7 @@ jQuery( function ($) {
             "/item/comment/favor/cancel",
             {
                 _token: $('meta[name="_token"]').attr('content'),
-                type: 5,
+                type: 11,
                 item_id: item_id,
                 comment_id: comment_id
             },

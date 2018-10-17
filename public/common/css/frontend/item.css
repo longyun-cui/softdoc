@@ -1,12 +1,12 @@
 .item-piece {
     position:relative;
-    display: block;
     width:100%;
-    height:auto;
+    min-height:32px;
     padding:32px;
     margin-bottom:16px;
     color:#444;
     background:#fff;
+    float:left;
 }
 
 .item-piece a { color:#888; }
@@ -14,13 +14,28 @@
 .item-piece .pull-left { margin-right:8px; }
 .item-piece .pull-right { margin-left:8px; }
 
-.item-entity-container {
-    position:relative;
-    display: block;
-    width:100%;
-    height:auto;
+.item-portrait-container {
+    width:48px;
+    height:48px;
+    overflow:hidden;
+    float:left;
 }
-.item-row { width:100%; margin-bottom:8px; }
+.item-portrait-container img { width:100%; height:100%; border-radius:50%; }
+.item-portrait-container:hover img { border-radius:4px; }
+
+.item-entity-container { width:100%; height:auto; float:right; }
+.item-entity-container.with-portrait {
+    width:-webkit-calc(100% - 64px);
+    width:-moz-calc(100% - 64px);
+    width:calc(100% - 64px);
+}
+.item-row { position:relative; width:100%; float:left; }
+
+.item-user-portrait { width:20px; height:20px; margin-top:-2px; margin-right:8px; border-radius:50%; overflow:hidden; float:left;}
+.item-user-portrait img { width:100%; height:100%; border-radius:50%;}
+
+.user-link { color:#eb7350; }
+.item-piece a.user-link { color:#eb7350; }
 
 .item-info-row {
     height:16px;
@@ -59,7 +74,7 @@
 .item-plus-button:hover { color:#ff7676; }
 
 
-.item-plus-list { display:none; position:absolute; top:-8px; left:16px; padding:8px; box-shadow:0 0 1px 1px #ff7676; background:#fff; }
+.item-plus-list { display:none; position:absolute; top:-8px; left:16px; padding:8px; box-shadow:0 0 1px 1px #ff7676; background:#fff; z-index:99; }
 .item-plus-list li { display:block; min-width:128px; line-height:24px; padding:4px; border-bottom:1px dotted #eee; float:left; }
 .item-plus-list li:hover { color:#ff7676; font-weight:bold; }
 
@@ -245,6 +260,8 @@ a.link { color:#3c8dbc; }
 
 }
 
+.item-comment-container { height:auto; padding:8px; background:#eee; }
+
 .forward-item-container { height:64px; padding:8px; background:#eee; }
 .portrait-box { width:48px; height:48px; background:#fff; overflow:hidden; float:left;  }
 .portrait-box img { width:100%; height:100%; overflow: hidden;  }
@@ -256,6 +273,7 @@ a.link { color:#3c8dbc; }
 
 .item-piece .forward-item-container { margin-bottom:16px; }
 .item-piece .forward-item-container:hover { background:#ddd; }
+.item-piece .item-comment-container:hover { background:#ddd; }
 
 
 .modal-dialog { margin: 80px auto; }

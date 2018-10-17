@@ -2,10 +2,12 @@
 <div class="main-side-block main-side-container">
     <ul>
         <div class="side-info">
-            <div class="box-body main-side-hover">
-                <img src="{{ url(env('DOMAIN_CDN').'/'.$data->portrait_img) }}" alt="">
-                <span><b>{{ $data->name or '' }}</b></span>
-            </div>
+            <a href="{{ url('/user/'.$data->id) }}">
+                <div class="box-body main-side-hover">
+                    <img src="{{ url(env('DOMAIN_CDN').'/'.$data->portrait_img) }}" alt="">
+                    <span><b>{{ $data->name or '' }}</b></span>
+                </div>
+            </a>
         </div>
         <div class="side-follow">
             <div class="side-follow-box pull-left">

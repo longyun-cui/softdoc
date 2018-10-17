@@ -4,10 +4,16 @@
      data-calendar-days="{{ $item->calendar_days or '' }}"
 >
     <!-- BEGIN PORTLET-->
-    <div class="panel-default box-default item-entity-container">
+    <div class="panel-default box-default item-portrait-container">
+        <a href="{{ url('/user/'.$item->user->id) }}">
+            <img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt="">
+        </a>
+    </div>
+
+    <div class="panel-default box-default item-entity-container with-portrait">
 
         {{--header--}}
-        <div class="item-row item-info-row text-muted">
+        <div class="item-row item-info-row text-muted margin-bottom-8">
             <span class="item-user-portrait _none"><img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt=""></span>
             <span class="item-user-name"><a href="{{ url('/user/'.$item->user->id) }}"><b>{{ $item->user->name or '' }}</b></a></span>
             {{--<span> • </span>--}}
@@ -20,14 +26,14 @@
                 <i class="fa fa-plus-square-o item-plus-button"></i>
                 <ul class="item-plus-list">
 
-                    @if(Auth::check() && $item->pivot_item_relation->contains('type', 1))
+                    @if(Auth::check() && $item->pivot_item_relation->contains('type', 21))
                         <li class="remove-this-collection"><i class="fa fa-star-o text-red"></i> 移出收藏</li>
                     @else
                         <li class="add-this-collection"><i class="fa fa-star-o"></i> 收藏</li>
                     @endif
 
 
-                    @if(Auth::check() && $item->pivot_item_relation->contains('type', 11))
+                    @if(Auth::check() && $item->pivot_item_relation->contains('type', 31))
                         <li class="remove-this-todolist"><i class="fa fa-check-square-o text-red"></i> 移出待办事</li>
                     @else
                         <li class="add-this-todolist"><i class="fa fa-check-square-o"></i> 添加到待办事</li>
@@ -35,7 +41,7 @@
 
 
                     @if($item->time_type == 1)
-                        @if(Auth::check() && $item->pivot_item_relation->contains('type', 12))
+                        @if(Auth::check() && $item->pivot_item_relation->contains('type', 32))
                             <li class="remove-this-schedule"><i class="fa fa-calendar-plus-o text-red"></i> 移出日程</li>
                         @else
                             <li class="add-this-schedule"><i class="fa fa-calendar-plus-o"></i> 添加为日程</li>
@@ -49,7 +55,7 @@
 
 
         @if($item->time_type == 1)
-        <div class="item-row item-info-row">
+        <div class="item-row item-info-row margin-bottom-8">
             @if(!empty($item->start_time))
                 <b class="text-blue">{{ time_show($item->start_time) }}</b>
             @endif
@@ -61,7 +67,7 @@
         @endif
 
         @if($item->category != 99)
-        <div class="item-row item-title-row">
+        <div class="item-row item-title-row margin-bottom-8">
             <a href="{{ url('/item/'.$item->id) }}"><b class="item-title">{{ $item->title or '' }}</b></a>
         </div>
         @endif
@@ -83,7 +89,7 @@
         {{--@endif--}}
 
         {{--content--}}
-        <div class="item-row item-content-row">
+        <div class="item-row item-content-row margin-bottom-8">
             <div class="media">
                 <div class="media-left">
                     @if(!empty($item->cover_pic))
@@ -113,7 +119,7 @@
         @if($item->category == 99)
             @if(!empty($item->forward_item))
             <a href="{{ url('/item/'.$item->forward_item->id) }}" target="_blank">
-                <div class="forward-item-container" role="button">
+                <div class="item-row forward-item-container" role="button">
                     <div class="portrait-box"><img src="{{ url(env('DOMAIN_CDN').'/'.$item->forward_item->user->portrait_img) }}" alt=""></div>
                     <div class="text-box">
                         <div class="text-row forward-item-title">{{ $item->forward_item->title or '' }}</div>
@@ -122,7 +128,7 @@
                 </div>
             </a>
             @else
-                <div class="forward-item-container" role="button" style="line-height:40px;text-align:center;">
+                <div class="item-row forward-item-container" role="button" style="line-height:40px;text-align:center;">
                     内容被作者删除或取消分享。
                 </div>
             @endif
@@ -158,13 +164,12 @@
 
                 {{--点赞--}}
                 <a class="margin operate-btn" role="button" data-num="{{ $item->favor_num or 0 }}">
-                    @if(Auth::check() && $item->pivot_item_relation->contains('type', 9))
+                    @if(Auth::check() && $item->pivot_item_relation->contains('type', 11))
                         <span class="remove-this-favor" title="取消赞"><i class="fa fa-thumbs-up text-red"></i>(<num>{{ $item->favor_num }}</num>)</span>
                     @else
                         <span class="add-this-favor" title="点赞"><i class="fa fa-thumbs-o-up"></i>(<num>{{ $item->favor_num }}</num>)</span>
                     @endif
                 </a>
-
 
             </div>
 
@@ -252,12 +257,12 @@
 
 
             {{--评论列表--}}
-            <div class="comment-entity-container">
+            <div class="item-row comment-entity-container">
 
-                <div class="comment-list-container">
+                <div class="item-row comment-list-container">
                 </div>
 
-                <div class="more-box">
+                <div class="item-row more-box">
                     <a href="{{ url('/item/'.$item->id) }}" target="_blank">
                         <span class="item-more">没有更多了</span>
                     </a>

@@ -65,6 +65,15 @@ class IndexController extends Controller
 
 
 
+    // 【我的好友圈】
+    public function view_home_notification()
+    {
+        return $this->repo->view_home_notification(request()->all());
+    }
+
+
+
+
     // 【内容详情】
     public function view_item($id=0)
     {
@@ -130,41 +139,41 @@ class IndexController extends Controller
     // 【收藏】
     public function item_add_collection()
     {
-        return $this->repo->item_add_this(request()->all(),1);
+        return $this->repo->item_add_this(request()->all(),21);
     }
     public function item_remove_collection()
     {
-        return $this->repo->item_remove_this(request()->all(),1);
+        return $this->repo->item_remove_this(request()->all(),21);
     }
 
     // 【点赞】
     public function item_add_favor()
     {
-        return $this->repo->item_add_this(request()->all(),9);
+        return $this->repo->item_add_this(request()->all(),11);
     }
     public function item_remove_favor()
     {
-        return $this->repo->item_remove_this(request()->all(),9);
+        return $this->repo->item_remove_this(request()->all(),11);
     }
 
     // 【待办事】
     public function item_add_todolist()
     {
-        return $this->repo->item_add_this(request()->all(),11);
+        return $this->repo->item_add_this(request()->all(),31);
     }
     public function item_remove_todolist()
     {
-        return $this->repo->item_remove_this(request()->all(),11);
+        return $this->repo->item_remove_this(request()->all(),31);
     }
 
     // 【日程】
     public function item_add_schedule()
     {
-        return $this->repo->item_add_this(request()->all(),12);
+        return $this->repo->item_add_this(request()->all(),32);
     }
     public function item_remove_schedule()
     {
-        return $this->repo->item_remove_this(request()->all(),12);
+        return $this->repo->item_remove_this(request()->all(),32);
     }
 
 

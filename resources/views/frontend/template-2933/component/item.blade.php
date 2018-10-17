@@ -1,13 +1,19 @@
+@if($item->category != 99)
 <div class="item-piece item-option item" data-item="{{ $item->id }}">
+    <div class="panel-default box-default item-portrait-container">
+        <a href="{{ url('/user/'.$item->user->id) }}">
+            <img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt="">
+        </a>
+    </div>
     <div class="panel-default box-default item-entity-container">
 
-        <div class="item-row item-title-row">
+        <div class="item-row item-title-row margin-bottom-8">
             <span class="item-user-portrait _none"><img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt=""></span>
             <span class="item-user-name _none"><a href="{{ url('/user/'.$item->user->id) }}">{{ $item->user->name or '' }}</a></span>
             <b class="item-title">{{ $item->title or '' }}</b>
         </div>
 
-        <div class="item-row item-info-row text-muted">
+        <div class="item-row item-info-row text-muted margin-bottom-8">
             {{--<span> • {{ $item->created_at->format('n月j日 H:i') }}</span>--}}
             <span>{{ time_show($item->created_at) }}</span>
             <span> • </span>
@@ -17,7 +23,7 @@
             <span> • </span>
             {{--点赞--}}
             <a class="operate-btn" role="button" data-num="{{ $item->favor_num or 0 }}">
-                @if(Auth::check() && $item->pivot_item_relation->contains('type', 9))
+                @if(Auth::check() && $item->pivot_item_relation->contains('type', 11))
                     <span class="remove-this-favor" title="取消赞"><i class="fa fa-thumbs-up text-red"></i>(<num>{{ $item->favor_num }}</num>)</span>
                 @else
                     <span class="add-this-favor" title="点赞"><i class="fa fa-thumbs-o-up"></i>(<num>{{ $item->favor_num }}</num>)</span>
@@ -36,9 +42,19 @@
 
     </div>
 </div>
+@endif
 
 
 <div class="item-piece item-option item" data-item="{{ $item->id }}">
+
+    @if($item->category == 99)
+    <div class="panel-default box-default item-portrait-container _none">
+        <a href="{{ url('/user/'.$item->user->id) }}">
+            <img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt="">
+        </a>
+    </div>
+    @endif
+
     <div class="item-entity-container">
 
         {{--description--}}
@@ -50,7 +66,42 @@
 
         {{--content--}}
         <div class="item-row item-content-row">
-            <article class="colo-md-12"> {!! $item->content or '' !!} </article>
+
+            @if($item->category == 99)
+                <article class="item-row colo-md-12 multi-ellipsis-3- margin-bottom-8" style="">{{{ $item->content or '' }}}</article>
+                @if(!empty($item->forward_item))
+                    <a href="{{ url('/item/'.$item->forward_item->id) }}" target="_blank">
+                        <div class="item-row forward-item-container" role="button">
+                            <div class="portrait-box"><img src="{{ url(env('DOMAIN_CDN').'/'.$item->forward_item->user->portrait_img) }}" alt=""></div>
+                            <div class="text-box">
+                                <div class="text-row forward-item-title">{{ $item->forward_item->title or '' }}</div>
+                                <div class="text-row forward-user-name">{{ '@'.$item->forward_item->user->name }}</div>
+                            </div>
+                        </div>
+                    </a>
+                @else
+                    <div class="item-row forward-item-container" role="button" style="line-height:40px;text-align:center;">
+                        内容被作者删除或取消分享。
+                    </div>
+                @endif
+                <div class="item-row item-info-row text-muted">
+                    {{--<span> • {{ $item->created_at->format('n月j日 H:i') }}</span>--}}
+                    <span>{{ time_show($item->created_at) }}</span>
+                    <span> • </span>
+                    <span>阅读({{ $item->visit_num }})</span>
+                    <span> • </span>
+                    {{--点赞--}}
+                    <a class="operate-btn" role="button" data-num="{{ $item->favor_num or 0 }}">
+                        @if(Auth::check() && $item->pivot_item_relation->contains('type', 11))
+                            <span class="remove-this-favor" title="取消赞"><i class="fa fa-thumbs-up text-red"></i>(<num>{{ $item->favor_num }}</num>)</span>
+                        @else
+                            <span class="add-this-favor" title="点赞"><i class="fa fa-thumbs-o-up"></i>(<num>{{ $item->favor_num }}</num>)</span>
+                        @endif
+                    </a>
+                </div>
+            @else
+                <article class="colo-md-12"> {!! $item->content or '' !!} </article>
+            @endif
         </div>
 
 
@@ -66,14 +117,14 @@
 
 
 <div class="item-piece item-option item" data-item="{{ $item->id }}">
-    <div class="item-entity-container">
+    <div class="item-row item-entity-container">
 
         {{--comment--}}
         <div class="item-row comment-container">
 
             <input type="hidden" class="comments-get comments-get-default">
 
-            <div class="comment-input-container">
+            <div class="item-row comment-input-container">
                 <form action="" method="post" class="form-horizontal form-bordered item-comment-form">
 
                     {{csrf_field()}}
@@ -149,12 +200,12 @@
 
 
             {{--评论列表--}}
-            <div class="comment-entity-container">
+            <div class="item-row comment-entity-container">
 
-                <div class="comment-list-container">
+                <div class="item-row comment-list-container">
                 </div>
 
-                <div class="more-box">
+                <div class="item-row more-box">
                     <a href="javascript:void(0);"><span class="item-more">没有更多了</span></a>
                 </div>
 

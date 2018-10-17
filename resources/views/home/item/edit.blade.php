@@ -361,10 +361,10 @@
 
 
         $('input[name=start_time]').datetimepicker({
-            format:"YYYY-MM-DD HH:mm:ss"
+            format:"YYYY-MM-DD HH:mm"
         });
         $('input[name=end_time]').datetimepicker({
-            format:"YYYY-MM-DD HH:mm:ss"
+            format:"YYYY-MM-DD HH:mm"
         });
 
     });
