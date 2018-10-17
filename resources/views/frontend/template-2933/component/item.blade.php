@@ -1,6 +1,6 @@
 @if($item->category != 99)
 <div class="item-piece item-option item" data-item="{{ $item->id }}">
-    <div class="panel-default box-default item-portrait-container">
+    <div class="panel-default box-default item-portrait-container _none">
         <a href="{{ url('/user/'.$item->user->id) }}">
             <img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt="">
         </a>
