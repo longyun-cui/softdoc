@@ -20,8 +20,8 @@ class NotificationMiddleware
     public function handle($request, Closure $next)
     {
         // 执行动作
-        $user = Auth::user();
-        $count = Notification::where(['is_read'=>0,'type'=>8,'user_id'=>$user->id])->count();
+        $me = Auth::user();
+        $count = Notification::where(['is_read'=>0,'type'=>11,'user_id'=>$me->id])->count();
         if(!$count) $count = '';
         view()->share('notification_count', $count);
 

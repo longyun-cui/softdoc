@@ -108,6 +108,7 @@
             <a href="{{url('/home/notification')}}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-bell"></i> <span> 消息</span>
+                    <span class="pull-right">@if(!empty($notification_count)) {{ $notification_count }} @endif</span>
                 </div>
             </a>
         </li>

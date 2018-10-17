@@ -90,21 +90,27 @@ Route::group(['namespace' => 'Front'], function () {
 
             $controller = "IndexController";
 
-            Route::get('/home/todolist', $controller.'@view_home_todolist');
-            Route::get('/home/schedule', $controller.'@view_home_schedule');
-
-            Route::get('/home/collection', $controller.'@view_home_collection');
-            Route::get('/home/favor', $controller.'@view_home_favor');
-
-            Route::get('/home/discovery', $controller.'@view_home_discovery');
-            Route::get('/home/follow', $controller.'@view_home_follow');
-            Route::get('/home/circle', $controller.'@view_home_circle');
-
             Route::get('/home/notification', $controller.'@view_home_notification');
 
+            Route::group(['middleware' => 'notification'], function () {
 
-            Route::get('/home/relation/follow', $controller.'@view_relation_follow');
-            Route::get('/home/relation/fans', $controller.'@view_relation_fans');
+                $controller = "IndexController";
+
+                Route::get('/home/todolist', $controller.'@view_home_todolist');
+                Route::get('/home/schedule', $controller.'@view_home_schedule');
+
+                Route::get('/home/collection', $controller.'@view_home_collection');
+                Route::get('/home/favor', $controller.'@view_home_favor');
+
+                Route::get('/home/discovery', $controller.'@view_home_discovery');
+                Route::get('/home/follow', $controller.'@view_home_follow');
+                Route::get('/home/circle', $controller.'@view_home_circle');
+
+
+                Route::get('/home/relation/follow', $controller.'@view_relation_follow');
+                Route::get('/home/relation/fans', $controller.'@view_relation_fans');
+
+            });
 
         });
 

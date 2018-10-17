@@ -39,15 +39,17 @@ class IndexRepository {
 
         if(Auth::check())
         {
-            $user = Auth::user();
-            $user_id = $user->id;
+            $me = Auth::user();
+            $me_id = $me->id;
+            $notification_count = Notification::where(['user_id'=>$me_id,'is_read'=>0])->count();
+            view()->share('notification_count',$notification_count);
         }
-        else $user_id = 0;
+        else $me_id = 0;
 
         $items = RootItem::with([
             'user',
             'forward_item'=>function($query) { $query->with('user'); },
-            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+            'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
         ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
 //        dd($items->toArray());
 
@@ -658,22 +660,50 @@ class IndexRepository {
         }
         else $me_id = 0;
 
-        $notifications = Notification::with([
-            'source',
-            'item'=>function($query) {
-                $query->with([
-                    'user',
-                    'forward_item'=>function($query) { $query->with('user'); }
-                ]);
-            },
-            'communication'=>function($query) { $query->with(['user']); },
-            'reply'=>function($query) {
-                $query->with([
-                    'user',
-                    'reply'=>function($query) { $query->with('user'); }
-                ]);
-            }
-        ])->where(['type'=>11,'user_id'=>$me_id])->orderBy('id','desc')->get();
+        $count = Notification::where(['is_read'=>0,'type'=>11,'user_id'=>$me_id])->count();
+        if($count)
+        {
+            $notifications = Notification::with([
+                'source',
+                'item'=>function($query) {
+                    $query->with([
+                        'user',
+                        'forward_item'=>function($query) { $query->with('user'); }
+                    ]);
+                },
+                'communication'=>function($query) { $query->with(['user']); },
+                'reply'=>function($query) {
+                    $query->with([
+                        'user',
+                        'reply'=>function($query) { $query->with('user'); }
+                    ]);
+                }
+            ])->where(['type'=>11,'is_read'=>0,'user_id'=>$me_id])->orderBy('id','desc')->get();
+
+            $update_num = Notification::where(['type'=>11,'is_read'=>0,'user_id'=>$me_id])->update(['is_read'=>1]);
+            view()->share('notification_type', 'new');
+        }
+        else
+        {
+            $notifications = Notification::with([
+                'source',
+                'item'=>function($query) {
+                    $query->with([
+                        'user',
+                        'forward_item'=>function($query) { $query->with('user'); }
+                    ]);
+                },
+                'communication'=>function($query) { $query->with(['user']); },
+                'reply'=>function($query) {
+                    $query->with([
+                        'user',
+                        'reply'=>function($query) { $query->with('user'); }
+                    ]);
+                }
+            ])->where(['type'=>11,'user_id'=>$me_id])->orderBy('id','desc')->paginate(10);
+            view()->share('notification_type', 'paginate');
+        }
+
 
 //        dd($notifications->toArray());
 

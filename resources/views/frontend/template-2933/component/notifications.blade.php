@@ -1,8 +1,5 @@
 @foreach($notifications as $num => $item)
-<div class="item-piece item-option"
-     data-item="{{ $item->id }}"
-     data-calendar-days="{{ $item->calendar_days or '' }}"
->
+<div class="item-piece item-option" data-notification="{{ $item->id }}">
     <!-- BEGIN PORTLET-->
     <div class="panel-default box-default item-portrait-container">
         <a href="{{ url('/user/'.$item->source->id) }}">
@@ -172,24 +169,12 @@
                 </form>
             </div>
 
-
-            {{--评论列表--}}
-            <div class="comment-entity-container">
-
-                <div class="comment-list-container">
-                </div>
-
-                <div class="more-box">
-                    <a href="{{ url('/item/'.$item->id) }}" target="_blank">
-                        <span class="item-more">没有更多了</span>
-                    </a>
-                </div>
-
-            </div>
-
         </div>
 
     </div>
     <!-- END PORTLET-->
 </div>
 @endforeach
+@if($notification_type == "paginate")
+    {{{ $notifications->links() }}}
+@endif
