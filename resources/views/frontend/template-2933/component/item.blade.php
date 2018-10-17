@@ -32,10 +32,10 @@
         </div>
 
         @if($item->category == 7)
-            <div class="box-body item-info-row">
+            <div class="item-row item-info-row">
                 <b class="text-red">【正方】 {{ $item->custom_decode->positive }}</b>
             </div>
-            <div class="box-body item-info-row">
+            <div class="item-row item-info-row">
                 <b class="text-blue">【反方】 {{ $item->custom_decode->negative }}</b>
             </div>
         @endif
@@ -106,7 +106,7 @@
 
 
         @if($item->category == 11)
-        <div class="box-footer navigation-box">
+        <div class="item-row navigation-box">
             <div class="colo-md-12 prev-content"><span class="label">上一篇:</span> <span class="a-box"></span> </div>
             <div class="colo-md-12 next-content"><span class="label">下一篇:</span> <span class="a-box"></span></div>
         </div>
