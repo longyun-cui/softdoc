@@ -13,6 +13,27 @@
             <b class="item-title">{{ $item->title or '' }}</b>
         </div>
 
+        @if($item->time_type == 1)
+            <div class="item-row item-info-row margin-bottom-8">
+                @if(!empty($item->start_time))
+                    <b class="text-blue">{{ time_show($item->start_time) }}</b>
+                @endif
+                @if(!empty($item->end_time))
+                    &nbsp;&nbsp;<b>--</b>&nbsp;&nbsp;
+                    <b class="text-blue">{{ time_show($item->end_time) }}</b>
+                @endif
+            </div>
+        @endif
+
+        @if($item->category == 7)
+            <div class="item-row item-info-row">
+                <b class="text-red">【正方】 {{ $item->custom_decode->positive }}</b>
+            </div>
+            <div class="item-row item-info-row">
+                <b class="text-blue">【反方】 {{ $item->custom_decode->negative }}</b>
+            </div>
+        @endif
+
         <div class="item-row item-info-row text-muted margin-bottom-8">
             {{--<span> • {{ $item->created_at->format('n月j日 H:i') }}</span>--}}
             <span>{{ time_show($item->created_at) }}</span>
@@ -30,15 +51,6 @@
                 @endif
              </a>
         </div>
-
-        @if($item->category == 7)
-            <div class="item-row item-info-row">
-                <b class="text-red">【正方】 {{ $item->custom_decode->positive }}</b>
-            </div>
-            <div class="item-row item-info-row">
-                <b class="text-blue">【反方】 {{ $item->custom_decode->negative }}</b>
-            </div>
-        @endif
 
     </div>
 </div>
