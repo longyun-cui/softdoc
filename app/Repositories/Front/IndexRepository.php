@@ -50,7 +50,8 @@ class IndexRepository {
             'user',
             'forward_item'=>function($query) { $query->with('user'); },
             'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
-        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
+        ])->where('is_shared','>=',99)->orderBy('id','desc')->paginate(20);
+        view()->share('items_type','paginate');
 //        dd($items->toArray());
 
         foreach ($items as $item)
@@ -650,7 +651,7 @@ class IndexRepository {
 
 
 
-    // 【好友圈】
+    // 【消息提醒】
     public function view_home_notification($post_data)
     {
         if(Auth::check())

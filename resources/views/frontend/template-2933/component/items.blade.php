@@ -276,3 +276,8 @@
     <!-- END PORTLET-->
 </div>
 @endforeach
+@if(!empty($items_type))
+    @if($items_type == 'paginate')
+        {{{ $items->links() }}}
+    @endif
+@endif
