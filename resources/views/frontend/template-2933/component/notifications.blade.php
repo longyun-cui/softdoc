@@ -18,6 +18,8 @@
                 <span>评论了你的文章</span>
             @elseif($item->sort == 2)
                 <span>回复了你的评论</span>
+            @elseif($item->sort == 3)
+                <span>回复评论</span>
             @elseif($item->sort == 11)
                 <span></span>
             @elseif($item->sort == 12)
@@ -38,18 +40,20 @@
 
         <div class="item-row item-content-row margin-top-8 margin-bottom-8">
         @if($item->sort == 1)
-                {{{ $item->communication->content or '' }}}
+            {{{ $item->communication->content or '' }}}
         @elseif($item->sort == 2)
-                {{--<span>回复</span>--}}
-                {{--<a href="{{ url('/user/'.$item->reply->user->id) }}" target="_blank" class="user-link">--}}
-                    {{--{{ $item->reply->user->name }}--}}
-                {{--</a>--}}
-                {{--<span>:</span>--}}
-                {{--<span>{{ $item->communication->content or '' }}</span>--}}
+            {{--<span>回复</span>--}}
+            {{--<a href="{{ url('/user/'.$item->reply->user->id) }}" target="_blank" class="user-link">--}}
+                {{--{{ $item->reply->user->name }}--}}
+            {{--</a>--}}
+            {{--<span>:</span>--}}
+            {{--<span>{{ $item->communication->content or '' }}</span>--}}
         @elseif($item->sort == 11)
-                <span>给你点赞 <i class="fa fa-thumbs-o-up text-red"></i></span>
+            <span>给你点赞 <i class="fa fa-thumbs-o-up text-red"></i></span>
         @elseif($item->sort == 12)
-                <span>赞了你的评论 <i class="fa fa-thumbs-o-up text-red"></i></span>
+            <span>赞了你的评论 <i class="fa fa-thumbs-o-up text-red"></i></span>
+        @elseif($item->sort == 13)
+            <span>赞了评论 <i class="fa fa-thumbs-o-up text-red"></i></span>
         @else
             <span></span>
         @endif
@@ -76,7 +80,7 @@
                         @endif
                     </div>
                 </div>
-                @if($item->sort == 2 || $item->sort == 12)
+                @if(in_array($item->sort, [2,3,12,13]))
                 <div class="item-row item-comment-container" role="button" style="margin-top:-8px;">
                     <div class="">
                         <span class="user-link"><b>{{ $item->reply->user->name or '' }}</b></span>
@@ -89,7 +93,7 @@
                     </div>
                 </div>
                 @endif
-                @if($item->sort == 2)
+                @if(in_array($item->sort, [2,3]))
                 <div class="item-row item-comment-container margin-top-4" role="button">
                     <div class="">
                         <span class="user-link"><b>{{ $item->source->name or '' }}</b></span>

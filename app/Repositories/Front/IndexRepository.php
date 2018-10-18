@@ -1497,16 +1497,31 @@ class IndexRepository {
                 // 通知对方
                 if($comment->user_id != $me_id)
                 {
-                    $notification_insert['type'] = 11;
-                    $notification_insert['sort'] = 2;
-                    $notification_insert['user_id'] = $comment->user_id;
-                    $notification_insert['source_id'] = $me_id;
-                    $notification_insert['item_id'] = $item_id;
-                    $notification_insert['communication_id'] = $communication->id;
-                    $notification_insert['reply_id'] = $comment->id;
+                    $notification_insert_1['type'] = 11;
+                    $notification_insert_1['sort'] = 2;
+                    $notification_insert_1['user_id'] = $comment->user_id;
+                    $notification_insert_1['source_id'] = $me_id;
+                    $notification_insert_1['item_id'] = $item_id;
+                    $notification_insert_1['communication_id'] = $communication->id;
+                    $notification_insert_1['reply_id'] = $comment->id;
 
-                    $notification = new Notification;
-                    $bool = $notification->fill($notification_insert)->save();
+                    $notification_1 = new Notification;
+                    $bool = $notification_1->fill($notification_insert_1)->save();
+                    if(!$bool) throw new Exception("insert--notification--fail");
+                }
+
+                if(($item->user_id != $me_id) && ($item->user_id != $comment->user_id))
+                {
+                    $notification_insert_2['type'] = 11;
+                    $notification_insert_2['sort'] = 3;
+                    $notification_insert_2['user_id'] = $item->user_id;
+                    $notification_insert_2['source_id'] = $me_id;
+                    $notification_insert_2['item_id'] = $item_id;
+                    $notification_insert_2['communication_id'] = $communication->id;
+                    $notification_insert_2['reply_id'] = $comment->id;
+
+                    $notification_2 = new Notification;
+                    $bool = $notification_2->fill($notification_insert_2)->save();
                     if(!$bool) throw new Exception("insert--notification--fail");
                 }
 
@@ -1654,16 +1669,31 @@ class IndexRepository {
 //                通知对方
                 if($comment->user_id != $me_id)
                 {
-                    $notification_insert['type'] = 11;
-                    $notification_insert['sort'] = 12;
-                    $notification_insert['user_id'] = $comment->user_id;
-                    $notification_insert['source_id'] = $me_id;
-                    $notification_insert['item_id'] = $item_id;
-                    $notification_insert['communication_id'] = $communication->id;
-                    $notification_insert['reply_id'] = $comment_decode;
+                    $notification_insert_1['type'] = 11;
+                    $notification_insert_1['sort'] = 12;
+                    $notification_insert_1['user_id'] = $comment->user_id;
+                    $notification_insert_1['source_id'] = $me_id;
+                    $notification_insert_1['item_id'] = $item_id;
+                    $notification_insert_1['communication_id'] = $communication->id;
+                    $notification_insert_1['reply_id'] = $comment_decode;
 
-                    $notification = new Notification;
-                    $bool = $notification->fill($notification_insert)->save();
+                    $notification_1 = new Notification;
+                    $bool = $notification_1->fill($notification_insert_1)->save();
+                    if(!$bool) throw new Exception("insert--notification--fail");
+                }
+
+                if(($item->user_id != $me_id) && ($item->user_id != $comment->user_id))
+                {
+                    $notification_insert_2['type'] = 11;
+                    $notification_insert_2['sort'] = 13;
+                    $notification_insert_2['user_id'] = $item->user_id;
+                    $notification_insert_2['source_id'] = $me_id;
+                    $notification_insert_2['item_id'] = $item_id;
+                    $notification_insert_2['communication_id'] = $communication->id;
+                    $notification_insert_2['reply_id'] = $comment->id;
+
+                    $notification_2 = new Notification;
+                    $bool = $notification_2->fill($notification_insert_2)->save();
                     if(!$bool) throw new Exception("insert--notification--fail");
                 }
 
