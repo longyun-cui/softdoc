@@ -27,29 +27,4 @@
     </ul>
 
 </div>
-
-
-
-<div class="main-side-block hidden-xs hidden-sm">
-
-    <ul>
-        <li>
-            <a href="{{url('/discovery')}}">
-                <div class="box-body main-side-hover">
-                    <i class="fa fa-globe text-orange"></i> <span> 发现</span>
-
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="{{url('/home/circle')}}">
-                <div class="box-body main-side-hover">
-                    <i class="fa fa-globe text-orange"></i> <span> 好友圈</span>
-                </div>
-            </a>
-        </li>
-    </ul>
-
-
-</div>
 {{--<!-- END: module -->--}}

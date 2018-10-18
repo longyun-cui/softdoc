@@ -29,7 +29,7 @@
             <div class="item-row item-info-row">
                 <b class="text-red">【正方】 {{ $item->custom_decode->positive }}</b>
             </div>
-            <div class="item-row item-info-row">
+            <div class="item-row item-info-row margin-bottom-8">
                 <b class="text-blue">【反方】 {{ $item->custom_decode->negative }}</b>
             </div>
         @endif
@@ -57,6 +57,7 @@
 @endif
 
 
+@if(($item->category != 99) && (!empty($item->content)) && (!empty($item->description)))
 <div class="item-piece item-option item" data-item="{{ $item->id }}">
 
     @if($item->category == 99)
@@ -69,18 +70,18 @@
 
     <div class="item-entity-container">
 
-        {{--description--}}
-        {{--@if(!empty($item->description))--}}
-        {{--<div class="box-body item-description-row">--}}
-        {{--<div class="colo-md-12 text-muted"> {!! $item->description or '' !!} </div>--}}
-        {{--</div>--}}
-        {{--@endif--}}
-
         {{--content--}}
         <div class="item-row item-content-row">
 
+            {{--description--}}
+            @if(!empty($item->description))
+                <div class="item-row item-description-row">
+                    <div class="colo-md-12 text-muted"> {{ $item->description or '' }} </div>
+                </div>
+            @endif
+
             @if($item->category == 99)
-                <article class="item-row colo-md-12 multi-ellipsis-3- margin-bottom-8" style="">{{{ $item->content or '' }}}</article>
+                <article class="item-row colo-md-12 multi-ellipsis-3- margin-bottom-8" style="">{!! $item->content or '' !!}</article>
                 @if(!empty($item->forward_item))
                     <a href="{{ url('/item/'.$item->forward_item->id) }}" target="_blank">
                         <div class="item-row forward-item-container" role="button">
@@ -125,7 +126,9 @@
         @endif
 
     </div>
+
 </div>
+@endif
 
 
 <div class="item-piece item-option item" data-item="{{ $item->id }}">
