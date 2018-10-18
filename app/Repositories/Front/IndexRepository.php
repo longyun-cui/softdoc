@@ -142,6 +142,66 @@ class IndexRepository {
         }
 //        dd($lines->toArray());
 
+        view()->share('user_root_active','active');
+        return view('frontend.entrance.user')->with(['data'=>$user,'items'=>$items]);
+    }
+    // 用户首页
+    public function view_user_original($post_data,$id=0)
+    {
+//        $user_encode = $id;
+//        $user_decode = decode($user_encode);
+//        if(!$user_decode) return view('frontend.404');
+
+        $user_id = $id;
+
+        $user = User::with([
+            'items'=>function($query) { $query->orderBy('id','desc'); }
+        ])->withCount('items')->find($user_id);
+
+        if(!$user) return view('frontend.errors.404');
+
+        $user->timestamps = false;
+        $user->increment('visit_num');
+
+        if(Auth::check())
+        {
+            $me = Auth::user();
+            $me_id = $me->id;
+            $items = RootItem::with([
+                'user',
+                'forward_item'=>function($query) { $query->with('user'); },
+                'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
+            ])->where('user_id',$user_id)
+                ->where('category','<>',99)
+                ->where('is_shared','>=',99)
+                ->orderBy('id','desc')->get();
+
+            if($user_id != $me_id)
+            {
+                $relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                view()->share(['relation'=>$relation]);
+            }
+        }
+        else
+        {
+            $items = RootItem::with([
+                'user',
+                'forward_item'=>function($query) { $query->with('user'); }
+            ])->where('user_id',$user_id)
+                ->where('category','<>',99)
+                ->where('is_shared','>=',99)
+                ->orderBy('id','desc')->get();
+        }
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+//        dd($lines->toArray());
+
+        view()->share('user_original_active','active');
         return view('frontend.entrance.user')->with(['data'=>$user,'items'=>$items]);
     }
 

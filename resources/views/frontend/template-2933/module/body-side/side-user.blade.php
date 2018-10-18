@@ -25,4 +25,24 @@
         </div>
     </ul>
 </div>
+
+
+<div class="main-side-block main-side-container">
+    <ul>
+        <li class="{{ $user_root_active or '' }}">
+            <a href="{{ url('/user/'.$data->id) }}">
+                <div class="box-body main-side-hover">
+                    <i class="fa fa-home"></i> <span> 主页</span>
+                </div>
+            </a>
+        </li>
+        <li class="{{ $user_original_active or '' }}">
+            <a href="{{ url('/user/'.$data->id.'/original') }}">
+                <div class="box-body main-side-hover">
+                    <i class="fa fa-globe"></i> <span> 原创内容</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
 {{--<!-- END: module -->--}}

@@ -117,6 +117,7 @@ Route::group(['namespace' => 'Front'], function () {
         Route::get('item/{id?}', $controller.'@view_item');
 
         Route::get('user/{id?}', $controller.'@view_user');
+        Route::get('user/{id?}/original', $controller.'@view_user_original');
         Route::get('user/{id?}/follow', $controller.'@view_user_follow');
         Route::get('user/{id?}/fans', $controller.'@view_user_fans');
 

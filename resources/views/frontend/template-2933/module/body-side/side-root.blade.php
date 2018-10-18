@@ -78,21 +78,21 @@
 <div class="main-side-block main-side-container">
     <ul>
         <li class="{{ $root_discovery_active or '' }}">
-            <a href="{{url('/home/discovery')}}">
+            <a href="{{ url('/home/discovery') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-globe"></i> <span> 发现</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_follow_active or '' }}">
-            <a href="{{url('/home/follow')}}">
+            <a href="{{ url('/home/follow') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-globe"></i> <span> 关注的</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_circle_active or '' }}">
-            <a href="{{url('/home/circle')}}">
+            <a href="{{ url('/home/circle') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-globe"></i> <span> 好友圈</span>
                 </div>
@@ -105,7 +105,7 @@
 <div class="main-side-block main-side-container">
     <ul>
         <li class="{{ $root_notification_active or '' }}">
-            <a href="{{url('/home/notification')}}">
+            <a href="{{ url('/home/notification') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-bell"></i> <span> 消息</span>
                     <span class="pull-right">@if(!empty($notification_count)) {{ $notification_count }} @endif</span>

@@ -87,6 +87,10 @@ class IndexController extends Controller
     {
         return $this->repo->view_user(request()->all(),$id);
     }
+    public function view_user_original($id=0)
+    {
+        return $this->repo->view_user_original(request()->all(),$id);
+    }
     public function view_user_follow($id=0)
     {
         return $this->repo->view_user_follow(request()->all(),$id);
