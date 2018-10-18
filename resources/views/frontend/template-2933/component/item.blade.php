@@ -14,12 +14,12 @@
         </div>
 
         @if($item->time_type == 1)
-            <div class="item-row item-info-row margin-bottom-8">
+            <div class="item-row item-content-row margin-bottom-8">
                 @if(!empty($item->start_time))
                     <b class="text-blue">{{ time_show($item->start_time) }}</b>
                 @endif
                 @if(!empty($item->end_time))
-                    &nbsp;&nbsp;<b>--</b>&nbsp;&nbsp;
+                    &nbsp;<b class="font-12px">至</b>&nbsp;
                     <b class="text-blue">{{ time_show($item->end_time) }}</b>
                 @endif
             </div>
