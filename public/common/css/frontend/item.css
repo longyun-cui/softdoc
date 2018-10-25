@@ -55,6 +55,7 @@
     font-size:18px;
 }
 .item-title-row a { color:#444; font-size:16px; }
+.item-description-row { background:#eee; padding:8px; margin-bottom:8px; }
 
 .item-content-row {
     color:#666;
@@ -85,7 +86,8 @@
 
 
 .recursion-item a { font-weight:bold; }
-.navigation-box .label { margin-right:0; color:#aaa; font-size:12px; }
+.navigation-box { margin-top:8px; }
+.navigation-box .label { margin-right:0; color:#aaa; font-size:12px; text-align:left; padding:0; }
 .navigation-box .a-box { color:#999; }
 .navigation-box .a-box a { color:#444; font-weight:500; }
 .navigation-box .a-box a:hover { color:#ff7676;; font-weight:bold; }

@@ -34,6 +34,7 @@
                             <th>名称</th>
                             <th>类型</th>
                             <th>分享</th>
+                            <th>浏览数</th>
                             <th>创建时间</th>
                             <th>修改时间</th>
                             <th>内容管理</th>
@@ -41,6 +42,7 @@
                         </tr>
                         <tr>
                             <td><input type="text" class="form-control" name="title" /></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -139,6 +141,13 @@
                         }
                     },
                     {
+                        'data': 'visit_num',
+                        'orderable': true,
+                        render: function(data, type, row, meta) {
+                            return data;
+                        }
+                    },
+                    {
                         'data': 'created_at',
                         'orderable': true,
                         render: function(data) {
@@ -167,7 +176,7 @@
                                 return '<a href="/home/item/content/timeline?id='+data+'"><button type="button" class="btn btn-sm bg-purple">时间点管理</button></a>';
                             }
                             else {
-                                return '';
+                                return '<a href="/home/item/edit?id='+data+'"><button type="button" class="btn btn-sm bg-purple">编辑</button></li>';
                             }
                         }
                     },
@@ -197,14 +206,17 @@
                                 shared_html = share_none_html + share_follow_html;
                             }
 
-                            var content_html = '';
-                            if(row.category == 11) {
-                                content_html = '<li><a href="/home/item/content/menutype?id='+data+'">内容管理</a></li>';
-                            }
-
+                            var menutype_html = '';
                             var timeline_html = '';
-                            if(row.category == 18) {
+                            var edit_html = '';
+                            if(row.category == 11) {
+                                menutype_html = '<li><a href="/home/item/content/menutype?id='+data+'">内容管理</a></li>';
+                            }
+                            else if(row.category == 18) {
                                 timeline_html = '<li><a href="/home/item/content/timeline?id='+data+'">管理时间点</a></li>';
+                            }
+                            else {
+                                edit_html = '<li><a href="/home/item/edit?id='+data+'">编辑</a></li>';
                             }
 
                             var html =
@@ -215,9 +227,10 @@
                                 '<span class="sr-only">Toggle Dropdown</span>'+
                                 '</button>'+
                                 '<ul class="dropdown-menu" role="menu">'+
-                                '<li><a href="/home/item/edit?id='+data+'">编辑</a></li>'+
+//                                '<li><a href="/home/item/edit?id='+data+'">编辑</a></li>'+
 //                                '<li><a href="/home/item/content?id='+data+'">内容管理</a></li>'+
-                                content_html+
+                                edit_html+
+                                menutype_html+
                                 timeline_html+
                                 shared_html+
 //                                active_html+

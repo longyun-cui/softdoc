@@ -57,7 +57,7 @@
 @endif
 
 
-@if(($item->category != 99) && (!empty($item->content)) && (!empty($item->description)))
+@if(($item->category != 99) && ( (!empty($item->content)) || (!empty($item->description))) )
 <div class="item-piece item-option item" data-item="{{ $item->id }}">
 
     @if($item->category == 99)
@@ -120,8 +120,8 @@
 
         @if($item->category == 11)
         <div class="item-row navigation-box">
-            <div class="colo-md-12 prev-content"><span class="label">上一篇:</span> <span class="a-box"></span> </div>
-            <div class="colo-md-12 next-content"><span class="label">下一篇:</span> <span class="a-box"></span></div>
+            <div class="item-row prev-content"><span class="label">上一篇:</span> <span class="a-box"></span> </div>
+            <div class="item-row next-content"><span class="label">下一篇:</span> <span class="a-box"></span></div>
         </div>
         @endif
 

@@ -31,6 +31,13 @@
             </div>
 
             <div class="box-body" id="content-structure-list">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="input-group" data-id='{{$data->id}}' style="margin-top:4px;margin-bottom:12px;">
+                        <span class="input-group-addon"><b>封面</b></span>
+                        <span class="form-control multi-ellipsis-1">{{ $data->title or '' }}</span>
+                        <span class="input-group-addon btn edit-this-content" style="border-left:0;"><i class="fa fa-pencil"></i></span>
+                    </div>
+                </div>
                 @foreach( $data->contents_recursion as $key => $content )
                     <div class="col-md-8 col-md-offset-2">
                         <div class="input-group" data-id='{{$content->id}}' style="margin-top:4px; margin-left:{{ $content->level*34 }}px">
@@ -64,6 +71,7 @@
             <div class="box-footer">
                 <div class="row" style="margin:16px 0;">
                     <div class="col-md-9 col-md-offset-2">
+                        <button type="button" class="btn btn-success show-create-content"><i class="fa fa-plus"></i> 添加新内容</button>
                         <a href="{{ url('/item/'.$data->id) }}" target="_blank"><button type="button" class="btn btn-primary">预览</button></a>
                         <button type="button" onclick="history.go(-1);" class="btn btn-default">返回</button>
                     </div>
@@ -119,7 +127,7 @@
                         </div>
                     </div>
                     {{--目录--}}
-                    <div class="form-group">
+                    <div class="form-group" id="form-menu-option">
                         <label class="control-label col-md-2">目录</label>
                         <div class="col-md-8 ">
                             <select name="p_id" id="menu" style="width:100%;">
@@ -143,7 +151,7 @@
                         </div>
                     </div>
                     {{--排序--}}
-                    <div class="form-group">
+                    <div class="form-group" id="form-rank-option">
                         <label class="control-label col-md-2">排序</label>
                         <div class="col-md-8 ">
                             <div><input type="text" class="form-control" name="rank" placeholder="默认排序" value="0"></div>
@@ -183,7 +191,7 @@
                     </div>
 
                     {{--是否启用--}}
-                    <div class="form-group form-active">
+                    <div class="form-group form-active" id="form-active-option">
                         <label class="control-label col-md-2">是否启用</label>
                         <div class="col-md-8">
                             <div class="btn-group">
@@ -305,6 +313,21 @@
                         $("#form-edit-content").find('input[name=operate]').val("edit");
                         $("#form-edit-content").find('input[name=id]').val(data.data.encode_id);
                         $("#form-edit-content").find('input[name=rank]').val(data.data.rank);
+
+                        if(data.data.encode_id == $("#form-edit-content").find('input[name=item_id]').val())
+                        {
+                            console.log('封面');
+                            $("#form-edit-content").find('input[name=rank]').val(0);
+                            $("#form-menu-option").hide();
+                            $("#form-rank-option").hide();
+                            $("#form-active-option").hide();
+                        }
+                        else
+                        {
+                            $("#form-menu-option").show();
+                            $("#form-rank-option").show();
+                            $("#form-active-option").show();
+                        }
 
                         $("#form-edit-content").find('input[name=active]:checked').prop('checked','');
                         var $active = data.data.active;
@@ -451,6 +474,10 @@
     function reset_form()
     {
 //        $("#form-edit-content").find('.form-type').show();
+
+        $("#form-menu-option").show();
+        $("#form-rank-option").show();
+        $("#form-active-option").show();
 
         $("#form-edit-content").find('input[name=operate]').val("create");
         $("#form-edit-content").find('input[name=id]').val("{{encode(0)}}");

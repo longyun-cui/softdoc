@@ -31,6 +31,14 @@
             </div>
 
             <div class="box-body" id="content-structure-list">
+                {{--封面--}}
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="input-group" data-id='{{ $data->id }}' style="margin-top:4px;margin-bottom:12px;">
+                        <span class="input-group-addon"><b>封面</b></span>
+                        <span class="form-control multi-ellipsis-1">{{ $data->title or '' }}</span>
+                        <span class="input-group-addon btn edit-this-content" style="border-left:0;"><i class="fa fa-pencil"></i></span>
+                    </div>
+                </div>
                 @foreach( $data->contents as $key => $content )
                     <div class="col-md-8 col-md-offset-2">
                         <div class="input-group" data-id='{{ $content->id }}'
@@ -56,8 +64,8 @@
             <div class="box-footer">
                 <div class="row" style="margin:16px 0;">
                     <div class="col-md-9 col-md-offset-2">
+                        <button type="button" class="btn btn-success show-create-content"><i class="fa fa-plus"></i> 添加新内容</button>
                         <a href="{{ url('/item/'.$data->id) }}" target="_blank"><button type="button" class="btn btn-primary">预览</button></a>
-                        <button type="button" class="btn btn-success pull-right show-create-content"><i class="fa fa-plus"></i> 添加新内容</button>
                         <button type="button" onclick="history.go(-1);" class="btn btn-default">返回</button>
                     </div>
                 </div>
@@ -90,7 +98,7 @@
                     <input type="hidden" name="category" value="18" readonly>
 
                     {{--时间点--}}
-                    <div class="form-group">
+                    <div class="form-group" id="form-time-point-option">
                         <label class="control-label col-md-2">时间点</label>
                         <div class="col-md-8 ">
                             <div><input type="text" class="form-control" name="time_point" placeholder="时间点" value=""></div>
@@ -130,7 +138,7 @@
                     </div>
 
                     {{--是否启用--}}
-                    <div class="form-group form-active">
+                    <div class="form-group form-active" id="form-active-option">
                         <label class="control-label col-md-2">是否启用</label>
                         <div class="col-md-8">
                             <div class="btn-group">
@@ -241,6 +249,19 @@
                         $("#form-edit-content").find('input[name=operate]').val("edit");
                         $("#form-edit-content").find('input[name=id]').val(data.data.encode_id);
                         $("#form-edit-content").find('input[name=time_point]').val(data.data.time_point);
+
+                        if(data.data.encode_id == $("#form-edit-content").find('input[name=item_id]').val())
+                        {
+                            console.log('封面');
+                            $("#form-edit-content").find('input[name=time_point]').val(0);
+                            $("#form-time-point-option").hide();
+                            $("#form-active-option").hide();
+                        }
+                        else
+                        {
+                            $("#form-time-point-option").show();
+                            $("#form-active-option").show();
+                        }
 
                         $("#form-edit-content").find('input[name=active]:checked').prop('checked','');
                         var $active = data.data.active;
@@ -384,6 +405,9 @@
     function reset_form()
     {
 //        $("#form-edit-content").find('.form-type').show();
+
+        $("#form-time-point-option").show();
+        $("#form-active-option").show();
 
         $("#form-edit-content").find('input[name=operate]').val("create");
         $("#form-edit-content").find('input[name=id]').val("{{encode(0)}}");

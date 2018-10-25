@@ -533,7 +533,8 @@ class ItemRepository {
             if($item->user_id == $user->id)
             {
 
-                $content_decode = decode($post_data["id"]);
+                $content_encode = $post_data["id"];
+                $content_decode = decode($content_encode);
                 if(intval($content_decode) !== 0 && !$content_decode) return response_error();
 
                 DB::beginTransaction();
@@ -576,6 +577,12 @@ class ItemRepository {
                                 }
                                 $p_id = $p->p_id;
                             }
+                        }
+
+                        if($content_encode == $item_encode)
+                        {
+                            unset($post_data['item_id']);
+                            unset($post_data['rank']);
                         }
 
                     }
@@ -646,7 +653,8 @@ class ItemRepository {
             if($item->user_id == $user->id)
             {
 
-                $content_decode = decode($post_data["id"]);
+                $content_encode = $post_data["id"];
+                $content_decode = decode($content_encode);
                 if(intval($content_decode) !== 0 && !$content_decode) return response_error();
 
                 DB::beginTransaction();
@@ -665,6 +673,12 @@ class ItemRepository {
                         if(!$content) return response_error([],"该内容不存在，刷新页面重试");
                         if($content->user_id != $user->id) return response_error([],"你没有操作权限");
 //                        if($content->type == 1) unset($post_data["type"]);
+
+                        if($content_encode == $item_encode)
+                        {
+                            unset($post_data['item_id']);
+                            unset($post_data['time_point']);
+                        }
                     }
                     else throw new Exception("operate--error");
 
