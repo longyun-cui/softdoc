@@ -65,6 +65,261 @@ class IndexRepository {
     }
 
 
+    // 【我的原创】
+    public function view_home_mine_original($post_data)
+    {
+        if(Auth::check())
+        {
+            $me = Auth::user();
+            $me_id = $me->id;
+
+            $items = RootItem::select("*")->with([
+                'user',
+                'forward_item'=>function($query) { $query->with('user'); },
+                'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
+            ])->where(['user_id'=>$me_id,'item_id'=>0])->orderBy("updated_at", "desc")->paginate(20);
+        }
+        else $items = [];
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
+        return view('frontend.entrance.root')->with(['items'=>$items,'root_mine_active'=>'active']);
+    }
+
+    // 【待办事】
+    public function view_home_mine_todolist($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            // Method 1
+            $query = User::with([
+                'pivot_item'=>function($query) use($user_id) { $query->with([
+                    'user',
+                    'forward_item'=>function($query) { $query->with('user'); },
+                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+                ])->wherePivot('type',31)->orderby('pivot_user_item.id','desc'); }
+            ])->find($user_id);
+            $items = $query->pivot_item;
+
+//            // Method 2
+//            $query = Pivot_User_Item::with([
+//                    'item'=>function($query) { $query->with(['user']); }
+//                ])->where(['type'=>11,'user_id'=>$user_id])->orderby('id','desc')->get();
+//            dd($query->toArray());
+        }
+        else $items = [];
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
+        return view('frontend.entrance.root-todolist')->with(['items'=>$items,'root_todolist_active'=>'active']);
+    }
+
+    // 【日程】
+    public function view_home_mine_schedule($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            // Method 1
+//            $query = User::with([
+//                'pivot_item'=>function($query) use($user_id) { $query->with([
+//                    'user',
+//                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+//                ])->wherePivot('type',12)->orderby('pivot_user_item.id','desc'); }
+//            ])->find($user_id);
+//            $items = $query->pivot_item;
+
+            $items = [];
+        }
+        else $items = [];
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
+        return view('frontend.entrance.root-schedule')->with(['items'=>$items,'root_schedule_active'=>'active']);
+    }
+
+    // 【收藏内容】
+    public function view_home_mine_collection($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            // Method 1
+            $query = User::with([
+                'pivot_item'=>function($query) use($user_id) { $query->with([
+                    'user',
+                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+                ])->wherePivot('type',21)->orderby('pivot_user_item.id','desc'); }
+            ])->find($user_id);
+            $items = $query->pivot_item;
+        }
+        else $items = [];
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
+        return view('frontend.entrance.root-collection')->with(['items'=>$items,'root_collection_active'=>'active']);
+    }
+
+    // 【点赞内容】
+    public function view_home_mine_favor($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            // Method 1
+            $query = User::with([
+                'pivot_item'=>function($query) use($user_id) { $query->with([
+                    'user',
+                    'forward_item'=>function($query) { $query->with('user'); },
+                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+                ])->wherePivot('type',11)->orderby('pivot_user_item.id','desc'); }
+            ])->find($user_id);
+            $items = $query->pivot_item;
+        }
+        else $items = [];
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
+        return view('frontend.entrance.root-favor')->with(['items'=>$items,'root_favor_active'=>'active']);
+    }
+
+    // 【发现】
+    public function view_home_mine_discovery($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+        }
+        else $user_id = 0;
+
+        $items = RootItem::with([
+            'user',
+            'forward_item'=>function($query) { $query->with('user'); },
+            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
+        return view('frontend.entrance.root-discovery')->with(['items'=>$items,'root_discovery_active'=>'active']);
+    }
+
+    // 【好友圈】
+    public function view_home_mine_follow($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+        }
+        else $user_id = 0;
+//
+//        $items = RootItem::with([
+//            'user',
+//            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+//        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
+
+        $user = User::with([
+            'relation_items'=>function($query) use($user_id) {$query->with([
+                'user',
+                'forward_item'=>function($query) { $query->with('user'); },
+                'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+            ])->where('pivot_user_relation.relation_type','<=', 50)->where('root_items.is_shared','>=', 41); }
+        ])->find($user_id);
+
+        $items = $user->relation_items;
+        $items = $items->sortByDesc('id');
+//        dd($items->toArray());
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
+        return view('frontend.entrance.root-follow')->with(['items'=>$items,'root_follow_active'=>'active']);
+    }
+
+    // 【好友圈】
+    public function view_home_mine_circle($post_data)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+        }
+        else $user_id = 0;
+//
+//        $items = RootItem::with([
+//            'user',
+//            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+//        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
+
+        $user = User::with([
+            'relation_items'=>function($query) use($user_id) { $query->with([
+                'user',
+                'forward_item'=>function($query) { $query->with('user'); },
+                'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
+            ])->where('pivot_user_relation.relation_type',21)->where('root_items.is_shared','>=', 41); }
+        ])->find($user_id);
+
+        $items = $user->relation_items;
+        $items = $items->sortByDesc('id');
+//        dd($items->toArray());
+
+        foreach ($items as $item)
+        {
+            $item->custom_decode = json_decode($item->custom);
+            $item->content_show = strip_tags($item->content);
+            $item->img_tags = get_html_img($item->content);
+        }
+
+        return view('frontend.entrance.root-circle')->with(['items'=>$items,'root_circle_active'=>'active']);
+    }
+
+
+
+
     // 内容模板
     public function view_item_html($id)
     {
@@ -482,235 +737,6 @@ class IndexRepository {
 
 
 
-    // 【待办事】
-    public function view_home_todolist($post_data)
-    {
-        if(Auth::check())
-        {
-            $user = Auth::user();
-            $user_id = $user->id;
-
-            // Method 1
-            $query = User::with([
-                'pivot_item'=>function($query) use($user_id) { $query->with([
-                    'user',
-                    'forward_item'=>function($query) { $query->with('user'); },
-                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-                ])->wherePivot('type',31)->orderby('pivot_user_item.id','desc'); }
-            ])->find($user_id);
-            $items = $query->pivot_item;
-
-//            // Method 2
-//            $query = Pivot_User_Item::with([
-//                    'item'=>function($query) { $query->with(['user']); }
-//                ])->where(['type'=>11,'user_id'=>$user_id])->orderby('id','desc')->get();
-//            dd($query->toArray());
-        }
-        else $items = [];
-
-        foreach ($items as $item)
-        {
-            $item->custom_decode = json_decode($item->custom);
-            $item->content_show = strip_tags($item->content);
-            $item->img_tags = get_html_img($item->content);
-        }
-
-        return view('frontend.entrance.root-todolist')->with(['items'=>$items,'root_todolist_active'=>'active']);
-    }
-
-    // 【日程】
-    public function view_home_schedule($post_data)
-    {
-        if(Auth::check())
-        {
-            $user = Auth::user();
-            $user_id = $user->id;
-
-            // Method 1
-//            $query = User::with([
-//                'pivot_item'=>function($query) use($user_id) { $query->with([
-//                    'user',
-//                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-//                ])->wherePivot('type',12)->orderby('pivot_user_item.id','desc'); }
-//            ])->find($user_id);
-//            $items = $query->pivot_item;
-
-            $items = [];
-        }
-        else $items = [];
-
-        foreach ($items as $item)
-        {
-            $item->custom_decode = json_decode($item->custom);
-            $item->content_show = strip_tags($item->content);
-            $item->img_tags = get_html_img($item->content);
-        }
-
-        return view('frontend.entrance.root-schedule')->with(['items'=>$items,'root_schedule_active'=>'active']);
-    }
-
-    // 【收藏内容】
-    public function view_home_collection($post_data)
-    {
-        if(Auth::check())
-        {
-            $user = Auth::user();
-            $user_id = $user->id;
-
-            // Method 1
-            $query = User::with([
-                'pivot_item'=>function($query) use($user_id) { $query->with([
-                    'user',
-                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-                ])->wherePivot('type',21)->orderby('pivot_user_item.id','desc'); }
-            ])->find($user_id);
-            $items = $query->pivot_item;
-        }
-        else $items = [];
-
-        foreach ($items as $item)
-        {
-            $item->custom_decode = json_decode($item->custom);
-            $item->content_show = strip_tags($item->content);
-            $item->img_tags = get_html_img($item->content);
-        }
-
-        return view('frontend.entrance.root-collection')->with(['items'=>$items,'root_collection_active'=>'active']);
-    }
-
-    // 【点赞内容】
-    public function view_home_favor($post_data)
-    {
-        if(Auth::check())
-        {
-            $user = Auth::user();
-            $user_id = $user->id;
-
-            // Method 1
-            $query = User::with([
-                'pivot_item'=>function($query) use($user_id) { $query->with([
-                    'user',
-                    'forward_item'=>function($query) { $query->with('user'); },
-                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-                ])->wherePivot('type',11)->orderby('pivot_user_item.id','desc'); }
-            ])->find($user_id);
-            $items = $query->pivot_item;
-        }
-        else $items = [];
-
-        foreach ($items as $item)
-        {
-            $item->custom_decode = json_decode($item->custom);
-            $item->content_show = strip_tags($item->content);
-            $item->img_tags = get_html_img($item->content);
-        }
-
-        return view('frontend.entrance.root-favor')->with(['items'=>$items,'root_favor_active'=>'active']);
-    }
-
-    // 【发现】
-    public function view_home_discovery($post_data)
-    {
-        if(Auth::check())
-        {
-            $user = Auth::user();
-            $user_id = $user->id;
-        }
-        else $user_id = 0;
-
-        $items = RootItem::with([
-            'user',
-            'forward_item'=>function($query) { $query->with('user'); },
-            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
-
-        foreach ($items as $item)
-        {
-            $item->custom_decode = json_decode($item->custom);
-            $item->content_show = strip_tags($item->content);
-            $item->img_tags = get_html_img($item->content);
-        }
-
-        return view('frontend.entrance.root-discovery')->with(['items'=>$items,'root_discovery_active'=>'active']);
-    }
-
-    // 【好友圈】
-    public function view_home_follow($post_data)
-    {
-        if(Auth::check())
-        {
-            $user = Auth::user();
-            $user_id = $user->id;
-        }
-        else $user_id = 0;
-//
-//        $items = RootItem::with([
-//            'user',
-//            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-//        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
-
-        $user = User::with([
-            'relation_items'=>function($query) use($user_id) {$query->with([
-                'user',
-                'forward_item'=>function($query) { $query->with('user'); },
-                'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-            ])->where('pivot_user_relation.relation_type','<=', 50)->where('root_items.is_shared','>=', 41); }
-        ])->find($user_id);
-
-        $items = $user->relation_items;
-        $items = $items->sortByDesc('id');
-//        dd($items->toArray());
-
-        foreach ($items as $item)
-        {
-            $item->custom_decode = json_decode($item->custom);
-            $item->content_show = strip_tags($item->content);
-            $item->img_tags = get_html_img($item->content);
-        }
-
-        return view('frontend.entrance.root-follow')->with(['items'=>$items,'root_follow_active'=>'active']);
-    }
-
-    // 【好友圈】
-    public function view_home_circle($post_data)
-    {
-        if(Auth::check())
-        {
-            $user = Auth::user();
-            $user_id = $user->id;
-        }
-        else $user_id = 0;
-//
-//        $items = RootItem::with([
-//            'user',
-//            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-//        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
-
-        $user = User::with([
-            'relation_items'=>function($query) use($user_id) { $query->with([
-                'user',
-                'forward_item'=>function($query) { $query->with('user'); },
-                'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
-            ])->where('pivot_user_relation.relation_type',21)->where('root_items.is_shared','>=', 41); }
-        ])->find($user_id);
-
-        $items = $user->relation_items;
-        $items = $items->sortByDesc('id');
-//        dd($items->toArray());
-
-        foreach ($items as $item)
-        {
-            $item->custom_decode = json_decode($item->custom);
-            $item->content_show = strip_tags($item->content);
-            $item->img_tags = get_html_img($item->content);
-        }
-
-        return view('frontend.entrance.root-circle')->with(['items'=>$items,'root_circle_active'=>'active']);
-    }
-
-
-
-
     // 【消息提醒】
     public function view_home_notification($post_data)
     {
@@ -943,6 +969,456 @@ class IndexRepository {
 
 
 
+
+    // 返回【添加】视图
+    public function view_home_mine_item_create()
+    {
+        $category = request("category",'');
+        $view_blade = 'frontend.entrance.root-edit';
+        return view($view_blade)->with(['operate'=>'create', 'encode_id'=>encode(0), 'root_edit_active'=>'active']);
+    }
+    // 返回【编辑】视图
+    public function view_home_mine_item_edit()
+    {
+        $id = request("id",0);
+        if(!$id && intval($id) !== 0) return view('home.404');
+
+        if($id == 0)
+        {
+            return view('frontend.entrance.root-create')->with(['operate'=>'create', 'encode_id'=>$id]);
+        }
+        else
+        {
+            $data = RootItem::find($id);
+            if($data)
+            {
+                unset($data->id);
+                return view('frontend.entrance.root-edit')->with(['operate'=>'edit', 'encode_id'=>$id, 'data'=>$data]);
+            }
+            else return response("该内容不存在！", 404);
+        }
+    }
+    // 【存储】
+    public function home_mine_item_save($post_data)
+    {
+        $messages = [
+            'id.required' => '参数有误',
+            'title.required' => '请输入标题',
+        ];
+        $v = Validator::make($post_data, [
+            'id' => 'required',
+            'title' => 'required'
+        ], $messages);
+        if ($v->fails())
+        {
+            $messages = $v->errors();
+            return response_error([],$messages->first());
+        }
+
+        $user = Auth::user();
+
+        $id = $post_data["id"];
+        $operate = $post_data["operate"];
+        if(intval($id) !== 0 && !$id) return response_error();
+
+        DB::beginTransaction();
+        try
+        {
+            if($operate == 'create') // $id==0，添加一个新的课程
+            {
+                $mine = new RootItem;
+                $post_data["user_id"] = $user->id;
+            }
+            elseif('edit') // 编辑
+            {
+                $mine = RootItem::find($id);
+                if(!$mine) return response_error([],"该内容不存在，刷新页面重试");
+                if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
+            }
+            else throw new Exception("operate--error");
+
+            if(!empty($post_data['custom']))
+            {
+                $post_data['custom'] = json_encode($post_data['custom']);
+            }
+
+            if($operate == 'create' && $post_data['category'] == 1 && $post_data['time_type'] == 1)
+            {
+                if(!empty($post_data['start_time'])) {
+                    $post_data['start_time'] = strtotime($post_data['start_time']);
+                }
+                else $post_data['start_time'] = 0;
+
+                if(!empty($post_data['end_time'])) {
+                    $post_data['end_time'] = strtotime($post_data['end_time']);
+                }
+                else $post_data['end_time'] = 0;
+            }
+            else {
+                unset($post_data['start_time']);
+                unset($post_data['end_time']);
+            }
+
+            $bool = $mine->fill($post_data)->save();
+            if($bool)
+            {
+                $encode_id = encode($mine->id);
+
+                $is_working = isset($post_data["is_working"]) ? $post_data["is_working"] : 0;
+                if($is_working == 1)
+                {
+                    $time = time();
+                    $user->pivot_item()->attach($mine->id,['type'=>11,'created_at'=>$time,'updated_at'=>$time]);
+                }
+
+                if($operate == 'create' && $post_data['category'] == 1 && $post_data['time_type'] == 1)
+                {
+                    $time = time();
+                    $user->pivot_item()->attach($mine->id,['type'=>12,'created_at'=>$time,'updated_at'=>$time]);
+                }
+
+                // 封面图片
+                if(!empty($post_data["cover"]))
+                {
+                    // 删除原封面图片
+                    $mine_cover_pic = $mine->cover_pic;
+                    if(!empty($mine_cover_pic) && file_exists(storage_path("resource/" . $mine_cover_pic)))
+                    {
+                        unlink(storage_path("resource/" . $mine_cover_pic));
+                    }
+
+                    $result = upload_storage($post_data["cover"]);
+                    if($result["result"])
+                    {
+                        $mine->cover_pic = $result["local"];
+                        $mine->save();
+                    }
+                    else throw new Exception("upload-cover-fail");
+                }
+            }
+            else throw new Exception("insert--people--fail");
+
+
+            DB::commit();
+            return response_success(['id'=>$mine->id]);
+        }
+        catch (Exception $e)
+        {
+            DB::rollback();
+            $msg = '操作失败，请重试！';
+//            $msg = $e->getMessage();
+//            exit($e->getMessage());
+            return response_fail([], $msg);
+        }
+    }
+
+
+    // 返回【目录类型】视图
+    public function view_home_mine_item_edit_menutype($post_data)
+    {
+        $id = $post_data['id'];
+        if(!$id) return view('home.404')->with(['error'=>'参数有误']);
+        // abort(404);
+
+        $item = RootItem::with([
+            'contents'=>function($query) { $query->orderBy('rank','asc'); }
+        ])->find($id);
+        if($item)
+        {
+            $item->encode_id = encode($item->id);
+
+            $item->contents_recursion = $this->get_recursion($item->contents,0);
+
+            return view('frontend.entrance.root-edit-for-menutype')->with(['data'=>$item]);
+        }
+        else return view('home.404')->with(['error'=>'该内容不存在']);
+
+    }
+    // 返回【时间线类型】视图
+    public function view_home_mine_item_edit_timeline($post_data)
+    {
+        $id = $post_data['id'];
+        if(!$id) return view('home.404')->with(['error'=>'参数有误']);
+        // abort(404);
+
+        $item = RootItem::with([
+            'contents'=>function($query) {
+                $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as SIGNED) asc'));
+                $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as DECIMAL) asc'));
+                $query->orderByRaw(DB::raw('replace(trim(time_point)," ","") asc'));
+                $query->orderBy('time_point','asc');
+            }
+        ])->find($id);
+        if($item)
+        {
+            $item->encode_id = encode($item->id);
+//            unset($item->id);
+
+            return view('frontend.entrance.root-edit-for-timeline')->with(['data'=>$item]);
+        }
+        else return view('home.404')->with(['error'=>'该内容不存在']);
+
+    }
+
+
+    // 【目录类型】【存储】
+    public function home_mine_item_menutype_save($post_data)
+    {
+        $messages = [
+            'id.required' => '参数有误',
+            'title.required' => '请输入标题',
+            'p_id.required' => '请选择目录',
+        ];
+        $v = Validator::make($post_data, [
+            'id' => 'required',
+            'title' => 'required',
+            'p_id' => 'required'
+        ], $messages);
+        if ($v->fails())
+        {
+            $messages = $v->errors();
+            return response_error([],$messages->first());
+        }
+
+        $user = Auth::user();
+
+//        $post_data["category"] = 11;
+        $item_encode = $post_data["item_id"];
+        $item_decode = decode($item_encode);
+        if(!$item_decode) return response_error();
+        $item = RootItem::find($item_decode);
+        if($item)
+        {
+            if($item->user_id == $user->id)
+            {
+
+                $content_encode = $post_data["id"];
+                $content_decode = decode($content_encode);
+                if(intval($content_decode) !== 0 && !$content_decode) return response_error();
+
+                DB::beginTransaction();
+                try
+                {
+                    $post_data["item_id"] = $item_decode;
+                    $operate = $post_data["operate"];
+                    if($operate == 'create') // $id==0，添加一个新的内容
+                    {
+                        $content = new RootItem;
+                        $post_data["user_id"] = $user->id;
+                    }
+                    elseif('edit') // 编辑
+                    {
+                        if($content_decode == $post_data["p_id"]) return response_error([],"不能选择自己为父节点");
+
+                        $content = RootItem::find($content_decode);
+                        if(!$content) return response_error([],"该内容不存在，刷新页面重试");
+                        if($content->user_id != $user->id) return response_error([],"你没有操作权限");
+//                        if($content->type == 1) unset($post_data["type"]);
+
+                        if($post_data["p_id"] != 0)
+                        {
+                            $is_child = true;
+                            $p_id = $post_data["p_id"];
+                            while($is_child)
+                            {
+                                $p = RootItem::find($p_id);
+                                if(!$p) return response_error([],"参数有误，刷新页面重试");
+                                if($p->p_id == 0) $is_child = false;
+                                if($p->p_id == $content_decode)
+                                {
+                                    $content_children = RootItem::where('p_id',$content_decode)->get();
+                                    $children_count = count($content_children);
+                                    if($children_count)
+                                    {
+                                        $num = RootItem::where('p_id',$content_decode)->update(['p_id'=>$content->p_id]);
+                                        if($num != $children_count)  throw new Exception("update--children--fail");
+                                    }
+                                }
+                                $p_id = $p->p_id;
+                            }
+                        }
+
+                        if($content_encode == $item_encode)
+                        {
+                            unset($post_data['item_id']);
+                            unset($post_data['rank']);
+                        }
+
+                    }
+                    else throw new Exception("operate--error");
+
+
+                    if($post_data["p_id"] != 0)
+                    {
+                        $parent = RootItem::find($post_data["p_id"]);
+                        if(!$parent) return response_error([],"父节点不存在，刷新页面重试");
+                    }
+
+                    $bool = $content->fill($post_data)->save();
+                    if($bool)
+                    {
+                        $encode_id = encode($content->id);
+                    }
+                    else throw new Exception("insert--content--fail");
+
+
+                    DB::commit();
+                    return response_success(['id'=>$encode_id]);
+                }
+                catch (Exception $e)
+                {
+                    DB::rollback();
+                    $msg = '操作失败，请重试！';
+                    $msg = $e->getMessage();
+//                    exit($e->getMessage());
+                    return response_fail([], $msg);
+                }
+
+            }
+            else response_error([],"该内容不是您的，您不能操作！");
+
+        }
+        else return response_error([],"该内容不存在");
+    }
+    // 【时间点】【存储】
+    public function home_mine_item_timeline_save($post_data)
+    {
+        $messages = [
+            'id.required' => '参数有误',
+            'title.required' => '请输入标题',
+            'time_point.required' => '请输入时间点',
+        ];
+        $v = Validator::make($post_data, [
+            'id' => 'required',
+            'title' => 'required',
+            'time_point' => 'required'
+        ], $messages);
+        if ($v->fails())
+        {
+            $messages = $v->errors();
+            return response_error([],$messages->first());
+        }
+
+        $user = Auth::user();
+
+//        $post_data["category"] = 18;
+        $item_encode = $post_data["item_id"];
+        $item_decode = decode($item_encode);
+        if(!$item_decode) return response_error();
+        $item = RootItem::find($item_decode);
+        if($item)
+        {
+            if($item->user_id == $user->id)
+            {
+
+                $content_encode = $post_data["id"];
+                $content_decode = decode($content_encode);
+                if(intval($content_decode) !== 0 && !$content_decode) return response_error();
+
+                DB::beginTransaction();
+                try
+                {
+                    $post_data["item_id"] = $item_decode;
+                    $operate = $post_data["operate"];
+                    if($operate == 'create') // $id==0，添加一个新的内容
+                    {
+                        $content = new RootItem;
+                        $post_data["user_id"] = $user->id;
+                    }
+                    elseif('edit') // 编辑
+                    {
+                        $content = RootItem::find($content_decode);
+                        if(!$content) return response_error([],"该内容不存在，刷新页面重试");
+                        if($content->user_id != $user->id) return response_error([],"你没有操作权限");
+//                        if($content->type == 1) unset($post_data["type"]);
+
+                        if($content_encode == $item_encode)
+                        {
+                            unset($post_data['item_id']);
+                            unset($post_data['time_point']);
+                        }
+                    }
+                    else throw new Exception("operate--error");
+
+                    $bool = $content->fill($post_data)->save();
+                    if($bool)
+                    {
+                        $encode_id = encode($content->id);
+                    }
+                    else throw new Exception("insert--content--fail");
+
+
+                    DB::commit();
+                    return response_success(['id'=>$encode_id]);
+                }
+                catch (Exception $e)
+                {
+                    DB::rollback();
+                    $msg = '操作失败，请重试！';
+                    $msg = $e->getMessage();
+//                    exit($e->getMessage());
+                    return response_fail([], $msg);
+                }
+
+            }
+            else response_error([],"该内容不是您的，您不能操作！");
+
+        }
+        else return response_error([],"该内容不存在");
+    }
+
+
+
+
+    // 【删除】
+    public function item_delete($post_data)
+    {
+        $me = Auth::user();
+        $id = $post_data["id"];
+        if(intval($id) !== 0 && !$id) return response_error([],"该内容不存在，刷新页面试试");
+
+        $mine = RootItem::find($id);
+        if($mine->user_id != $me->id) return response_error([],"你没有操作权限");
+
+        DB::beginTransaction();
+        try
+        {
+            $content = $mine->content;
+            $cover_pic = $mine->cover_pic;
+
+            $bool = $mine->delete();
+            if(!$bool) throw new Exception("delete--item--fail");
+
+            DB::commit();
+
+            // 删除UEditor图片
+            $img_tags = get_html_img($content);
+            foreach ($img_tags[2] as $img)
+            {
+                if (!empty($img) && file_exists(public_path($img)))
+                {
+                    unlink(public_path($img));
+                }
+            }
+
+            // 删除封面图片
+            if(!empty($cover_pic) && file_exists(storage_path("resource/" . $cover_pic)))
+            {
+                unlink(storage_path("resource/" . $cover_pic));
+            }
+
+            return response_success([]);
+        }
+        catch (Exception $e)
+        {
+            DB::rollback();
+            $msg = '操作失败，请重试！';
+//            $msg = $e->getMessage();
+//            exit($e->getMessage());
+            return response_fail([],$msg);
+        }
+
+    }
 
     // 【添加】
     public function item_add_this($post_data,$type=0)
@@ -1245,6 +1721,8 @@ class IndexRepository {
         else return response_error([],'请先登录！');
 
     }
+
+
 
 
 

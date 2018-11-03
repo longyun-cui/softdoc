@@ -96,15 +96,23 @@ Route::group(['namespace' => 'Front'], function () {
 
                 $controller = "IndexController";
 
-                Route::get('/home/todolist', $controller.'@view_home_todolist');
-                Route::get('/home/schedule', $controller.'@view_home_schedule');
+                Route::get('/home/mine/original', $controller.'@view_home_mine_original');
 
-                Route::get('/home/collection', $controller.'@view_home_collection');
-                Route::get('/home/favor', $controller.'@view_home_favor');
+                Route::get('/home/mine/todolist', $controller.'@view_home_mine_todolist');
+                Route::get('/home/mine/schedule', $controller.'@view_home_mine_schedule');
 
-                Route::get('/home/discovery', $controller.'@view_home_discovery');
-                Route::get('/home/follow', $controller.'@view_home_follow');
-                Route::get('/home/circle', $controller.'@view_home_circle');
+                Route::get('/home/mine/collection', $controller.'@view_home_mine_collection');
+                Route::get('/home/mine/favor', $controller.'@view_home_mine_favor');
+
+                Route::get('/home/mine/discovery', $controller.'@view_home_mine_discovery');
+                Route::get('/home/mine/follow', $controller.'@view_home_mine_follow');
+                Route::get('/home/mine/circle', $controller.'@view_home_mine_circle');
+
+                // 添加&编辑
+                Route::get('/home/mine/item/create', $controller.'@view_home_mine_item_create');
+                Route::match(['get','post'], '/home/mine/item/edit', $controller.'@view_home_mine_item_edit');
+                Route::match(['get','post'], '/home/mine/item/edit/menutype', $controller.'@view_home_mine_item_edit_menutype');
+                Route::match(['get','post'], '/home/mine/item/edit/timeline', $controller.'@view_home_mine_item_edit_timeline');
 
 
                 Route::get('/home/relation/follow', $controller.'@view_relation_follow');
@@ -135,6 +143,12 @@ Route::group(['namespace' => 'Front'], function () {
         Route::post('item/add/collection', $controller.'@item_add_collection');
         Route::post('item/remove/collection', $controller.'@item_remove_collection');
 
+        // 删除
+        Route::post('item/delete', $controller.'@item_delete');
+
+        // 转发
+        Route::post('item/forward', $controller.'@item_forward');
+
         // 点赞
         Route::post('item/add/favor', $controller.'@item_add_favor');
         Route::post('item/remove/favor', $controller.'@item_remove_favor');
@@ -156,8 +170,6 @@ Route::group(['namespace' => 'Front'], function () {
 
         Route::post('user/relation/add', $controller.'@user_relation_add');
         Route::post('user/relation/remove', $controller.'@user_relation_remove');
-
-        Route::post('item/forward', $controller.'@item_forward');
 
     });
 

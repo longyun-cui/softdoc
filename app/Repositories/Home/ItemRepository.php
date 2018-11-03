@@ -159,7 +159,7 @@ class ItemRepository {
                 unset($data->id);
                 return view('home.item.edit')->with(['operate'=>'edit', 'encode_id'=>$id, 'data'=>$data]);
             }
-            else return response("该课程不存在！", 404);
+            else return response("该内容不存在！", 404);
         }
     }
 
@@ -168,7 +168,7 @@ class ItemRepository {
     {
         $messages = [
             'id.required' => '参数有误',
-            'title.required' => '请输入课程标题',
+            'title.required' => '请输入标题',
         ];
         $v = Validator::make($post_data, [
             'id' => 'required',
@@ -189,7 +189,7 @@ class ItemRepository {
         DB::beginTransaction();
         try
         {
-            if($operate == 'create') // $id==0，添加一个新的课程
+            if($operate == 'create') // $id==0，添加一个新的内容
             {
                 $mine = new RootItem;
                 $post_data["user_id"] = $user->id;
@@ -282,7 +282,7 @@ class ItemRepository {
     {
         $user = Auth::user();
         $id = decode($post_data["id"]);
-        if(intval($id) !== 0 && !$id) return response_error([],"该课程不存在，刷新页面试试");
+        if(intval($id) !== 0 && !$id) return response_error([],"该内容不存在，刷新页面试试");
 
         $mine = RootItem::find($id);
         if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
@@ -442,7 +442,7 @@ class ItemRepository {
 
             return view('home.item.edit-for-menutype')->with(['data'=>$item]);
         }
-        else return view('home.404')->with(['error'=>'课程不存在']);
+        else return view('home.404')->with(['error'=>'该内容不存在']);
 
     }
 
@@ -469,7 +469,7 @@ class ItemRepository {
 
             return view('home.item.edit-for-timeline')->with(['data'=>$item]);
         }
-        else return view('home.404')->with(['error'=>'课程不存在']);
+        else return view('home.404')->with(['error'=>'该内容不存在']);
 
     }
 
@@ -498,7 +498,7 @@ class ItemRepository {
                 unset($data->id);
                 return view('home.item.menu')->with(['operate'=>'edit', 'encode_id'=>$id, 'data'=>$data]);
             }
-            else return view('home.404')->with(['error'=>'课程不存在']);
+            else return view('home.404')->with(['error'=>'该内容不存在']);
         }
     }
 
@@ -715,7 +715,7 @@ class ItemRepository {
         $user = Auth::user();
         $id = $post_data["id"];
 //        $id = decode($post_data["id"]);
-        if(!$id) return response_error([],"该课程不存在，刷新页面试试");
+        if(!$id) return response_error([],"该内容不存在，刷新页面试试");
 
         $content = RootItem::find($id);
         if($content->user_id != $user->id) return response_error([],"你没有操作权限");

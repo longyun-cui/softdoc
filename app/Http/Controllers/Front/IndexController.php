@@ -26,40 +26,46 @@ class IndexController extends Controller
     }
 
 
-    // 【我的待办事】
-    public function view_home_todolist()
+    // 【我的原创】
+    public function view_home_mine_original()
     {
-        return $this->repo->view_home_todolist(request()->all());
+        return $this->repo->view_home_mine_original(request()->all());
+    }
+
+    // 【我的待办事】
+    public function view_home_mine_todolist()
+    {
+        return $this->repo->view_home_mine_todolist(request()->all());
     }
     // 【我的日程】
-    public function view_home_schedule()
+    public function view_home_mine_schedule()
     {
-        return $this->repo->view_home_schedule(request()->all());
+        return $this->repo->view_home_mine_schedule(request()->all());
     }
-    // 【收藏的内容】
-    public function view_home_collection()
+    // 【收藏内容】
+    public function view_home_mine_collection()
     {
-        return $this->repo->view_home_collection(request()->all());
+        return $this->repo->view_home_mine_collection(request()->all());
     }
-    // 【点赞的内容】
-    public function view_home_favor()
+    // 【点赞内容】
+    public function view_home_mine_favor()
     {
-        return $this->repo->view_home_favor(request()->all());
+        return $this->repo->view_home_mine_favor(request()->all());
     }
     // 【发现】
-    public function view_home_discovery()
+    public function view_home_mine_discovery()
     {
-        return $this->repo->view_home_discovery(request()->all());
+        return $this->repo->view_home_mine_discovery(request()->all());
     }
     // 【我的关注】
-    public function view_home_follow()
+    public function view_home_mine_follow()
     {
-        return $this->repo->view_home_follow(request()->all());
+        return $this->repo->view_home_mine_follow(request()->all());
     }
     // 【我的好友圈】
-    public function view_home_circle()
+    public function view_home_mine_circle()
     {
-        return $this->repo->view_home_circle(request()->all());
+        return $this->repo->view_home_mine_circle(request()->all());
     }
 
 
@@ -139,6 +145,52 @@ class IndexController extends Controller
 
 
 
+    // 【创建】
+    public function view_home_mine_item_create()
+    {
+        return $this->repo->view_home_mine_item_create();
+    }
+    // 【编辑&存储】
+    public function view_home_mine_item_edit()
+    {
+        if(request()->isMethod('get')) return $this->repo->view_home_mine_item_edit();
+        else if (request()->isMethod('post')) return $this->repo->home_mine_item_save(request()->all());
+    }
+
+
+    // 【目录类型】编辑视图
+    public function view_home_mine_item_edit_menutype()
+    {
+        return $this->repo->view_home_mine_item_edit_menutype(request()->all());
+    }
+    // 【时间线】编辑视图
+    public function view_home_mine_item_edit_timeline()
+    {
+        return $this->repo->view_home_mine_item_edit_timeline(request()->all());
+    }
+
+
+    // 【目录类型】存储
+    public function home_mine_item_menutype_save()
+    {
+        if(request()->isMethod('get')) return $this->repo->view_home_mine_item_edit_menutype(request()->all());
+        else if (request()->isMethod('post')) return $this->repo->home_mine_item_menutype_save(request()->all());
+    }
+    // 【时间线】存储
+    public function home_mine_item_timeline_save()
+    {
+        if(request()->isMethod('get')) return $this->repo->view_home_mine_item_edit_timeline(request()->all());
+        else if (request()->isMethod('post')) return $this->repo->home_mine_item_timeline_save(request()->all());
+    }
+
+
+
+
+    // 【删除】
+    public function item_delete()
+    {
+        return $this->repo->item_delete(request()->all());
+    }
 
     // 【收藏】
     public function item_add_collection()

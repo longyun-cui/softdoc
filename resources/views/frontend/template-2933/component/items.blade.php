@@ -48,6 +48,10 @@
                         @endif
                     @endif
 
+                    @if(Auth::check() && $item->user_id == Auth::user()->id)
+                        <li class="delete-this-item"><i class="fa fa-trash"></i> 删除</li>
+                    @endif
+
                 </ul>
             </span>
             @endif
@@ -145,6 +149,20 @@
             </div>
 
             <div class="pull-right">
+
+                @if($item->category == 99 && Auth::check() && $item->user_id == Auth::user()->id)
+                    <a class="margin delete-this-item" href="javascript:void(0);" role="button">删除</a>
+                @endif
+
+                @if($item->category != 99 && Auth::check() && $item->user_id == Auth::user()->id)
+                    @if($item->category == 11)
+                        <a class="margin" href="{{ url('/home/mine/item/edit/menutype?id='.$item->id) }}" role="button">编辑</a>
+                    @elseif($item->category == 18)
+                        <a class="margin" href="{{ url('/home/mine/item/edit/timeline?id='.$item->id) }}" role="button">编辑</a>
+                    @else
+                        <a class="margin" href="{{ url('/home/mine/item/edit?id='.$item->id) }}" role="button">编辑</a>
+                    @endif
+                @endif
 
                 @if($item->category != 99)
                 <a class="margin forward-show" href="javascript:void(0);" data-toggle="modal" data-target="#modal-forward" role="button">

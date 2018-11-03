@@ -185,6 +185,38 @@ jQuery( function ($) {
 
 
 
+
+    // 删除
+    $(".section-body").off("click",".delete-this-item").on('click', ".delete-this-item", function() {
+        var that = $(this);
+        var item_option = $(this).parents('.item-option');
+
+        layer.msg('确认"删除"？', {
+            time: 0
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.post(
+                    "/item/delete",
+                    {
+                        _token: $('meta[name="_token"]').attr('content'),
+                        id: item_option.attr('data-item')
+                    },
+                    function(data){
+                        if(!data.success) layer.msg(data.msg);
+                        else
+                        {
+                            layer.closeAll();
+                            if(!data.success) layer.msg(data.msg);
+                            else item_option.remove();
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
+
+    });
+
     // 点赞
     $(".section-body").off("click",".add-this-favor").on('click', ".add-this-favor", function() {
         var that = $(this);

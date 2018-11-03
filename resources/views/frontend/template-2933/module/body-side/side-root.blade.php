@@ -43,28 +43,28 @@
 <div class="main-side-block main-side-container">
     <ul>
         <li class="{{ $root_todolist_active or '' }}">
-            <a href="{{ url('/home/todolist') }}">
+            <a href="{{ url('/home/mine/todolist') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-check-square-o"></i> <span> 待办事</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_schedule_active or '' }}">
-            <a href="{{ url('/home/schedule') }}">
+            <a href="{{ url('/home/mine/schedule') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-calendar-plus-o"></i> <span> 日程</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_collection_active or '' }}">
-            <a href="{{ url('/home/collection') }}">
+            <a href="{{ url('/home/mine/collection') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-star-o"></i> <span> 我的收藏</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_favor_active or '' }}">
-            <a href="{{ url('/home/favor') }}">
+            <a href="{{ url('/home/mine/favor') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-thumbs-o-up"></i> <span> 我的点赞</span>
                 </div>
@@ -75,24 +75,48 @@
 @endif
 
 
+@if(Auth::check())
+    <div class="main-side-block main-side-container">
+        <ul>
+            <li class="{{ $root_mine_active or '' }}">
+                <a href="{{ url('/home/mine/original') }}">
+                    <div class="box-body main-side-hover">
+                        <i class="fa fa-check-square-o"></i> <span> 我的原创内容</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li class="{{ $root_edit_active or '' }}">
+                <a href="{{ url('/home/mine/item/create') }}">
+                    <div class="box-body main-side-hover">
+                        <i class="fa fa-plus"></i> <span> 创作新内容</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+@endif
+
+
 <div class="main-side-block main-side-container">
     <ul>
         <li class="{{ $root_discovery_active or '' }}">
-            <a href="{{ url('/home/discovery') }}">
+            <a href="{{ url('/home/mine/discovery') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-globe"></i> <span> 发现</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_follow_active or '' }}">
-            <a href="{{ url('/home/follow') }}">
+            <a href="{{ url('/home/mine/follow') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-globe"></i> <span> 关注的</span>
                 </div>
             </a>
         </li>
         <li class="{{ $root_circle_active or '' }}">
-            <a href="{{ url('/home/circle') }}">
+            <a href="{{ url('/home/mine/circle') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-globe"></i> <span> 好友圈</span>
                 </div>
@@ -105,7 +129,7 @@
 <div class="main-side-block main-side-container">
     <ul>
         <li class="{{ $root_notification_active or '' }}">
-            <a href="{{ url('/home/notification') }}">
+            <a href="{{ url('/home/mine/notification') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-bell"></i> <span> 消息</span>
                     <span class="pull-right">@if(!empty($notification_count)) {{ $notification_count }} @endif</span>
