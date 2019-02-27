@@ -45,18 +45,23 @@
 
     <main class="main-body">
 
-        <section class="main-container">
-            <section class="module-container">
-                <div class="container- row">
-                    @include('frontend.'.env('TEMPLATE').'.component.relation-user', ['users'=>$users])
-                </div>
-            </section>
+        {{--<section class="main-container">--}}
+            {{--<section class="module-container">--}}
+                {{--<div class="container- row">--}}
+                    {{--@include('frontend.'.env('TEMPLATE').'.component.relation-user', ['users'=>$users])--}}
+                {{--</div>--}}
+            {{--</section>--}}
+        {{--</section>--}}
+        <section class="main-container-xs">
+            <div class="row" style="margin:0;">
+                @include('frontend.'.env('TEMPLATE').'.component.relation-user', ['users'=>$users])
+            </div>
         </section>
 
     </main>
 
     <main class="main-sidebar-fixed">
-        @include('frontend.'.env('TEMPLATE').'.module.sidebar-root')
+        @include('frontend.'.env('TEMPLATE').'.module.sidebar-user')
     </main>
 
     {{--@include('frontend.'.env('TEMPLATE').'.component.body')--}}

@@ -402,7 +402,7 @@ class IndexRepository {
 //        dd($lines->toArray());
 
         view()->share('user_root_active','active');
-        return view('frontend.entrance.user')->with(['data'=>$user,'items'=>$items]);
+        return view('frontend.entrance.user')->with(['data'=>$user,'items'=>$items,'user_root_active'=>'active']);
     }
     // 用户首页
     public function view_user_original($post_data,$id=0)
@@ -461,7 +461,7 @@ class IndexRepository {
 //        dd($lines->toArray());
 
         view()->share('user_original_active','active');
-        return view('frontend.entrance.user')->with(['data'=>$user,'items'=>$items]);
+        return view('frontend.entrance.user')->with(['data'=>$user,'items'=>$items,'user_original_active'=>'active']);
     }
 
     // 【Ta关注的人】
@@ -505,7 +505,7 @@ class IndexRepository {
             }
         }
 
-        return view('frontend.entrance.user-follow')->with(['data'=>$Ta,'users'=>$pivot_users]);
+        return view('frontend.entrance.user-follow')->with(['data'=>$Ta,'users'=>$pivot_users,'user_relation_follow_active'=>'active']);
     }
     // 【关注Ta的人】
     public function view_user_fans($post_data,$id=0)
@@ -548,7 +548,7 @@ class IndexRepository {
             }
         }
 
-        return view('frontend.entrance.user-fans')->with(['data'=>$Ta,'users'=>$pivot_users]);
+        return view('frontend.entrance.user-fans')->with(['data'=>$Ta,'users'=>$pivot_users,'user_relation_fans_active'=>'active']);
     }
 
 
@@ -626,7 +626,7 @@ class IndexRepository {
                 DB::rollback();
                 $msg = '添加关注失败，请重试！';
 //                $msg = $e->getMessage();
-//                exit($e->getMessage());、
+//                exit($e->getMessage());
                 return response_fail([], $msg);
             }
         }

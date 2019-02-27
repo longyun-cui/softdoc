@@ -10,8 +10,8 @@
         </div>
 
         <li class="{{ $user_mine_active or '' }}">
-            <a href="{{ url('/') }}">
-                <div class="box-body main-side-hover">
+            <a href="{{ url('/user/'.$data->id) }}">
+                <div class="box-body main-side-hover multi-ellipsis-1">
                     {{ $data->name or '' }}
                 </div>
             </a>

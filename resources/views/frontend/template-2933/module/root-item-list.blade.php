@@ -7,12 +7,12 @@
             {{--<div class="wow slideInRight module-subtitle-row color-5 title-h4"><b>description-1</b></div>--}}
         </header>
 
-        <div class="module-row module-body-container bg-light">
+        <div class="module-row module-body-container bg-light-">
             @include('frontend.'.env('TEMPLATE').'.component.item-list', ['items'=>$items])
         </div>
 
         <footer class="module-row module-footer-container text-center">
-            <a href="{{ url('/item/list') }}" class="view-more style-dark">查看更多 <i class="fa fa-hand-o-right"></i></a>
+            {{--<a href="{{ url('/item/list') }}" class="view-more style-dark">查看更多 <i class="fa fa-hand-o-right"></i></a>--}}
         </footer>
 
     </div>
