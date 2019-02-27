@@ -36,7 +36,23 @@
 {{--custom-content--}}
 @section('custom-body')
 
-    @include('frontend.'.env('TEMPLATE').'.component.body')
+    <main class="main-body">
+
+        <section class="main-container">
+            <section class="module-container">
+                <div class="container- row">
+                    @include('frontend.'.env('TEMPLATE').'.component.notification-list', ['notifications'=>$notifications])
+                </div>
+            </section>
+        </section>
+
+    </main>
+
+    <main class="main-sidebar-fixed">
+        @include('frontend.'.env('TEMPLATE').'.module.sidebar-root')
+    </main>
+
+    {{--@include('frontend.'.env('TEMPLATE').'.component.body')--}}
     @include('frontend.'.env('TEMPLATE').'.component.modal-forward')
 
 @endsection

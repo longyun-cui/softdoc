@@ -85,12 +85,14 @@ Route::group(['namespace' => 'Front'], function () {
         $controller = "IndexController";
 
         Route::get('/', $controller.'@view_root');
+        Route::get('/root-1', $controller.'@view_root');
+
 
         Route::group(['middleware' => 'login.turn'], function () {
 
             $controller = "IndexController";
 
-            Route::get('/home/notification', $controller.'@view_home_notification');
+            Route::get('/home/mine/notification', $controller.'@view_home_notification');
 
             Route::group(['middleware' => 'notification'], function () {
 

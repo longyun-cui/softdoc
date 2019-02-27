@@ -32,19 +32,31 @@
 
 
 {{--custom-content-main--}}
-@section('custom-body-main')
-    @include('frontend.'.env('TEMPLATE').'.module.module-body-content')
-@endsection
+{{--@section('custom-body-main')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.module-body-content')--}}
+{{--@endsection--}}
 {{--custom-content-side--}}
-@section('custom-body-side')
-    @include('frontend.'.env('TEMPLATE').'.module.body-side.side-user')
-@endsection
+{{--@section('custom-body-side')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.body-side.side-user')--}}
+{{--@endsection--}}
 
 
 {{--custom-content--}}
 @section('custom-body')
 
-    @include('frontend.'.env('TEMPLATE').'.component.body')
+    <main class="main-body">
+
+        <section class="main-container">
+            @include('frontend.'.env('TEMPLATE').'.module.root-item-list', ['items'=>$items])
+        </section>
+
+    </main>
+
+    <main class="main-sidebar-fixed">
+        @include('frontend.'.env('TEMPLATE').'.module.sidebar-user')
+    </main>
+
+    {{--@include('frontend.'.env('TEMPLATE').'.component.body')--}}
     @include('frontend.'.env('TEMPLATE').'.component.modal-forward')
 
 @endsection

@@ -1,5 +1,5 @@
 {{--<!-- START: footer -->--}}
-<footer role="contentinfo" class="probootstrap-footer background-blue">
+<footer role="contentinfo" class="section-footer probootstrap-footer background-blue">
     <div class="site-footer _none">
         <div class="container">
 
@@ -166,7 +166,7 @@
             <div class="row mt20 mb20">
                 <div class="col-md-12 text-center">
                     <div>
-                        <small> Copyright&copy;上海如哉网络科技有限公司 2017-2018</small><br>
+                        <small> Copyright&copy;上海如哉网络科技有限公司 2017-2019</small><br>
                         <small><a target="_blank" href="http://www.miitbeian.gov.cn" style="color:#a8a8a8">沪ICP备17052782号-2</a></small>
                     </div>
                 </div>

@@ -31,19 +31,31 @@
 
 
 {{--custom-content-main--}}
-@section('custom-body-main')
-    @include('frontend.'.env('TEMPLATE').'.module.module-body-edit')
-@endsection
+{{--@section('custom-body-main')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.module-body-edit')--}}
+{{--@endsection--}}
 {{--custom-content-side--}}
-@section('custom-body-side')
-    @include('frontend.'.env('TEMPLATE').'.module.body-side.side-root')
-@endsection
+{{--@section('custom-body-side')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.body-side.side-root')--}}
+{{--@endsection--}}
 
 
 {{--custom-content--}}
 @section('custom-body')
 
-    @include('frontend.'.env('TEMPLATE').'.component.body')
+    <main class="main-body">
+
+        <section class="main-container">
+            @include('frontend.'.env('TEMPLATE').'.module.module-body-edit')
+        </section>
+
+    </main>
+
+    <main class="main-sidebar-fixed">
+        @include('frontend.'.env('TEMPLATE').'.module.sidebar-root')
+    </main>
+
+    {{--@include('frontend.'.env('TEMPLATE').'.component.body')--}}
     @include('frontend.'.env('TEMPLATE').'.component.modal-forward')
 
 @endsection

@@ -28,6 +28,7 @@
 
                 @if(Auth::check())
                     <li class="hidden-xs hidden-sm"><a href="{{ url('/home') }}">内容管理后台</a></li>
+                    <li class="hidden-xs hidden-sm"><a href="{{ url('/home/mine/item/create') }}">原创</a></li>
                     <li class="hidden-xs hidden-sm"><a href="{{ url('/logout') }}">退出</a></li>
                 @endif
 

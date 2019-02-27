@@ -54,12 +54,53 @@
 {{--custom-content--}}
 @section('custom-body')
 
-    @if($item->category == 11 || $item->category == 18)
-        @include('frontend.'.env('TEMPLATE').'.component.body', ['side'=>4,'main'=>8])
-    @else
-        @include('frontend.'.env('TEMPLATE').'.component.body')
-    @endif
+    <main class="main-body">
+        @if($item->category == 11 || $item->category == 18)
+            <div class="main-container">
+                <div class="row" style="margin:0;">
 
+                    <div class="col-xs-12 col-sm-12 col-md-4 body-side pull-right" style="padding-left:8px;padding-right:8px;">
+                        {{--@yield('custom-body-side')--}}
+                        @if($item->category == 11)
+                            @include('frontend.'.env('TEMPLATE').'.module.body-side.side-menu')
+                        @elseif($item->category == 18)
+                            @include('frontend.'.env('TEMPLATE').'.module.body-side.side-timeline')
+                        @else
+                            @include('frontend.'.env('TEMPLATE').'.module.body-side.side-item')
+                        @endif
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-8 body-main pull-left" style="padding-left:8px;padding-right:8px;">
+                        {{--@yield('custom-body-main')--}}
+                        @if($item->category == 18)
+                            @include('frontend.'.env('TEMPLATE').'.module.module-body-timeline')
+                        @else
+                            @include('frontend.'.env('TEMPLATE').'.module.module-body-item')
+                        @endif
+                    </div>
+
+                </div>
+            </div>
+        @else
+            <section class="main-container-xs">
+                <div class="row" style="margin:0;">
+                    @include('frontend.'.env('TEMPLATE').'.module.module-body-item')
+                </div>
+            </section>
+        @endif
+    </main>
+
+    {{--@if($item->category == 11 || $item->category == 18)--}}
+        {{--@include('frontend.'.env('TEMPLATE').'.component.body', ['side'=>4,'main'=>8])--}}
+    {{--@else--}}
+        {{--@include('frontend.'.env('TEMPLATE').'.component.body')--}}
+    {{--@endif--}}
+
+    <main class="main-sidebar-fixed">
+        @include('frontend.'.env('TEMPLATE').'.module.sidebar-item')
+    </main>
+
+    {{--@include('frontend.'.env('TEMPLATE').'.component.body')--}}
     @include('frontend.'.env('TEMPLATE').'.component.modal-forward')
 
 @endsection

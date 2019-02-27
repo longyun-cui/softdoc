@@ -31,19 +31,47 @@
 
 
 {{--custom-content-main--}}
-@section('custom-body-main')
-    @include('frontend.'.env('TEMPLATE').'.module.module-body-schedule')
-@endsection
+{{--@section('custom-body-main')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.module-body-schedule')--}}
+{{--@endsection--}}
 {{--custom-content-side--}}
-@section('custom-body-side')
-    @include('frontend.'.env('TEMPLATE').'.module.body-side.side-root')
-@endsection
+{{--@section('custom-body-side')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.body-side.side-root')--}}
+{{--@endsection--}}
 
 
 {{--custom-content--}}
 @section('custom-body')
 
-    @include('frontend.'.env('TEMPLATE').'.component.body')
+    <main class="main-body">
+
+        <section class="main-container">
+
+            <div class="main-body-block" style="margin-bottom:32px;">
+
+                <div class="clearfix">
+                    <div id='calendar'></div>
+                </div>
+
+            </div>
+            <div class="main-body-block">
+
+                {{--@include('frontend.'.env('TEMPLATE').'.component.items', ['items'=>$items])--}}
+
+            </div>
+            <div class="main-body-block item-container schedule-container" id="schedule-container-clone">
+                I am clone.
+            </div>
+
+        </section>
+
+    </main>
+
+    <main class="main-sidebar-fixed">
+        @include('frontend.'.env('TEMPLATE').'.module.sidebar-root')
+    </main>
+
+    {{--@include('frontend.'.env('TEMPLATE').'.component.body')--}}
     @include('frontend.'.env('TEMPLATE').'.component.modal-forward')
 
 @endsection

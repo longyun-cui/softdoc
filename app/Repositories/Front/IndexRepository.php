@@ -50,7 +50,9 @@ class IndexRepository {
             'user',
             'forward_item'=>function($query) { $query->with('user'); },
             'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
-        ])->where('is_shared','>=',99)->orderBy('id','desc')->paginate(20);
+        ])->where('is_shared','>=',99)
+            ->where('item_id',0)
+            ->orderBy('id','desc')->paginate(20);
         view()->share('items_type','paginate');
 //        dd($items->toArray());
 
@@ -61,7 +63,9 @@ class IndexRepository {
             $item->img_tags = get_html_img($item->content);
         }
 
-        return view('frontend.entrance.root')->with(['items'=>$items]);
+        $path = request()->path();
+        if($path == "root-1") return view('frontend.entrance.root-1')->with(['items'=>$items]);
+        else return view('frontend.entrance.root')->with(['items'=>$items]);
     }
 
 
@@ -713,7 +717,7 @@ class IndexRepository {
         }
         else return response_error([],"请先登录！");
 
-        return view('frontend.entrance.relation-follow')->with(['users'=>$users]);
+        return view('frontend.entrance.relation-follow')->with(['users'=>$users,'root_relation_follow_active'=>'active']);
     }
     // 【关注我的人】
     public function view_relation_fans($post_data)
@@ -731,7 +735,7 @@ class IndexRepository {
         }
         else return response_error([],"请先登录！");
 
-        return view('frontend.entrance.relation-fans')->with(['users'=>$users]);
+        return view('frontend.entrance.relation-fans')->with(['users'=>$users,'root_relation_fans_active'=>'active']);
     }
 
 

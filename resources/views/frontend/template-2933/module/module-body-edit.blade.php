@@ -23,28 +23,36 @@
                             @if($operate == 'edit')
                                 <label role="button">
                                     <input type="radio" name="category-" value="{{ $data->category or 0 }}" checked="checked">
-                                    @if($data->category == 1) 图文类型
+                                    @if($data->category == 1) 文章类型
                                     @elseif($data->category == 7) 辩题类型
-                                    @elseif($data->category == 11) 书目类型
+                                    @elseif($data->category == 11) 文件目录类型
                                     @elseif($data->category == 18) 时间线类型
                                     @endif
                                 </label>
                             @elseif($operate == 'create')
-                                <label role="button">
-                                    <input type="radio" name="category" value="1" checked="checked"> 图文类型
-                                </label>
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="category" value="1" checked="checked"> 文章类型
+                                    </label>
+                                </button>
 
-                                <label role="button">
-                                    <input type="radio" name="category" value="7"> 辩题类型
-                                </label>
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="category" value="7"> 辩题类型
+                                    </label>
+                                </button>
 
-                                <label role="button">
-                                    <input type="radio" name="category" value="11"> 书目类型
-                                </label>
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="category" value="11"> 文件目录类型
+                                    </label>
+                                </button>
 
-                                <label role="button">
-                                    <input type="radio" name="category" value="18"> 时间线类型
-                                </label>
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="category" value="18"> 时间线类型
+                                    </label>
+                                </button>
                             @endif
 
                         </div>
@@ -66,12 +74,22 @@
                                     @endif
                                 </label>
                             @elseif($operate == 'create')
-                                <label role="button">
-                                    <input type="radio" name="time_type" value="0" checked="checked"> 非日程
-                                </label>
-                                <label role="button">
-                                    <input type="radio" name="time_type" value="1"> 日程
-                                </label>
+                                {{--<label role="button">--}}
+                                    {{--<input type="radio" name="time_type" value="0" checked="checked"> 非日程--}}
+                                {{--</label>--}}
+                                {{--<label role="button">--}}
+                                    {{--<input type="radio" name="time_type" value="1"> 日程--}}
+                                {{--</label>--}}
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="time_type" value="0" checked="checked"> 非日程
+                                    </label>
+                                </button>
+                                <button type="button" class="btn radio">
+                                    <label>
+                                        <input type="radio" name="time_type" value="1" checked="checked"> 日程
+                                    </label>
+                                </button>
                             @endif
 
                         </div>

@@ -31,21 +31,36 @@
 
 
 {{--custom-content-main--}}
-@section('custom-body-main')
-    @include('frontend.'.env('TEMPLATE').'.module.module-body-user')
-@endsection
+{{--@section('custom-body-main')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.module-body-user')--}}
+{{--@endsection--}}
 {{--custom-content-side--}}
-@section('custom-body-side')
-    @include('frontend.'.env('TEMPLATE').'.module.body-side.side-user')
-@endsection
+{{--@section('custom-body-side')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.body-side.side-user')--}}
+{{--@endsection--}}
 
 
 {{--custom-content--}}
 @section('custom-body')
 
-    @include('frontend.'.env('TEMPLATE').'.component.body')
+    <main class="main-body">
 
-    {{--@include('frontend.'.env('TEMPLATE').'.module.module-service-for-root', ['page_type'=>'root','services'=>$services])--}}
+        <section class="main-container">
+            <section class="module-container">
+                <div class="container- row">
+                    @include('frontend.'.env('TEMPLATE').'.component.relation-user', ['users'=>$users])
+                </div>
+            </section>
+        </section>
+
+    </main>
+
+    <main class="main-sidebar-fixed">
+        @include('frontend.'.env('TEMPLATE').'.module.sidebar-root')
+    </main>
+
+    {{--@include('frontend.'.env('TEMPLATE').'.component.body')--}}
+    @include('frontend.'.env('TEMPLATE').'.component.modal-forward')
 
 @endsection
 

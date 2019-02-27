@@ -2,7 +2,7 @@
 
 
 {{--html.head--}}
-@section('head_title')我的粉丝 - {{ config('website.website_name') }}@endsection
+@section('head_title'){{ config('website.website_name') }}@endsection
 @section('meta_author')@endsection
 @section('meta_title')@endsection
 @section('meta_description')@endsection
@@ -32,7 +32,7 @@
 
 {{--custom-content-main--}}
 {{--@section('custom-body-main')--}}
-    {{--@include('frontend.'.env('TEMPLATE').'.module.module-body-user')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.module-body-content')--}}
 {{--@endsection--}}
 {{--custom-content-side--}}
 {{--@section('custom-body-side')--}}
@@ -44,19 +44,21 @@
 @section('custom-body')
 
     <main class="main-body">
+        <div class="container">
+            <div class="row-">
 
-        <section class="main-container">
-            <section class="module-container">
-                <div class="container- row">
-                    @include('frontend.'.env('TEMPLATE').'.component.relation-user', ['users'=>$users])
+                <div class="col-xs-12 col-sm-12 col-md-{{$side or 3}} body-side pull-right">
+                    {{--@yield('custom-body-side')--}}
+                    @include('frontend.'.env('TEMPLATE').'.module.body-side.side-root')
                 </div>
-            </section>
-        </section>
 
-    </main>
+                <div class="col-xs-12 col-sm-12 col-md-{{$main or 9}} body-main pull-left">
+                    {{--@yield('custom-body-main')--}}
+                    @include('frontend.'.env('TEMPLATE').'.component.item-list-1', ['items'=>$items])
+                </div>
 
-    <main class="main-sidebar-fixed">
-        @include('frontend.'.env('TEMPLATE').'.module.sidebar-root')
+            </div>
+        </div>
     </main>
 
     {{--@include('frontend.'.env('TEMPLATE').'.component.body')--}}

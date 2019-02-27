@@ -31,19 +31,35 @@
 
 
 {{--custom-content-main--}}
-@section('custom-body-main')
-    @include('frontend.'.env('TEMPLATE').'.module.module-body-content')
-@endsection
+{{--@section('custom-body-main')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.module-body-content')--}}
+{{--@endsection--}}
 {{--custom-content-side--}}
-@section('custom-body-side')
-    @include('frontend.'.env('TEMPLATE').'.module.body-side.side-root')
-@endsection
+{{--@section('custom-body-side')--}}
+    {{--@include('frontend.'.env('TEMPLATE').'.module.body-side.side-root')--}}
+{{--@endsection--}}
 
 
 {{--custom-content--}}
 @section('custom-body')
 
-    @include('frontend.'.env('TEMPLATE').'.component.body')
+    <main class="main-body">
+
+        <section class="main-container">
+            <section class="module-container">
+                <div class="container- row">
+                    @include('frontend.'.env('TEMPLATE').'.component.item-list-1', ['items'=>$items])
+                </div>
+            </section>
+        </section>
+
+    </main>
+
+    <main class="main-sidebar-fixed">
+        @include('frontend.'.env('TEMPLATE').'.module.sidebar-root')
+    </main>
+
+    {{--@include('frontend.'.env('TEMPLATE').'.component.body')--}}
     @include('frontend.'.env('TEMPLATE').'.component.modal-forward')
 
 @endsection

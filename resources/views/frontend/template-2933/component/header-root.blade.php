@@ -22,8 +22,21 @@
                 <li class="mb10"> &nbsp; </li>
 
                 @if(Auth::check())
-                    <li class=""><a href="{{ url('/home') }}">内容管理后台</a></li>
+                    {{--<li class=""><a href="{{ url('/home') }}"><i class="fa fa-home"></i> 内容管理后台</a></li>--}}
+                    <li class=""><a href="{{ url('/home/mine/item/create') }}"><i class="fa fa-plus"></i> 原创</a></li>
+                    <li class="">
+                        <a href="{{ url('/home/mine/notification') }}">
+                            <i class="fa fa-bell"></i> 消息
+                            <span class=""><b>@if(!empty($notification_count)) {{ $notification_count }} @endif</b></span>
+                        </a>
+                    </li>
                     <li class=""><a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> 退出</a></li>
+                @else
+                    <li class="">
+                        <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxaf993c7aace04371&redirect_uri=http%3A%2F%2Fsoftdoc.cn%2Fweixin%2Flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect">
+                            <i class="fa fa-sign-in"></i> 登录
+                        </a>
+                    </li>
                 @endif
 
                 <li class="header-wechat hidden-xs hidden-sm" role="button">
