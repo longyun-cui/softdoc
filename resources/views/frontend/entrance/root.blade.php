@@ -59,7 +59,8 @@
                     </div>
 
                     <footer class="module-row module-footer-container text-center">
-                        <a href="{{ url('/item/list') }}" class="view-more style-dark">查看更多 <i class="fa fa-hand-o-right"></i></a>
+                        {{{ $items->links() }}}
+                        {{--<a href="{{ url('/item/list') }}" class="view-more style-dark">查看更多 <i class="fa fa-hand-o-right"></i></a>--}}
                     </footer>
 
                 </div>
