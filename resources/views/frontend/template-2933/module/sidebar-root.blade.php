@@ -12,7 +12,7 @@
 
         <li class="{{ $root_mine_active or '' }}">
             <a href="{{ url('/') }}">
-                <div class="box-body main-side-hover multi-ellipsis-1">
+                <div class="box-body main-side-hover multi-ellipsis-1" title="{{ Auth::user()->name }}">
                     {{ Auth::user()->name }}
                 </div>
             </a>

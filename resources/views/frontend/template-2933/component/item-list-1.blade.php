@@ -165,7 +165,7 @@
                 @endif
 
                 @if($item->category != 99)
-                <a class="margin forward-show" href="javascript:void(0);" data-toggle="modal" data-target="#modal-forward" role="button">
+                <a class="margin forward-show" href="" data-toggle="modal" data-target="#modal-forward" role="button">
                     分享({{ $item->share_num or 0 }})
                 </a>
                 @endif

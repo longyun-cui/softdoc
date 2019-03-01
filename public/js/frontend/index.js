@@ -1,6 +1,8 @@
 jQuery( function ($) {
 
 
+    console.log(4123);
+
     $(".user-logout").on("click",function() {
         location.href = "/logout";
     });
@@ -168,14 +170,14 @@ jQuery( function ($) {
 
 
 
-    $('.section-body').on('click', '.show-menu', function () {
+    $('.main-body').on('click', '.show-menu', function () {
         var item_option = $(this).parents('.item-option');
         item_option.find('.menu-container').show();
         $(this).removeClass('show-menu').addClass('hide-menu');
         $(this).html('隐藏目录');
     });
 
-    $('.section-body').on('click', '.hide-menu', function () {
+    $('.main-body').on('click', '.hide-menu', function () {
         var item_option = $(this).parents('.item-option');
         item_option.find('.menu-container').hide();
         $(this).removeClass('hide-menu').addClass('show-menu');
@@ -187,7 +189,7 @@ jQuery( function ($) {
 
 
     // 删除
-    $(".section-body").off("click",".delete-this-item").on('click', ".delete-this-item", function() {
+    $(".main-body").off("click",".delete-this-item").on('click', ".delete-this-item", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -218,7 +220,7 @@ jQuery( function ($) {
     });
 
     // 点赞
-    $(".section-body").off("click",".add-this-favor").on('click', ".add-this-favor", function() {
+    $(".main-body").off("click",".add-this-favor").on('click', ".add-this-favor", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -258,7 +260,7 @@ jQuery( function ($) {
 
     });
     // 取消点赞
-    $(".section-body").off("click",".remove-this-favor").on('click', ".remove-this-favor", function() {
+    $(".main-body").off("click",".remove-this-favor").on('click', ".remove-this-favor", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -299,11 +301,11 @@ jQuery( function ($) {
 
 
     // 收藏自己
-    $(".section-body").off("click",".collect-mine").on('click', ".collect-mine", function() {
+    $(".main-body").off("click",".collect-mine").on('click', ".collect-mine", function() {
         layer.msg('不能收藏自己的', function(){});
     });
     // 收藏
-    $(".section-body").off("click",".add-this-collection").on('click', ".add-this-collection", function() {
+    $(".main-body").off("click",".add-this-collection").on('click', ".add-this-collection", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -344,7 +346,7 @@ jQuery( function ($) {
 
     });
     // 移出收藏
-    $(".section-body").off("click",".remove-this-collection").on('click', ".remove-this-collection", function() {
+    $(".main-body").off("click",".remove-this-collection").on('click', ".remove-this-collection", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -391,7 +393,7 @@ jQuery( function ($) {
 
 
     // 添加待办事
-    $(".section-body").off("click",".add-this-todolist").on('click', ".add-this-todolist", function() {
+    $(".main-body").off("click",".add-this-todolist").on('click', ".add-this-todolist", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -423,7 +425,7 @@ jQuery( function ($) {
 
     });
     // 移出待办事
-    $(".section-body").off("click",".remove-this-todolist").on('click', ".remove-this-todolist", function() {
+    $(".main-body").off("click",".remove-this-todolist").on('click', ".remove-this-todolist", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -457,7 +459,7 @@ jQuery( function ($) {
 
 
     // 添加日程
-    $(".section-body").off("click",".add-this-schedule").on('click', ".add-this-schedule", function() {
+    $(".main-body").off("click",".add-this-schedule").on('click', ".add-this-schedule", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -489,7 +491,7 @@ jQuery( function ($) {
 
     });
     // 移出日程
-    $(".section-body").off("click",".remove-this-schedule").on('click', ".remove-this-schedule", function() {
+    $(".main-body").off("click",".remove-this-schedule").on('click', ".remove-this-schedule", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         console.log(2);
@@ -524,7 +526,7 @@ jQuery( function ($) {
 
 
     // 显示转发
-    $(".section-body").off("click",".forward-show").on('click', ".forward-show", function() {
+    $(".main-body").off("click",".forward-show").on('click', ".forward-show", function() {
         var $that = $(this);
         var $item_option = $(this).parents('.item-option');
         var $item_id = $item_option.data('item');
@@ -587,7 +589,7 @@ jQuery( function ($) {
 
 
     // 显示评论
-    $(".section-body").off("click",".comment-toggle").on('click', ".comment-toggle", function() {
+    $(".main-body").off("click",".comment-toggle").on('click', ".comment-toggle", function() {
         var item_option = $(this).parents('.item-option');
         item_option.find(".comment-container").toggle();
 
@@ -621,7 +623,7 @@ jQuery( function ($) {
         }
     });
     // 发布评论
-    $(".section-body").off("click",".comment-submit").on('click', ".comment-submit", function() {
+    $(".main-body").off("click",".comment-submit").on('click', ".comment-submit", function() {
         var item_option = $(this).parents('.item-option');
         var form = $(this).parents('.item-comment-form');
         var options = {
@@ -642,7 +644,7 @@ jQuery( function ($) {
 
 
     // 查看评论
-    $(".section-body").off("click",".comments-get").on('click', ".comments-get", function() {
+    $(".main-body").off("click",".comments-get").on('click', ".comments-get", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         var getSort = that.attr('data-getSort');
@@ -680,7 +682,7 @@ jQuery( function ($) {
         );
     });
     // 更多评论
-    $(".section-body").off("click",".comments-more").on('click', ".comments-more", function() {
+    $(".main-body").off("click",".comments-more").on('click', ".comments-more", function() {
 
         var that = $(this);
         var more = that.attr('data-more');
@@ -730,7 +732,7 @@ jQuery( function ($) {
 
 
     // 选择支持方
-    $(".section-body").off("click","input[name=get-support]").on('click', "input[name=get-support]", function() {
+    $(".main-body").off("click","input[name=get-support]").on('click', "input[name=get-support]", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         item_option.find('.comments-get').click();
@@ -738,12 +740,12 @@ jQuery( function ($) {
 
 
     // 显示对评论的回复
-    $(".section-body").off("click",".comment-reply-toggle").on('click', ".comment-reply-toggle", function() {
+    $(".main-body").off("click",".comment-reply-toggle").on('click', ".comment-reply-toggle", function() {
         var comment_option = $(this).parents('.comment-option');
         comment_option.find(".comment-reply-input-container").toggle();
     });
     // 发布对评论的回复
-    $(".section-body").off("click",".comment-reply-submit").on('click', ".comment-reply-submit", function() {
+    $(".main-body").off("click",".comment-reply-submit").on('click', ".comment-reply-submit", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         var comment_option = $(this).parents('.comment-option');
@@ -783,12 +785,12 @@ jQuery( function ($) {
 
 
     // 显示对回复的回复
-    $(".section-body").off("click",".reply-toggle").on('click', ".reply-toggle", function() {
+    $(".main-body").off("click",".reply-toggle").on('click', ".reply-toggle", function() {
         var reply_option = $(this).parents('.reply-option');
         reply_option.find(".reply-input-container").toggle();
     });
     // 发布对回复的回复
-    $(".section-body").off("click",".reply-submit").on('click', ".reply-submit", function() {
+    $(".main-body").off("click",".reply-submit").on('click', ".reply-submit", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         var comment_option = $(this).parents('.comment-option');
@@ -829,7 +831,7 @@ jQuery( function ($) {
 
 
     // 更多回复
-    $(".section-body").off("click",".replies-more").on('click', ".replies-more", function() {
+    $(".main-body").off("click",".replies-more").on('click', ".replies-more", function() {
 
         var that = $(this);
         var more = that.attr('data-more');
@@ -881,7 +883,7 @@ jQuery( function ($) {
 
 
     // 发布对回复的点赞
-    $(".section-body").off("click",".comment-favor-this").on('click', ".comment-favor-this", function() {
+    $(".main-body").off("click",".comment-favor-this").on('click', ".comment-favor-this", function() {
         var that = $(this);
         var that_parent = that.attr('data-parent');
         var reply_option = $(this).parents(that_parent);
@@ -918,7 +920,7 @@ jQuery( function ($) {
         );
     });
     // 取消点赞
-    $(".section-body").off("click",".comment-favor-this-cancel").on('click', ".comment-favor-this-cancel", function() {
+    $(".main-body").off("click",".comment-favor-this-cancel").on('click', ".comment-favor-this-cancel", function() {
         var that = $(this);
         var that_parent = that.attr('data-parent');
         var reply_option = $(this).parents(that_parent);

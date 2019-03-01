@@ -46,8 +46,13 @@
 
     <main class="main-body">
 
-        <section class="main-container">
-            @include('frontend.'.env('TEMPLATE').'.module.root-item-list', ['items'=>$items])
+        {{--<section class="main-container">--}}
+            {{--@include('frontend.'.env('TEMPLATE').'.module.root-item-list-1', ['items'=>$items])--}}
+        {{--</section>--}}
+        <section class="main-container-xs">
+            <div class="row" style="margin:0;">
+                @include('frontend.'.env('TEMPLATE').'.component.item-list-1', ['items'=>$items])
+            </div>
         </section>
 
     </main>

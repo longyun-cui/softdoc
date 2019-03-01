@@ -45,9 +45,9 @@
 
     <main class="main-body">
 
-        <section class="main-container">
+        <section class="main-container-xs">
             <section class="module-container">
-                <div class="container- row">
+                <div class="row">
 
                     <header class="module-row module-header-container text-center _none">
                         <div class="wow slideInLeft module-title-row title-with-double-line color-1 border-light title-h2"><b>原创内容</b></div>
@@ -55,7 +55,7 @@
                     </header>
 
                     <div class="module-row module-body-container bg-light-">
-                        @include('frontend.'.env('TEMPLATE').'.component.item-list', ['items'=>$items])
+                        @include('frontend.'.env('TEMPLATE').'.component.item-list-1', ['items'=>$items])
                     </div>
 
                     <footer class="module-row module-footer-container text-center">
