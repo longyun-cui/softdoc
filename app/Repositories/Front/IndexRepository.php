@@ -461,7 +461,7 @@ class IndexRepository {
 //        dd($lines->toArray());
 
         view()->share('user_original_active','active');
-        return view('frontend.entrance.user')->with(['data'=>$user,'items'=>$items,'user_original_active'=>'active']);
+        return view('frontend.entrance.user-original')->with(['data'=>$user,'items'=>$items,'user_original_active'=>'active']);
     }
 
     // 【Ta关注的人】
