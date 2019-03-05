@@ -13,9 +13,9 @@
     <div class="panel-default box-default item-entity-container with-portrait">
 
         {{--header--}}
-        <div class="item-row item-info-row text-muted margin-bottom-8">
+        <div class="item-row item-info-row text-muted">
             <span class="item-user-portrait _none"><img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt=""></span>
-            <span class="item-user-name"><a href="{{ url('/user/'.$item->user->id) }}"><b>{{ $item->user->name or '' }}</b></a></span>
+            <span class="item-user-name"><a href="{{ url('/user/'.$item->user->id) }}" class="font-sm">{{ $item->user->name or '' }}</a></span>
             {{--<span> • </span>--}}
             {{--<span>{{ $item->created_at->format('n月j日 H:i') }}</span>--}}
             {{--<span> • </span>--}}
@@ -59,13 +59,13 @@
 
 
         @if($item->category != 99)
-            <div class="item-row item-title-row margin-bottom-8">
-                <a href="{{ url('/item/'.$item->id) }}"><b class="item-title">{{ $item->title or '' }}</b></a>
+            <div class="item-row item-title-row">
+                <a href="{{ url('/item/'.$item->id) }}" class="color-6 font-md"><b>{{ $item->title or '' }}</b></a>
             </div>
         @endif
 
         @if($item->time_type == 1)
-        <div class="item-row item-content-row margin-bottom-8">
+        <div class="item-row item-content-row _none">
             @if(!empty($item->start_time))
                 <b class="text-blue">{{ time_show($item->start_time) }}</b>
             @endif
@@ -77,10 +77,10 @@
         @endif
 
         @if($item->category == 7)
-            <div class="item-row item-info-row">
+            <div class="item-row item-info-row _none">
                 <b class="text-red">【正方】{{ $item->custom_decode->positive }}</b>
             </div>
-            <div class="item-row item-info-row">
+            <div class="item-row item-info-row _none">
                 <b class="text-blue">【反方】{{ $item->custom_decode->negative }}</b>
             </div>
         @endif
@@ -93,7 +93,7 @@
         {{--@endif--}}
 
         {{--content--}}
-        <div class="item-row item-content-row margin-bottom-8">
+        <div class="item-row item-content-row">
             <div class="media">
                 <div class="media-left">
                     @if(!empty($item->cover_pic))
@@ -107,13 +107,34 @@
                     @endif
                 </div>
                 <div class="media-body">
+
+                    @if($item->time_type == 1)
+                        <div class="item-row item-content-row">
+                            @if(!empty($item->start_time))
+                                <b class="text-blue">{{ time_show($item->start_time) }}</b>
+                            @endif
+                            @if(!empty($item->end_time))
+                                <span class="font-xs">至</span>
+                                <b class="text-blue">{{ time_show($item->end_time) }}</b>
+                                <span class="font-xs">(截止)</span>
+                            @endif
+                        </div>
+                    @endif
+
+                    @if($item->category == 7)
+                        <div class="item-row item-info-row">
+                            <b class="text-red">【正方】{{ $item->custom_decode->positive }}</b>
+                        </div>
+                        <div class="item-row item-info-row">
+                            <b class="text-blue">【反方】{{ $item->custom_decode->negative }}</b>
+                        </div>
+                    @endif
                     <div class="clearfix">
                         @if(!empty($item->description))
                             <article class="colo-md-12 multi-ellipsis-3">{{{ $item->description or '' }}}</article>
                         @else
                             <article class="colo-md-12 multi-ellipsis-3">{!! $item->content_show or '' !!}</article>
                         @endif
-
                     </div>
                 </div>
             </div>
@@ -142,7 +163,7 @@
         <div class="item-row item-tools-row">
 
             <div class="pull-left">
-                <a class="" role="button">
+                <a class="font-sm" role="button">
                     {{ time_show($item->created_at->timestamp) }}
                     {{--{{ time_show($item->created_at->getTimestamp()) }}--}}
                 </a>

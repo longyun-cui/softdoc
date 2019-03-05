@@ -15,6 +15,11 @@
 
 .item-col { padding:4px; }
 
+.font-xs { font-size:12px; }
+.font-sm { font-size:13px; }
+.font-md { font-size:14px; }
+.font-lg { font-size:16px; }
+
 
 
 /*col-xs*/
