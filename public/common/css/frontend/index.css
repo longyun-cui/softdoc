@@ -482,12 +482,7 @@ html,body {
     vertical-align:top;
 }
 
-.media img {
-    width: 100%;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-}
+.media img { width:100%; border-radius:4px; }
 
 .media-left {
     display:block;
@@ -495,16 +490,15 @@ html,body {
     height:auto;
     min-height:0;
     max-height:100px;
-    padding-right:10px;
-    -webkit-border-radius:2px;
-    -moz-border-radius:2px;
-    border-radius:2px;
+    margin-right:10px;
+    border-radius:4px;
     font-size:0;
     overflow:hidden;
     float:left;
 }
+.media-left img { object-fit: cover; }
 .media-object {
-    display: block;
+    display:block;
 }
 
 .media-body {

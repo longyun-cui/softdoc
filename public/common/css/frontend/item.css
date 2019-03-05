@@ -50,7 +50,7 @@
 .item-title-row a { color:#555; }
 .item-description-row { background:#eee; padding:8px; margin-bottom:8px; }
 
-.item-content-row { color:#666; }
+.item-content-row { min-height:0; color:#666; }
 
 .item-tools-row { color:#888; font-size:13px; }
 .item-tools-row a { color:#aaa; }

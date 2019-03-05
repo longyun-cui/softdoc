@@ -98,11 +98,11 @@
                 <div class="media-left">
                     @if(!empty($item->cover_pic))
                         <a href="{{ url('/item/'.$item->id) }}">
-                            <img class="media-object" src="{{ url(env('DOMAIN_CDN').'/'.$item->cover_pic) }}">
+                            <img class="media-object grow" src="{{ url(env('DOMAIN_CDN').'/'.$item->cover_pic) }}">
                         </a>
                     @else
                         <a href="{{ url('/item/'.$item->id) }}">
-                            <img class="media-object" src="{{ $item->img_tags[2][0] or '' }}">
+                            <img class="media-object grow" src="{{ $item->img_tags[2][0] or '' }}">
                         </a>
                     @endif
                 </div>
@@ -123,10 +123,10 @@
 
                     @if($item->category == 7)
                         <div class="item-row item-info-row">
-                            <span class="text-red">【正方】{{ $item->custom_decode->positive }}</span>
+                            <span class="text-red">[正方] : {{ $item->custom_decode->positive }}</span>
                         </div>
                         <div class="item-row item-info-row">
-                            <span class="text-blue">【反方】{{ $item->custom_decode->negative }}</span>
+                            <span class="text-blue">[反方] : {{ $item->custom_decode->negative }}</span>
                         </div>
                     @endif
                     <div class="clearfix">
