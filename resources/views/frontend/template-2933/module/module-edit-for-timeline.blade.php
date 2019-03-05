@@ -112,6 +112,35 @@
                         </div>
                     </div>
 
+                    {{--cover 封面图片--}}
+                    <div class="form-group">
+                        <label class=" col-md-12">封面图片</label>
+                        <div class="col-md-8 fileinput-group">
+
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail cover-box">
+                                    {{--@if(!empty($data->cover_pic))--}}
+                                    {{--<img src="{{ url(env('DOMAIN_CDN').'/'.$data->cover_pic) }}" alt="" />--}}
+                                    {{--@endif--}}
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail">
+                                </div>
+                                <div class="btn-tool-group">
+                                <span class="btn-file">
+                                    <button class="btn btn-sm btn-primary fileinput-new">选择图片</button>
+                                    <button class="btn btn-sm btn-warning fileinput-exists">更改</button>
+                                    <input type="file" name="cover" />
+                                </span>
+                                    <span class="">
+                                    <button class="btn btn-sm btn-danger fileinput-exists" data-dismiss="fileinput">移除</button>
+                                </span>
+                                </div>
+                            </div>
+                            <div id="titleImageError" style="color: #a94442"></div>
+
+                        </div>
+                    </div>
+
                     {{--是否启用--}}
                     <div class="form-group form-active" id="form-active-option">
                         <label class=" col-md-12">是否启用</label>
@@ -161,8 +190,21 @@
 
 
 
+@section('custom-css')
+    <link href="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/css/fileinput.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('common/css/component/fileinput.css') }}" media="all" />
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+@endsection
+
+
+@section('custom-js')
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/fileinput.min.js"></script>
+    <script src="{{ asset('common/js/component/fileinput-only.js') }}"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.19.0/moment.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdn.bootcss.com/select2/4.0.5/js/select2.min.js"></script>
+@endsection
 @section('custom-script')
-<script src="https://cdn.bootcss.com/select2/4.0.5/js/select2.min.js"></script>
 <script>
     $(function() {
 
@@ -245,6 +287,10 @@
 
                         $("#form-edit-content").find('input[name=title]').val(data.data.title);
                         $("#form-edit-content").find('textarea[name=description]').val(data.data.description);
+                        if(data.data.cover_pic != null)
+                        {
+                            $("#form-edit-content").find('.cover-box').html(data.data.cover_img);
+                        }
 
                         var content = data.data.content;
                         if(data.data.content == null) content = '';
@@ -391,6 +437,7 @@
         $("#form-edit-content").find('textarea[name=description]').val("");
         var ue = UE.getEditor('container');
         ue.setContent("");
+        $("#form-edit-content").find('.cover-box').html("");
 
         $("#form-edit-content").find('input[name=type]').prop('checked',null);
         $("#form-edit-content").find('input[name=type][value="1"]').prop('checked',true);

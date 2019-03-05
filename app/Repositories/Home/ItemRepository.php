@@ -599,6 +599,25 @@ class ItemRepository {
                     if($bool)
                     {
                         $encode_id = encode($content->id);
+
+                        // 封面图片
+                        if(!empty($post_data["cover"]))
+                        {
+                            // 删除原封面图片
+                            $mine_cover_pic = $content->cover_pic;
+                            if(!empty($mine_cover_pic) && file_exists(storage_path("resource/" . $mine_cover_pic)))
+                            {
+                                unlink(storage_path("resource/" . $mine_cover_pic));
+                            }
+
+                            $result = upload_storage($post_data["cover"]);
+                            if($result["result"])
+                            {
+                                $content->cover_pic = $result["local"];
+                                $content->save();
+                            }
+                            else throw new Exception("upload-cover-fail");
+                        }
                     }
                     else throw new Exception("insert--content--fail");
 
@@ -686,6 +705,25 @@ class ItemRepository {
                     if($bool)
                     {
                         $encode_id = encode($content->id);
+
+                        // 封面图片
+                        if(!empty($post_data["cover"]))
+                        {
+                            // 删除原封面图片
+                            $mine_cover_pic = $content->cover_pic;
+                            if(!empty($mine_cover_pic) && file_exists(storage_path("resource/" . $mine_cover_pic)))
+                            {
+                                unlink(storage_path("resource/" . $mine_cover_pic));
+                            }
+
+                            $result = upload_storage($post_data["cover"]);
+                            if($result["result"])
+                            {
+                                $content->cover_pic = $result["local"];
+                                $content->save();
+                            }
+                            else throw new Exception("upload-cover-fail");
+                        }
                     }
                     else throw new Exception("insert--content--fail");
 
@@ -722,6 +760,11 @@ class ItemRepository {
         else
         {
             $content->encode_id = encode($content->id);
+            if(!empty($content->cover_pic))
+            {
+                $cover_url = url(env('DOMAIN_CDN').'/'.$content->cover_pic);
+                $content->cover_img = '<img src="'.$cover_url.'" alt="" />"';
+            }
             return response_success($content);
         }
     }

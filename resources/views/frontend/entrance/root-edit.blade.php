@@ -46,7 +46,7 @@
     <main class="main-body">
 
         <section class="main-container-xs">
-            @include('frontend.'.env('TEMPLATE').'.module.module-body-edit')
+            @include('frontend.'.env('TEMPLATE').'.module.module-edit')
         </section>
 
     </main>

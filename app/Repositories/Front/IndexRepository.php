@@ -1424,6 +1424,9 @@ class IndexRepository {
 
     }
 
+
+
+
     // 【添加】
     public function item_add_this($post_data,$type=0)
     {

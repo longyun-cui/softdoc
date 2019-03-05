@@ -36,7 +36,7 @@
     <main class="main-body">
 
         <section class="main-container-xs">
-            @include('frontend.'.env('TEMPLATE').'.module.module-body-edit-for-timeline')
+            @include('frontend.'.env('TEMPLATE').'.module.module-edit-for-timeline')
         </section>
 
     </main>

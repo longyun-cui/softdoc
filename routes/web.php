@@ -92,7 +92,7 @@ Route::group(['namespace' => 'Front'], function () {
 
             $controller = "IndexController";
 
-            Route::get('/home/mine/notification', $controller.'@view_home_notification');
+            Route::get('/home/notification', $controller.'@view_home_notification');
 
             Route::group(['middleware' => 'notification'], function () {
 
