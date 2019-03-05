@@ -100,7 +100,7 @@
         </li>
 </ul>
     @else
-    <ul>
+    <ul class="_none">
         <li>
             <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxaf993c7aace04371&redirect_uri=http%3A%2F%2Fsoftdoc.cn%2Fweixin%2Flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect">
                 <div class="box-body main-side-hover">
