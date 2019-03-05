@@ -3,7 +3,7 @@
     width:100%;
     min-height:32px;
     padding:20px;
-    margin-bottom:16px;
+    margin-bottom:8px;
     color:#444;
     background:#fff;
     float:left;
@@ -16,10 +16,11 @@
 .item-piece .pull-right { margin-left:8px; }
 
 .item-portrait-container {
-    width:44px;
-    height:44px;
+    width:48px;
+    height:48px;
     border:2px solid #ccc;
-    border-radius:50%;
+    border-radius:4px;
+    /*border-radius:50%;*/
     overflow:hidden;
     float:left;
 }
@@ -32,7 +33,7 @@
     width:-moz-calc(100% - 60px);
     width:calc(100% - 60px);
 }
-.item-row { position:relative; width:100%; min-height:20px; line-height:20px; float:left; }
+.item-row { position:relative; width:100%; min-height:24px; line-height:20px; float:left; }
 .item-row a { line-height:20px; }
 
 .item-user-portrait { width:20px; height:20px; margin-top:-2px; margin-right:8px; border-radius:50%; overflow:hidden; float:left;}
@@ -49,7 +50,7 @@
 .item-title-row a { color:#555; }
 .item-description-row { background:#eee; padding:8px; margin-bottom:8px; }
 
-.item-content-row { color:#666; font-size:14px; }
+.item-content-row { color:#666; }
 
 .item-tools-row { color:#888; font-size:13px; }
 .item-tools-row a { color:#aaa; }
@@ -82,8 +83,8 @@
 
 .item-table-box { display: table; width:100%; }
 .item-left-box {
-    display: table-cell;
-    vertical-align: middle;
+    display:table-cell;
+    vertical-align:middle;
     width:100px;
     margin-right:16px;
     border-right:1px solid #eee;

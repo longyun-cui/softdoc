@@ -87,7 +87,7 @@
                                 </button>
                                 <button type="button" class="btn radio">
                                     <label>
-                                        <input type="radio" name="time_type" value="1" checked="checked"> 日程
+                                        <input type="radio" name="time_type" value="1"> 日程
                                     </label>
                                 </button>
                             @endif
@@ -97,7 +97,7 @@
                 </div>
                 @endif
                 {{--时间选择器--}}
-                <div class="form-group article-show time-show _none">
+                <div class="form-group article-show time-show" style="display:none;">
                     <div class="col-md-12 ">
                         <div class="col-md-6" style="padding-left:0;">
                             <input type="text" class="form-control" name="start_time" placeholder="选择开始时间" value="{{$data->start_time or ''}}">
@@ -343,6 +343,7 @@
 //            } else {
 //                $('.time-show').hide();
 //            }
+
             // radio
             var $value = $(this).val();
             if($value == 1) {

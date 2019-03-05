@@ -345,7 +345,7 @@ class IndexRepository {
             ])->find($id);
         }
         $items[0] = $item;
-        return view('frontend.'.env('TEMPLATE').'.component.items')->with(['items'=>$items])->__toString();
+        return view('frontend.'.env('TEMPLATE').'.component.item-list-1')->with(['items'=>$items])->__toString();
     }
 
 
@@ -964,7 +964,7 @@ class IndexRepository {
                 $item->calendar_days = $this->handleScheduleDays($item->start_time, $item->end_time);
             }
 
-            $html =  view('frontend.'.env('TEMPLATE').'.component.items')->with(['items'=>$items])->__toString();
+            $html =  view('frontend.'.env('TEMPLATE').'.component.item-list-1')->with(['items'=>$items])->__toString();
             return response_success(['html'=>$html]);
 
         }

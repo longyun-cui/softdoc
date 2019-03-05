@@ -111,11 +111,11 @@
                     @if($item->time_type == 1)
                         <div class="item-row item-content-row">
                             @if(!empty($item->start_time))
-                                <b class="text-blue">{{ time_show($item->start_time) }}</b>
+                                <span class="text-blue">{{ time_show($item->start_time) }}</span>
                             @endif
                             @if(!empty($item->end_time))
                                 <span class="font-xs">至</span>
-                                <b class="text-blue">{{ time_show($item->end_time) }}</b>
+                                <span class="text-blue">{{ time_show($item->end_time) }}</span>
                                 <span class="font-xs">(截止)</span>
                             @endif
                         </div>
@@ -123,10 +123,10 @@
 
                     @if($item->category == 7)
                         <div class="item-row item-info-row">
-                            <b class="text-red">【正方】{{ $item->custom_decode->positive }}</b>
+                            <span class="text-red">【正方】{{ $item->custom_decode->positive }}</span>
                         </div>
                         <div class="item-row item-info-row">
-                            <b class="text-blue">【反方】{{ $item->custom_decode->negative }}</b>
+                            <span class="text-blue">【反方】{{ $item->custom_decode->negative }}</span>
                         </div>
                     @endif
                     <div class="clearfix">

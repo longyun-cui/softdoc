@@ -1,8 +1,6 @@
 jQuery( function ($) {
 
 
-    console.log(4123);
-
     $(".user-logout").on("click",function() {
         location.href = "/logout";
     });

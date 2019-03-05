@@ -81,25 +81,25 @@ if(!function_exists('time_show'))
 		time_init();
 
 		if( ($stamp >= $beforeday_start_unix) && ($stamp < $yesterday_start_unix) ) {
-			return "前天".date(" H:i",$stamp);
+			return "前天".date(" G:i",$stamp);
 		}
 		elseif( ($stamp >= $yesterday_start_unix) && ($stamp < $today_start_unix) ) {
-			return "昨天".date(" H:i",$stamp);
+			return "昨天".date(" G:i",$stamp);
 		}
 		elseif( ($stamp >= $today_start_unix) && ($stamp <= $today_ended_unix) ) {
-			return "今天".date(" H:i",$stamp);
+			return "今天".date(" G:i",$stamp);
 		}
 		elseif( ($stamp >= $today_ended_unix) && ($stamp < $tomorrow_ended_unix) ) {
-			return "明天".date(" H:i",$stamp);
+			return "明天".date(" G:i",$stamp);
 		}
 		elseif( ($stamp >= $tomorrow_ended_unix) && ($stamp < $afterday_ended_unix) ) {
-			return "后天".date(" H:i",$stamp);
+			return "后天".date(" G:i",$stamp);
 		}
 		else {
 			if( ($this_year_start_unix <= $stamp) && ($stamp <= $this_year_ended_unix) ) {
-				return date("n月j日 H:i",$stamp);
+				return date("n月j日 G:i",$stamp);
 			} else {
-				return date("Y-n-j H:i",$stamp);
+				return date("Y-n-j G:i",$stamp);
 			}
 		}
 	}
