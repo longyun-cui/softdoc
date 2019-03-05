@@ -92,7 +92,7 @@ class IndexRepository {
             $item->img_tags = get_html_img($item->content);
         }
 
-        return view('frontend.entrance.root')->with(['items'=>$items,'root_mine_active'=>'active']);
+        return view('frontend.entrance.root-original')->with(['items'=>$items,'root_mine_active'=>'active']);
     }
 
     // 【待办事】

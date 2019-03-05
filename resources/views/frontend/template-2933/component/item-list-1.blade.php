@@ -93,6 +93,7 @@
         {{--@endif--}}
 
         {{--content--}}
+        @if($item->category != 99)
         <div class="item-row item-content-row">
             <div class="media">
                 <div class="media-left">
@@ -140,8 +141,16 @@
             </div>
             {{--<article class="colo-md-12"> {!! $item->content or '' !!} </article>--}}
         </div>
+        @endif
 
         @if($item->category == 99)
+
+            @if(!empty($item->content))
+            <div class="item-row">
+                {!! $item->content_show or '' !!}
+            </div>
+            @endif
+
             @if(!empty($item->forward_item))
             <a href="{{ url('/item/'.$item->forward_item->id) }}" target="_blank">
                 <div class="item-row forward-item-container" role="button">
@@ -157,6 +166,7 @@
                     内容被作者删除或取消分享。
                 </div>
             @endif
+
         @endif
 
         {{--tools--}}

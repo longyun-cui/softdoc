@@ -29,7 +29,7 @@
 
     <main class="main-body">
 
-        <section class="main-container">
+        <section class="main-container-xs">
             <section class="module-container">
                 <div class="container- row">
                     @include('frontend.'.env('TEMPLATE').'.component.item-list-1', ['items'=>$items])

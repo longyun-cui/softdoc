@@ -2,7 +2,7 @@
 
 
 {{--html.head--}}
-@section('head_title')我的待办事 - {{ config('website.website_name') }}@endsection
+@section('head_title'){{ config('website.website_name') }}@endsection
 @section('meta_author')@endsection
 @section('meta_title')@endsection
 @section('meta_description')@endsection
@@ -11,7 +11,7 @@
 
 
 {{--微信分享--}}
-@section('wx_share_title')我的待办事 | {{ config('website.website_name') }}@endsection
+@section('wx_share_title'){{ config('website.website_name') }}@endsection
 @section('wx_share_desc')如未改变生活@endsection
 @section('wx_share_imgUrl'){{ url('/softdoc_white_1.png') }}@endsection
 
@@ -45,12 +45,27 @@
 
     <main class="main-body">
 
-        <section class="main-container-xs">
+        <section class="main-container">
             <section class="module-container">
-                <div class="container- row">
-                    @include('frontend.'.env('TEMPLATE').'.component.item-list-1', ['items'=>$items])
+                <div class="row">
+
+                    <header class="module-row module-header-container text-center _none">
+                        <div class="wow slideInLeft module-title-row title-with-double-line color-1 border-light title-h2"><b>原创内容</b></div>
+                        {{--<div class="wow slideInRight module-subtitle-row color-5 title-h4"><b>description-1</b></div>--}}
+                    </header>
+
+                    <div class="module-row module-body-container bg-light-">
+                        @include('frontend.'.env('TEMPLATE').'.component.item-list', ['items'=>$items])
+                    </div>
+
+                    <footer class="module-row module-footer-container text-center">
+                        {{{ $items->links() }}}
+                        {{--<a href="{{ url('/item/list') }}" class="view-more style-dark">查看更多 <i class="fa fa-hand-o-right"></i></a>--}}
+                    </footer>
+
                 </div>
             </section>
+            {{--@include('frontend.'.env('TEMPLATE').'.module.root-item-list', ['items'=>$items])--}}
         </section>
 
     </main>
@@ -72,8 +87,8 @@
 @endsection
 {{--style--}}
 @section('custom-style')
-<style>
-</style>
+    <style>
+    </style>
 @endsection
 
 
@@ -82,8 +97,8 @@
 @endsection
 {{--script--}}
 @section('custom-script')
-<script>
-    $(function() {
-    });
-</script>
+    <script>
+        $(function() {
+        });
+    </script>
 @endsection
