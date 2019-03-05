@@ -14,6 +14,8 @@
 
                 <li class="mb10"> &nbsp; </li>
 
+                <li class=""><a href="{{ url('/') }}"><i class="fa fa-home"></i> 返回首页</a></li>
+
                 @if(Auth::check())
                     @if(Auth::user()->id != $data->id)
                         @if(!empty($relation) && ($relation->relation_type==21 || $relation->relation_type==41) )
@@ -30,9 +32,12 @@
                     <li class="follow-add-it" data-user-id="{{ $data->id or 0 }}">
                         <a href="javascript:void(0);"><i class="fa fa-plus"></i> 添加关注</a>
                     </li>
+                    <li class="">
+                        <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxaf993c7aace04371&redirect_uri=http%3A%2F%2Fsoftdoc.cn%2Fweixin%2Flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect">
+                            <i class="fa fa-sign-in"></i> 登录
+                        </a>
+                    </li>
                 @endif
-
-                <li class=""><a href="{{ url('/') }}"><i class="fa fa-home"></i> 返回首页</a></li>
 
                 <li class="header-wechat hidden-xs hidden-sm" role="button">
                     <a href="javascript:void(0);"><i class="fa fa-weixin"></i> 微信公众号</a>

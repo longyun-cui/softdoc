@@ -7,10 +7,10 @@
     </div>
     <div class="panel-default box-default item-entity-container">
 
-        <div class="item-row item-title-row margin-bottom-8">
+        <div class="item-row item-title-row">
             <span class="item-user-portrait _none"><img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt=""></span>
             <span class="item-user-name _none"><a href="{{ url('/user/'.$item->user->id) }}">{{ $item->user->name or '' }}</a></span>
-            <b class="item-title">{{ $item->title or '' }}</b>
+            <b class="font-lg">{{ $item->title or '' }}</b>
         </div>
 
         @if($item->time_type == 1)
@@ -34,7 +34,7 @@
             </div>
         @endif
 
-        <div class="item-row item-info-row text-muted margin-bottom-8">
+        <div class="item-row item-tools-row">
             {{--<span> • {{ $item->created_at->format('n月j日 H:i') }}</span>--}}
             <span>{{ time_show($item->created_at) }}</span>
             <span> • </span>

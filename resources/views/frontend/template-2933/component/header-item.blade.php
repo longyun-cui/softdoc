@@ -30,7 +30,13 @@
                 <li class=""><a href="{{ url('/') }}"><i class="fa fa-home"></i> 返回首页</a></li>
 
                 @if(Auth::check())
-                    <li class="hidden-xs hidden-sm"><a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> 退出</a></li>
+                    <li class="hidden-xs hidden-sm _none"><a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> 退出</a></li>
+                @else
+                    <li class="">
+                        <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxaf993c7aace04371&redirect_uri=http%3A%2F%2Fsoftdoc.cn%2Fweixin%2Flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect">
+                            <i class="fa fa-sign-in"></i> 登录
+                        </a>
+                    </li>
                 @endif
 
                 <li class="header-wechat hidden-xs hidden-sm" role="button">

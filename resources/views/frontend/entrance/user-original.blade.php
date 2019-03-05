@@ -49,7 +49,7 @@
         {{--<section class="main-container">--}}
             {{--@include('frontend.'.env('TEMPLATE').'.module.root-item-list-1', ['items'=>$items])--}}
         {{--</section>--}}
-        <section class="main-container-xs">
+        <section class="main-container">
             <div class="row" style="margin:0;">
                 @include('frontend.'.env('TEMPLATE').'.component.item-list', ['items'=>$items])
             </div>

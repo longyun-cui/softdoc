@@ -91,7 +91,7 @@
                 </div>
             </a>
         </li>
-        <li class="{{ $root_circle_active or '' }}">
+        <li class="{{ $root_circle_active or '' }} _none">
             <a href="{{ url('/home/mine/circle') }}">
                 <div class="box-body main-side-hover">
                     <i class="fa fa-globe _none"></i> 好友圈
