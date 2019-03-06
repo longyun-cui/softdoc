@@ -27,10 +27,10 @@
 
         @if($item->category == 7)
             <div class="item-row item-info-row">
-                <b class="text-red">【正方】 {{ $item->custom_decode->positive }}</b>
+                <span class="text-red font-sm">[正方] {{ $item->custom_decode->positive }}</span>
             </div>
             <div class="item-row item-info-row margin-bottom-8">
-                <b class="text-blue">【反方】 {{ $item->custom_decode->negative }}</b>
+                <span class="text-blue font-sm">[反方] {{ $item->custom_decode->negative }}</span>
             </div>
         @endif
 
@@ -127,16 +127,16 @@
 
 
 
+@if($item->category == 11)
 <div class="item-piece item-piece-2 item-option item" data-item="{{ $item->id }}">
 
-    @if($item->category == 11)
-        <div class="item-row navigation-box">
-            <div class="item-row prev-content"><span class="label">上一篇:</span> <span class="a-box"></span></div>
-            <div class="item-row next-content"><span class="label">下一篇:</span> <span class="a-box"></span></div>
-        </div>
-    @endif
+    <div class="item-row navigation-box">
+        <div class="item-row prev-content"><span class="label">上一篇:</span> <span class="a-box"></span></div>
+        <div class="item-row next-content"><span class="label">下一篇:</span> <span class="a-box"></span></div>
+    </div>
 
 </div>
+@endif
 
 
 
