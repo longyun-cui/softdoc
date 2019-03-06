@@ -131,8 +131,8 @@
 
     @if($item->category == 11)
         <div class="item-row navigation-box">
-            <div class="item-row prev-content"><span class="label">上一篇:</span> <b class="a-box"></b></div>
-            <div class="item-row next-content"><span class="label">下一篇:</span> <b class="a-box"></b></div>
+            <div class="item-row prev-content"><span class="label">上一篇:</span> <span class="a-box"></span></div>
+            <div class="item-row next-content"><span class="label">下一篇:</span> <span class="a-box"></span></div>
         </div>
     @endif
 

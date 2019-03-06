@@ -7,7 +7,7 @@
             <i class="fa fa-search text-orange"></i>
         </span>
         <span class="recursion-text">
-            <a href="javascript:void(0)" style="font-size:12px;">总浏览 <b class="text-blue" style="font-size:12px;">{{ $parent_item->visit_total or 0 }}</b> 次</a>
+            <a href="javascript:void(0)">总浏览 <b class="text-blue font-xs">{{ $parent_item->visit_total or 0 }}</b> 次</a>
         </span>
     </div>
 
@@ -16,7 +16,7 @@
             <i class="fa fa-comment text-orange"></i>
         </span>
         <span class="recursion-text">
-            <a href="javascript:void(0)" style="font-size:12px;">总评论 <b class="text-blue" style="font-size:12px;">{{ $parent_item->comments_total or 0 }}</b> 个</a>
+            <a href="javascript:void(0)">总评论 <b class="text-blue font-xs" >{{ $parent_item->comments_total or 0 }}</b> 个</a>
         </span>
     </div>
 
@@ -59,7 +59,7 @@
                         {{--<i class="fa fa-file-text"></i>--}}
                     {{--@endif--}}
                 </span>
-                <span class="recursion-text @if($recursion->id == $item->id) active @endif">
+                <span class="recursion-text @if($recursion->id == $item->id) active @endif font-sm">
                     <a class="row-ellipsis" href="{{ url('/item/'.$recursion->id) }}">
                         {{ $recursion->title or '' }}
                     </a>

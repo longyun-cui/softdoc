@@ -8,7 +8,7 @@
     background:#fff;
     float:left;
 }
-.item-piece-2 { padding:16px 32px; }
+.item-piece-2 { padding:20px; }
 
 .item-piece a { color:#888; }
 .item-piece a:hover { color:#ff7676; }
@@ -72,12 +72,12 @@
 
 .recursion-item a { font-weight:bold; }
 .navigation-box { margin-top:0; }
-.navigation-box div { margin-top:4px;margin-bottom:4px; }
-.navigation-box .label { margin-right:0; color:#aaa; font-size:12px; text-align:left; padding:0; }
-.navigation-box .a-box { color:#999; }
-.navigation-box .a-box a { color:#0073b7; font-weight:bold; }
+/*.navigation-box div { margin-top:4px;margin-bottom:4px; }*/
+.navigation-box .label { padding:0; margin-right:0; color:#aaa; font-size:12px; font-weight:normal; text-align:left; }
+.navigation-box .a-box { line-height:24px; color:#999; }
+.navigation-box .a-box a { line-height:24px; color:#0073b7; font-size:13px; }
 .navigation-box .a-box a:hover { color:#ff7676;; font-weight:bold; }
-.navigation-box .next-content { margin-top:4px; }
+.navigation-box .next-content { margin-top:0; }
 
 
 
