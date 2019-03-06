@@ -11,7 +11,7 @@
 
         <li class="{{ $item_mine_active or '' }}">
             <a href="{{ url('/user/'.$item->user->id) }}">
-                <div class="box-body main-side-hover">
+                <div class="box-body main-side-hover row-ellipsis">
                     {{ $item->user->name or '' }}
                 </div>
             </a>
