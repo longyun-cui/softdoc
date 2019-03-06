@@ -132,9 +132,9 @@
                     @endif
                     <div class="clearfix">
                         @if(!empty($item->description))
-                            <article class="colo-md-12 multi-ellipsis-3">{{{ $item->description or '' }}}</article>
+                            <article class="colo-md-12 multi-ellipsis multi-ellipsis-row-3">{{{ $item->description or '' }}}</article>
                         @else
-                            <article class="colo-md-12 multi-ellipsis-3">{!! $item->content_show or '' !!}</article>
+                            <article class="colo-md-12 multi-ellipsis multi-ellipsis-row-3">{!! $item->content_show or '' !!}</article>
                         @endif
                     </div>
                 </div>

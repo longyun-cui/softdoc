@@ -10,7 +10,7 @@
         </div>
 
         <li class="{{ $item_mine_active or '' }}">
-            <a href="{{ url('/user/'.$item->user->id) }}">
+            <a href="{{ url('/user/'.$item->user->id) }}" title="{{ $item->user->name or '' }}">
                 <div class="box-body main-side-hover row-ellipsis">
                     {{ $item->user->name or '' }}
                 </div>
