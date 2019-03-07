@@ -81,7 +81,8 @@ class IndexRepository {
                 'user',
                 'forward_item'=>function($query) { $query->with('user'); },
                 'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
-            ])->where(['user_id'=>$me_id,'item_id'=>0])->orderBy("updated_at", "desc")->paginate(20);
+            ])->where(['user_id'=>$me_id])->orderBy("updated_at", "desc")->paginate(20);
+//            ])->where(['user_id'=>$me_id,'item_id'=>0])->orderBy("updated_at", "desc")->paginate(20);
         }
         else $items = [];
 

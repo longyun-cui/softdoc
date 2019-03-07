@@ -5,7 +5,7 @@
 >
     <!-- BEGIN PORTLET-->
     <div class="panel-default box-default item-portrait-container">
-        <a href="{{ url('/user/'.$item->user->id) }}">
+        <a target="_blank" href="{{ url('/user/'.$item->user->id) }}">
             <img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt="">
         </a>
     </div>
@@ -15,7 +15,9 @@
         {{--header--}}
         <div class="item-row item-info-row text-muted">
             <span class="item-user-portrait _none"><img src="{{ url(env('DOMAIN_CDN').'/'.$item->user->portrait_img) }}" alt=""></span>
-            <span class="item-user-name"><a href="{{ url('/user/'.$item->user->id) }}" class="font-sm">{{ $item->user->name or '' }}</a></span>
+            <span class="item-user-name">
+                <a target="_blank" href="{{ url('/user/'.$item->user->id) }}" class="text-hover-red font-sm">{{ $item->user->name or '' }}</a>
+            </span>
             {{--<span> • </span>--}}
             {{--<span>{{ $item->created_at->format('n月j日 H:i') }}</span>--}}
             {{--<span> • </span>--}}
@@ -60,7 +62,7 @@
 
         @if($item->category != 99)
             <div class="item-row item-title-row">
-                <a href="{{ url('/item/'.$item->id) }}" class="color-6 font-md"><b>{{ $item->title or '' }}</b></a>
+                <a target="_blank" href="{{ url('/item/'.$item->id) }}" class="color-6 text-hover-blue font-md"><b>{{ $item->title or '' }}</b></a>
             </div>
         @endif
 
@@ -98,11 +100,11 @@
             <div class="media">
                 <div class="media-left">
                     @if(!empty($item->cover_pic))
-                        <a href="{{ url('/item/'.$item->id) }}">
+                        <a target="_blank" href="{{ url('/item/'.$item->id) }}">
                             <img class="media-object grow" src="{{ url(env('DOMAIN_CDN').'/'.$item->cover_pic) }}">
                         </a>
                     @else
-                        <a href="{{ url('/item/'.$item->id) }}">
+                        <a target="_blank" href="{{ url('/item/'.$item->id) }}">
                             <img class="media-object grow" src="{{ $item->img_tags[2][0] or '' }}">
                         </a>
                     @endif

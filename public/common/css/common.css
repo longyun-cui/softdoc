@@ -8,7 +8,9 @@ body {
 
 img { max-width:100%; }
 
-._none { display:none !important; }
+._none { display:none; }
+._none_always { display:none !important; }
+
 ._pointer { cursor:pointer !important; }
 
 .width-auto { width:auto !important; }
@@ -409,6 +411,10 @@ img { max-width:100%; }
 .text-fuchsia { color:#f012be !important; }
 .text-purple { color:#605ca8 !important; }
 .text-maroon { color:#d81b60 !important; }
+
+.text-hover-red:hover { color:#dd4b39 !important; }
+.text-hover-blue:hover { color:#0073b7 !important; }
+.text-hover-green:hover { color:#00a65a !important; }
 
 
 

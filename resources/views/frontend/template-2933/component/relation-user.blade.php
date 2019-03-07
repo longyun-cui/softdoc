@@ -32,7 +32,7 @@
                             <span class="tool-inn tool-info follow-add-it"><i class="fa fa-plus text-yellow"></i> 关注</span>
                         @endif
 
-                        <div class="tool-menu-list _none">
+                        <div class="tool-menu-list _none" style="z-index:999;">
                             <ul>
                                 @if($u->relation_with_me == 21)
                                     <li class="follow-remove-it">取消关注</li>

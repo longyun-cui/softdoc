@@ -24,7 +24,7 @@
     overflow:hidden;
     float:left;
 }
-.item-portrait-container:hover { border-radius:4px; }
+.item-portrait-container:hover { border-radius:50%; }
 .item-portrait-container img { width:100%; height:100%; }
 
 .item-entity-container { width:100%; height:auto; float:right; }
@@ -43,7 +43,7 @@
 .item-piece a.user-link { color:#eb7350; }
 
 .item-info-row { color:#aaa; }
-.item-info-row a { color:#888; }
+.item-info-row a { color:#999; }
 .item-info-row a:hover { color:#ff7676; }
 
 .item-title-row { color:#666; }

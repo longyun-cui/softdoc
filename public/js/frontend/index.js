@@ -75,6 +75,7 @@ jQuery( function ($) {
                             var html = '<i class="fa fa-plus"></i> 添加关注';
                             $that.removeClass('follow-remove-it').addClass('follow-add-it');
                             $that.find('a').html(html);
+                            layer.msg("已取消关注");
                         }
                     },
                     'json'
@@ -132,6 +133,8 @@ jQuery( function ($) {
     $('.user-option').on('click', '.follow-remove-it', function (e) {
 
         e.stopPropagation();
+
+        console.log(9);
 
         var $that = $(this);
         var $user_option = $that.parents('.user-option');
@@ -457,7 +460,7 @@ jQuery( function ($) {
 
 
     // 添加日程
-    $(".main-body").off("click",".add-this-schedule").on('click', ".add-this-schedule", function() {
+    $(".section-body").off("click",".add-this-schedule").on('click', ".add-this-schedule", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
@@ -527,7 +530,7 @@ jQuery( function ($) {
     $(".main-body").off("click",".forward-show").on('click', ".forward-show", function() {
         var $that = $(this);
         var $item_option = $(this).parents('.item-option');
-        var $item_id = $item_option.data('item');
+        var $item_id = $item_option.data('item');console.log();
         var $item_user_portrait = $item_option.find('.item-user-portrait img').attr("src");
         var $item_user_name = $item_option.find('.item-user-name a').html();
         var $item_title = $item_option.find('.item-title').html();
@@ -587,7 +590,7 @@ jQuery( function ($) {
 
 
     // 显示评论
-    $(".main-body").off("click",".comment-toggle").on('click', ".comment-toggle", function() {
+    $(".section-body").off("click",".comment-toggle").on('click', ".comment-toggle", function() {
         var item_option = $(this).parents('.item-option');
         item_option.find(".comment-container").toggle();
 
@@ -621,7 +624,7 @@ jQuery( function ($) {
         }
     });
     // 发布评论
-    $(".main-body").off("click",".comment-submit").on('click', ".comment-submit", function() {
+    $(".section-body").off("click",".comment-submit").on('click', ".comment-submit", function() {
         var item_option = $(this).parents('.item-option');
         var form = $(this).parents('.item-comment-form');
         var options = {
@@ -642,7 +645,7 @@ jQuery( function ($) {
 
 
     // 查看评论
-    $(".main-body").off("click",".comments-get").on('click', ".comments-get", function() {
+    $(".section-body").off("click",".comments-get").on('click', ".comments-get", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         var getSort = that.attr('data-getSort');
@@ -680,7 +683,7 @@ jQuery( function ($) {
         );
     });
     // 更多评论
-    $(".main-body").off("click",".comments-more").on('click', ".comments-more", function() {
+    $(".section-body").off("click",".comments-more").on('click', ".comments-more", function() {
 
         var that = $(this);
         var more = that.attr('data-more');
@@ -730,7 +733,7 @@ jQuery( function ($) {
 
 
     // 选择支持方
-    $(".main-body").off("click","input[name=get-support]").on('click', "input[name=get-support]", function() {
+    $(".section-body").off("click","input[name=get-support]").on('click', "input[name=get-support]", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         item_option.find('.comments-get').click();
@@ -738,12 +741,12 @@ jQuery( function ($) {
 
 
     // 显示对评论的回复
-    $(".main-body").off("click",".comment-reply-toggle").on('click', ".comment-reply-toggle", function() {
+    $(".section-body").off("click",".comment-reply-toggle").on('click', ".comment-reply-toggle", function() {
         var comment_option = $(this).parents('.comment-option');
         comment_option.find(".comment-reply-input-container").toggle();
     });
     // 发布对评论的回复
-    $(".main-body").off("click",".comment-reply-submit").on('click', ".comment-reply-submit", function() {
+    $(".section-body").off("click",".comment-reply-submit").on('click', ".comment-reply-submit", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         var comment_option = $(this).parents('.comment-option');
@@ -783,12 +786,12 @@ jQuery( function ($) {
 
 
     // 显示对回复的回复
-    $(".main-body").off("click",".reply-toggle").on('click', ".reply-toggle", function() {
+    $(".section-body").off("click",".reply-toggle").on('click', ".reply-toggle", function() {
         var reply_option = $(this).parents('.reply-option');
         reply_option.find(".reply-input-container").toggle();
     });
     // 发布对回复的回复
-    $(".main-body").off("click",".reply-submit").on('click', ".reply-submit", function() {
+    $(".section-body").off("click",".reply-submit").on('click', ".reply-submit", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         var comment_option = $(this).parents('.comment-option');
@@ -829,7 +832,7 @@ jQuery( function ($) {
 
 
     // 更多回复
-    $(".main-body").off("click",".replies-more").on('click', ".replies-more", function() {
+    $(".section-body").off("click",".replies-more").on('click', ".replies-more", function() {
 
         var that = $(this);
         var more = that.attr('data-more');
@@ -881,7 +884,7 @@ jQuery( function ($) {
 
 
     // 发布对回复的点赞
-    $(".main-body").off("click",".comment-favor-this").on('click', ".comment-favor-this", function() {
+    $(".section-body").off("click",".comment-favor-this").on('click', ".comment-favor-this", function() {
         var that = $(this);
         var that_parent = that.attr('data-parent');
         var reply_option = $(this).parents(that_parent);
@@ -918,7 +921,7 @@ jQuery( function ($) {
         );
     });
     // 取消点赞
-    $(".main-body").off("click",".comment-favor-this-cancel").on('click', ".comment-favor-this-cancel", function() {
+    $(".section-body").off("click",".comment-favor-this-cancel").on('click', ".comment-favor-this-cancel", function() {
         var that = $(this);
         var that_parent = that.attr('data-parent');
         var reply_option = $(this).parents(that_parent);
