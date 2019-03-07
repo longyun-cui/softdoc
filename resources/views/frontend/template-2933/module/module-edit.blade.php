@@ -30,29 +30,18 @@
                                     @endif
                                 </label>
                             @elseif($operate == 'create')
-                                <button type="button" class="btn radio">
-                                    <label>
-                                        <input type="radio" name="category" value="1" checked="checked"> 文章类型
-                                    </label>
-                                </button>
-
-                                <button type="button" class="btn radio">
-                                    <label>
-                                        <input type="radio" name="category" value="7"> 辩题类型
-                                    </label>
-                                </button>
-
-                                <button type="button" class="btn radio">
-                                    <label>
-                                        <input type="radio" name="category" value="11"> 文件目录类型
-                                    </label>
-                                </button>
-
-                                <button type="button" class="btn radio">
-                                    <label>
-                                        <input type="radio" name="category" value="18"> 时间线类型
-                                    </label>
-                                </button>
+                                <label class="btn" role="button">
+                                    <input type="radio" name="category" value="1" checked="checked"> 文章类型
+                                </label>
+                                <label class="btn" role="button">
+                                    <input type="radio" name="category" value="11"> 目录类型
+                                </label>
+                                <label class="btn" role="button">
+                                    <input type="radio" name="category" value="18"> 时间线类型
+                                </label>
+                                <label class="btn" role="button">
+                                    <input type="radio" name="category" value="7" role="button"> 辩题类型
+                                </label>
                             @endif
 
                         </div>
@@ -74,22 +63,12 @@
                                     @endif
                                 </label>
                             @elseif($operate == 'create')
-                                {{--<label role="button">--}}
-                                    {{--<input type="radio" name="time_type" value="0" checked="checked"> 非日程--}}
-                                {{--</label>--}}
-                                {{--<label role="button">--}}
-                                    {{--<input type="radio" name="time_type" value="1"> 日程--}}
-                                {{--</label>--}}
-                                <button type="button" class="btn radio">
-                                    <label>
-                                        <input type="radio" name="time_type" value="0" checked="checked"> 非日程
-                                    </label>
-                                </button>
-                                <button type="button" class="btn radio">
-                                    <label>
-                                        <input type="radio" name="time_type" value="1"> 日程
-                                    </label>
-                                </button>
+                                <label class="btn" role="button">
+                                    <input type="radio" name="time_type" value="0" checked="checked"> 非日程
+                                </label>
+                                <label class="btn" role="button">
+                                    <input type="radio" name="time_type" value="1"> 日程
+                                </label>
                             @endif
 
                         </div>
@@ -200,11 +179,9 @@
                     <label class=" col-md-12">待办事</label>
                     <div class="col-md-12">
                         <div class="btn-group">
-                            <button type="button" class="btn checkbox">
-                                <label>
-                                    <input type="checkbox" name="is_working" value="1"> 添加到我的待办事
-                                </label>
-                            </button>
+                            <label class="btn checkbox-" role="button">
+                                <input type="checkbox" name="is_working" value="1"> 添加到我的待办事
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -217,21 +194,15 @@
                         <div class="col-md-12">
                             <div class="btn-group">
 
-                                <button type="button" class="btn radio">
-                                    <label>
-                                        <input type="radio" name="is_shared" value="11" checked="checked"> 仅自己可见
-                                    </label>
-                                </button>
-                                <button type="button" class="btn radio">
-                                    <label>
-                                        <input type="radio" name="is_shared" value="41"> 关注可见
-                                    </label>
-                                </button>
-                                <button type="button" class="btn radio">
-                                    <label>
-                                        <input type="radio" name="is_shared" value="100"> 所有人可见
-                                    </label>
-                                </button>
+                                <label class="btn" role="button">
+                                    <input type="radio" name="is_shared" value="11" checked="checked"> 仅自己可见
+                                </label>
+                                <label class="btn" role="button">
+                                    <input type="radio" name="is_shared" value="41"> 关注可见
+                                </label>
+                                <label class="btn" role="button">
+                                    <input type="radio" name="is_shared" value="100"> 所有人可见
+                                </label>
 
                             </div>
                         </div>
