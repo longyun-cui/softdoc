@@ -81,8 +81,8 @@ class IndexRepository {
                 'user',
                 'forward_item'=>function($query) { $query->with('user'); },
                 'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
-            ])->where(['user_id'=>$me_id])->orderBy("updated_at", "desc")->paginate(20);
-//            ])->where(['user_id'=>$me_id,'item_id'=>0])->orderBy("updated_at", "desc")->paginate(20);
+            ])->where(['user_id'=>$me_id])->where('category','<>',99)->orderBy("updated_at", "desc")->paginate(20);
+//            ])->where(['user_id'=>$me_id,'item_id'=>0])->where('category','<>',99)->orderBy("updated_at", "desc")->paginate(20);
         }
         else $items = [];
 
@@ -95,6 +95,9 @@ class IndexRepository {
 
         return view('frontend.entrance.root-original')->with(['items'=>$items,'root_mine_active'=>'active']);
     }
+
+
+
 
     // 【待办事】
     public function view_home_mine_todolist($post_data)
@@ -222,6 +225,9 @@ class IndexRepository {
         return view('frontend.entrance.root-favor')->with(['items'=>$items,'root_favor_active'=>'active']);
     }
 
+
+
+
     // 【发现】
     public function view_home_mine_discovery($post_data)
     {
@@ -248,7 +254,7 @@ class IndexRepository {
         return view('frontend.entrance.root-discovery')->with(['items'=>$items,'root_discovery_active'=>'active']);
     }
 
-    // 【好友圈】
+    // 【关注】
     public function view_home_mine_follow($post_data)
     {
         if(Auth::check())
