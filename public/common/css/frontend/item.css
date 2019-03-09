@@ -176,7 +176,8 @@ a.comment-button { width:100%; height:100%; line-height:36px;color:#fff; font-si
 .more-box:hover {color:#ff7676;background:#fff;}
 .more-box a {width:100%;height:100%;line-height:36px;text-align: center;float:right;}
 .comment-more-box {margin-top:16px;padding:0;}
-.reply-more-box {width:-webkit-calc(100% - 64px);width:-moz-calc(100% - 64px);width:calc(100% - 64px);margin:8px 32px;padding:0;}
+.reply-more-box {width:-webkit-calc(100% - 64px);width:-moz-calc(100% - 64px);width:calc(100% - 64px);height:24px;line-height:24px;margin:4px 32px;padding:0;}
+.reply-more-box a {height:24px;line-height:24px;font-size:12px;}
 
 
 
@@ -195,6 +196,7 @@ a.comment-button { width:100%; height:100%; line-height:36px;color:#fff; font-si
 .reply-title-container {padding:0 8px;}
 .reply-tools-container {padding:0 8px;}
 .reply-container {padding:0; margin-top:4px;}
+.item-row.reply-container {min-height:0;}
 .item-row.reply-list-container {min-height:0;}
 .reply-input-container {display:none;padding:2px 0;margin-top:16px;background:#fff;}
 
