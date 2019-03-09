@@ -186,15 +186,15 @@
             @if($item->category == 7)
                 <div class="item-row mt10 mb10">
                     <div class="btn-group">
-                                <label class="btn" role="button">
-                                    <input type="radio" name="get-support" value="0" checked="checked"> 全部评论
-                                </label>
-                                <label class="btn" role="button">
-                                    <input type="radio" name="get-support" value="1"> 只看正方
-                                </label>
-                                <label class="btn" role="button">
-                                    <input type="radio" name="get-support" value="2"> 只看反方
-                                </label>
+                        <label class="btn" role="button">
+                            <input type="radio" name="get-support" value="0" checked="checked"> 全部评论
+                        </label>
+                        <label class="btn" role="button">
+                            <input type="radio" name="get-support" value="1"> 只看正方
+                        </label>
+                        <label class="btn" role="button">
+                            <input type="radio" name="get-support" value="2"> 只看反方
+                        </label>
                     </div>
                 </div>
             @endif
