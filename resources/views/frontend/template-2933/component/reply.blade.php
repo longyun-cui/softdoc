@@ -3,12 +3,12 @@
     {{--回复头部--}}
     <div class="item-row reply-title-container">
 
-        <a href="{{ url('/user/'.$reply->user->id) }}" class="link">{{ $reply->user->name or '' }}</a>
+        <a href="{{ url('/user/'.$reply->user->id) }}" class="link font-xs">{{ $reply->user->name or '' }}</a>
 
         @if($reply->reply_id != $reply->dialog_id)
             @if($reply->reply)
                 <span class="font-12px">回复</span>
-                <a href="{{ url('/user/'.$reply->reply->user->id) }}" class="link">{{ $reply->reply->user->name or '' }}</a> :
+                <a href="{{ url('/user/'.$reply->reply->user->id) }}" class="link font-xs">{{ $reply->reply->user->name or '' }}</a> :
             @endif
         @endif
 
@@ -20,25 +20,25 @@
     {{--回复工具--}}
     <div class="item-row reply-tools-container item-info-row">
 
-        <span class="pull-left text-muted disabled">{{ $reply->created_at->format('n月j日 H:i') }}</span>
+        <span class="pull-left text-muted disabled font-xs">{{ $reply->created_at->format('n月j日 H:i') }}</span>
 
-        <span class="pull-right text-muted disabled reply-toggle" role="button" data-num="{{ $reply->comment_num or 0 }}">
+        <span class="pull-right text-muted disabled font-xs reply-toggle" role="button" data-num="{{ $reply->comment_num or 0 }}">
             回复({{ $reply->comment_num or 0 }})
         </span>
 
         <span class="comment-favor-btn" data-num="{{ $reply->favor_num or 0 }}">
             @if(Auth::check())
                 @if(count($reply->favors))
-                    <span class="pull-right text-muted disabled comment-favor-this-cancel" data-parent=".reply-option" role="button">
+                    <span class="pull-right text-muted disabled font-xs comment-favor-this-cancel" data-parent=".reply-option" role="button">
                         <i class="fa fa-thumbs-up text-red"></i>({{ $reply->favor_num or 0 }})
                     </span>
                 @else
-                    <span class="pull-right text-muted disabled comment-favor-this" data-parent=".reply-option" role="button">
+                    <span class="pull-right text-muted disabled font-xs comment-favor-this" data-parent=".reply-option" role="button">
                         <i class="fa fa-thumbs-o-up"></i>({{ $reply->favor_num or 0 }})
                     </span>
                 @endif
             @else
-                <span class="pull-right text-muted disabled comment-favor-this" data-parent=".reply-option" role="button">
+                <span class="pull-right text-muted disabled font-xs comment-favor-this" data-parent=".reply-option" role="button">
                     <i class="fa fa-thumbs-o-up"></i>({{ $reply->favor_num or 0 }})
                 </span>
             @endif
