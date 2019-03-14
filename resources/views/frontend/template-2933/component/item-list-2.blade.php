@@ -1,5 +1,8 @@
 @foreach($items as $n => $v)
-<div class="item-col col-lg-2 col-md-3 col-sm-6 col-xs-6" style="">
+<div class="item-col col-lg-3 col-md-3 col-sm-6 col-xs-6 item-option" style=""
+     data-item="{{ $v->id }}"
+     data-calendar-days="{{ $v->calendar_days or '' }}"
+>
     <div class="item-container bg-white">
 
         <figure class="image-container padding-top-2-3">
@@ -29,7 +32,7 @@
                     <a href="{{ url('/user/'.$v->user->id) }}" style="color:#ff7676;font-size:13px;">
                         <img src="{{ url(env('DOMAIN_CDN').'/'.$v->user->portrait_img) }}" class="title-portrait" alt="">
                         <c>{{ $v->user->name or '' }}</c>
-                    </a> &nbsp;
+                    </a>
                 </div>
                 <div class="text-description-row _none">
                     {{--<div>--}}
@@ -60,6 +63,41 @@
                 </a>
             </div>
         </figure>
+
+
+
+        <span class="item-plus-box in-item-list-2" role="button">
+            <i class="fa fa-plus-square-o item-plus-button" style="font-weight:900;"></i>
+            <ul class="item-plus-list left-bottom">
+
+                @if(Auth::check() && $v->pivot_item_relation->contains('type', 21))
+                    <li class="remove-this-collection"><i class="fa fa-star-o text-red"></i> 移出收藏</li>
+                @else
+                    <li class="add-this-collection"><i class="fa fa-star-o"></i> 收藏</li>
+                @endif
+
+
+                @if(Auth::check() && $v->pivot_item_relation->contains('type', 31))
+                    <li class="remove-this-todolist"><i class="fa fa-check-square-o text-red"></i> 移出待办事</li>
+                @else
+                    <li class="add-this-todolist"><i class="fa fa-check-square-o"></i> 添加到待办事</li>
+                @endif
+
+
+                @if($v->time_type == 1)
+                    @if(Auth::check() && $v->pivot_item_relation->contains('type', 32))
+                        <li class="remove-this-schedule"><i class="fa fa-calendar-plus-o text-red"></i> 移出日程</li>
+                    @else
+                        <li class="add-this-schedule"><i class="fa fa-calendar-plus-o"></i> 添加为日程</li>
+                    @endif
+                @endif
+
+                @if(Auth::check() && $v->user_id == Auth::user()->id)
+                    <li class="delete-this-item"><i class="fa fa-trash"></i> 删除</li>
+                @endif
+
+            </ul>
+        </span>
 
     </div>
 </div>

@@ -26,7 +26,7 @@
             <span> • </span>
             <span class="item-plus-box" role="button">
                 <i class="fa fa-plus-square-o item-plus-button"></i>
-                <ul class="item-plus-list">
+                <ul class="item-plus-list right-top">
 
                     @if(Auth::check() && $item->pivot_item_relation->contains('type', 21))
                         <li class="remove-this-collection"><i class="fa fa-star-o text-red"></i> 移出收藏</li>

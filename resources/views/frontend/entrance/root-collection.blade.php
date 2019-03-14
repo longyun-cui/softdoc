@@ -31,7 +31,7 @@
         <section class="main-container">
             <section class="module-container">
                 <div class="container- row">
-                    @include('frontend.'.env('TEMPLATE').'.component.item-list', ['items'=>$items])
+                    @include('frontend.'.env('TEMPLATE').'.component.item-list-2', ['items'=>$items])
                 </div>
             </section>
         </section>

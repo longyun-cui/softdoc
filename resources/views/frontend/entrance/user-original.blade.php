@@ -51,7 +51,7 @@
         {{--</section>--}}
         <section class="main-container">
             <div class="row" style="margin:0;">
-                @include('frontend.'.env('TEMPLATE').'.component.item-list', ['items'=>$items])
+                @include('frontend.'.env('TEMPLATE').'.component.item-list-2', ['items'=>$items])
             </div>
         </section>
 

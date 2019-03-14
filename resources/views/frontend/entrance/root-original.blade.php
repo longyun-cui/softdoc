@@ -55,7 +55,7 @@
                     </header>
 
                     <div class="module-row module-body-container bg-light-">
-                        @include('frontend.'.env('TEMPLATE').'.component.item-list', ['items'=>$items])
+                        @include('frontend.'.env('TEMPLATE').'.component.item-list-2', ['items'=>$items])
                     </div>
 
                     <footer class="module-row module-footer-container text-center">

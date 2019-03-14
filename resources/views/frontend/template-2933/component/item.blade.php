@@ -34,7 +34,7 @@
             </div>
         @endif
 
-        <div class="item-row item-tools-row">
+        <div class="item-row item-tools-row font-xs">
             {{--<span> • {{ $item->created_at->format('n月j日 H:i') }}</span>--}}
             <span>{{ time_show($item->created_at) }}</span>
             <span> • </span>
@@ -49,7 +49,19 @@
                 @else
                     <span class="add-this-favor" title="点赞"><i class="fa fa-thumbs-o-up"></i>(<num>{{ $item->favor_num }}</num>)</span>
                 @endif
-             </a>
+            </a>
+            {{--点赞--}}
+            @if($item->category != 99 && Auth::check() && $item->user_id == Auth::user()->id)
+                <span> • </span>
+                @if($item->category == 11)
+                    <a class="margin" href="{{ url('/home/mine/item/edit/menutype?id='.$parent_item->id) }}" role="button">编辑</a>
+                @elseif($item->category == 18)
+                    <a class="margin" href="{{ url('/home/mine/item/edit/timeline?id='.$parent_item->id) }}" role="button">编辑</a>
+                @else
+                    <a class="margin" href="{{ url('/home/mine/item/edit?id='.$item->id) }}" role="button">编辑</a>
+                @endif
+{{--                <a class="margin" href="{{ url('/home/mine/item/edit?id='.$item->id) }}" role="button">编辑</a>--}}
+            @endif
         </div>
 
     </div>
