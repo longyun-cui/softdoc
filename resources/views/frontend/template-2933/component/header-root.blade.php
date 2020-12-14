@@ -25,7 +25,7 @@
                     {{--<li class=""><a href="{{ url('/home') }}"><i class="fa fa-home"></i> 内容管理后台</a></li>--}}
                     <li class=""><a href="{{ url('/home/mine/item/create') }}"><i class="fa fa-plus"></i> 原创</a></li>
                     <li class="">
-                        <a href="{{ url('/home/mine/notification') }}">
+                        <a href="{{ url('/home/notification') }}">
                             <i class="fa fa-bell"></i> 消息
                             <span class=""><b>@if(!empty($notification_count)) {{ $notification_count }} @endif</b></span>
                         </a>

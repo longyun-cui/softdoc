@@ -106,7 +106,7 @@
                 @endif
             </a>
         @else
-            <div class="forward-item-container" role="button" style="line-height:40px;text-align:center;">
+            <div class="item-row forward-item-container" role="button" style="line-height:40px;text-align:center;">
                 内容被作者删除或取消分享。
             </div>
         @endif
