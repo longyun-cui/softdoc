@@ -167,7 +167,7 @@
                 <div class="col-md-12 text-center">
                     <div>
                         <small> Copyright&copy;上海如哉网络科技有限公司 2017-2019</small><br>
-                        <small><a target="_blank" href="http://www.miitbeian.gov.cn" style="color:#a8a8a8">沪ICP备17052782号-2</a></small>
+                        <small><a target="_blank" href="https://beian.miit.gov.cn" style="color:#a8a8a8">沪ICP备17052782号-2</a></small>
                     </div>
                 </div>
             </div>
