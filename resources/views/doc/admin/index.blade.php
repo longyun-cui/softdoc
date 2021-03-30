@@ -3,7 +3,7 @@
 @section('head_title','管理员后台')
 
 @section('header','')
-@section('description','搜索引擎智能营销系统')
+@section('description','如未科技')
 
 @section('breadcrumb')
     <li><a href="{{ url('/admin') }}"><i class="fa fa-dashboard"></i>首页</a></li>

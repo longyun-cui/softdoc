@@ -197,24 +197,38 @@ class IndexController extends Controller
     {
         $user_id = request()->get('id');
         $user = User::where('id',$user_id)->first();
-
-        Auth::login($user,true);
-
-        if($user->user_type == 8)
+        if($user)
         {
-            Auth::guard('atom')->login($user,true);
-        }
-        else if($user->user_type == 11)
-        {
-            Auth::guard('org')->login($user,true);
-        }
-        else if($user->user_type == 88)
-        {
-            Auth::guard('sponsor')->login($user,true);
-        }
+            Auth::login($user,true);
 
-        $return['user'] = $user;
-        return response_success($return);
+            $type = request()->get('type','');
+            if($type == "atom")
+            {
+                Auth::guard('atom')->login($user,true);
+                return redirect('/atom');
+            }
+            else
+            {
+                if($user->user_type == 8)
+                {
+                    Auth::guard('atom')->login($user,true);
+
+                }
+                else if($user->user_type == 11)
+                {
+                    Auth::guard('org')->login($user,true);
+                }
+                else if($user->user_type == 88)
+                {
+                    Auth::guard('sponsor')->login($user,true);
+                }
+
+                $return['user'] = $user;
+                return response_success($return);
+            }
+        }
+        else return response_error([]);
+
     }
     // 【用户】登录-组织
     public function operate_user_org_login()

@@ -30,7 +30,7 @@ Route::group([], function () {
 
 
         Route::fallback(function(){
-            return response()->view(env('TEMPLATE_ADMIN').'admin.errors.404');
+            return response()->view(env('TEMPLATE_DOC_ADMIN').'errors.404');
         });
 
 
