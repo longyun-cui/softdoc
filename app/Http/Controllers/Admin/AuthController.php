@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Doc_User;
+use App\User;
 
 use Response, Auth, Validator, DB, Exception;
 
@@ -39,7 +39,7 @@ class AuthController extends Controller
 
             // 手机验证
             $mobile = request()->get('mobile');
-            $admin = Doc_User::where(['user_category'=>0,'mobile'=>$mobile])->first();
+            $admin = User::where(['user_category'=>0,'mobile'=>$mobile])->first();
 
             if($admin)
             {
@@ -86,7 +86,7 @@ class AuthController extends Controller
 
             // 手机验证
             $mobile = request()->get('mobile');
-            $admin = Doc_User::where(['user_category'=>0,'mobile'=>$mobile])->first();
+            $admin = User::where(['user_category'=>0,'mobile'=>$mobile])->first();
 
             if($admin)
             {
