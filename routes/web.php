@@ -43,6 +43,32 @@ Route::group(['prefix' => 'common'], function () {
 });
 
 
+/*
+ * 通用
+ */
+Route::group(['namespace' => 'Common'], function () {
+    require(__DIR__ . '/Common/route.php');
+});
+
+
+
+
+/*
+ * 管理员
+ */
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    require(__DIR__ . '/Admin/route.php');
+});
+
+
+/*
+ * 原子
+ */
+Route::group(['prefix' => 'atom', 'namespace' => 'Atom'], function () {
+    require(__DIR__ . '/Atom/route.php');
+});
+
+
 
 
 

@@ -545,7 +545,9 @@ class ContentRepository {
         else
         {
             $keyword = "%{$post_data['keyword']}%";
-            $list =Content::select(['id','title as text'])->where('course_id', $course_decode)->where('name','like',"%$keyword%")->get()->toArray();
+            $list =Content::select(['id','title as text'])->where('course_id', $course_decode)->where('name','like',"%$keyword%")
+                ->get()
+                ->toArray();
         }
         return $list;
     }

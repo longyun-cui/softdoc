@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use App\Administrator;
-use App\Models\Notification;
+use App\Models\Doc_Notification;
 use Auth, Response;
 
 class NotificationMiddleware
@@ -21,7 +21,7 @@ class NotificationMiddleware
     {
         // 执行动作
         $me = Auth::user();
-        $count = Notification::where(['is_read'=>0,'type'=>11,'user_id'=>$me->id])->count();
+        $count = Doc_Notification::where(['is_read'=>0,'type'=>11,'user_id'=>$me->id])->count();
         if(!$count) $count = '';
         view()->share('notification_count', $count);
 

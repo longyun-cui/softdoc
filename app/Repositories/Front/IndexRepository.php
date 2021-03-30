@@ -2,12 +2,13 @@
 namespace App\Repositories\Front;
 
 use App\User;
-use App\Models\RootItem;
-use App\Models\Content;
-use App\Models\Communication;
-use App\Models\Notification;
-use App\Models\Pivot_User_Item;
-use App\Models\Pivot_User_Relation;
+use App\Models\Doc_Item;
+use App\Models\Doc_User;
+use App\Models\Doc_Content;
+use App\Models\Doc_Communication;
+use App\Models\Doc_Notification;
+use App\Models\Doc_Pivot_User_Item;
+use App\Models\Doc_Pivot_User_Relation;
 
 use App\Repositories\Common\CommonRepository;
 
@@ -28,7 +29,7 @@ class IndexRepository {
     // 平台主页
     public function view_root($post_data)
     {
-//        $item = RootItem::first();
+//        $item = Doc_Item::first();
 //        dd($item->created_at);
 
 //        $headers = apache_request_headers();
@@ -41,12 +42,12 @@ class IndexRepository {
         {
             $me = Auth::user();
             $me_id = $me->id;
-            $notification_count = Notification::where(['user_id'=>$me_id,'is_read'=>0])->count();
+            $notification_count = Doc_Notification::where(['user_id'=>$me_id,'is_read'=>0])->count();
             view()->share('notification_count',$notification_count);
         }
         else $me_id = 0;
 
-        $items = RootItem::with([
+        $items = Doc_Item::with([
             'user',
             'forward_item'=>function($query) { $query->with('user'); },
             'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
@@ -77,7 +78,7 @@ class IndexRepository {
             $me = Auth::user();
             $me_id = $me->id;
 
-            $items = RootItem::select("*")->with([
+            $items = Doc_Item::select("*")->with([
                 'user',
                 'forward_item'=>function($query) { $query->with('user'); },
                 'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
@@ -108,7 +109,7 @@ class IndexRepository {
             $user_id = $user->id;
 
             // Method 1
-            $query = User::with([
+            $query = Doc_User::with([
                 'pivot_item'=>function($query) use($user_id) { $query->with([
                     'user',
                     'forward_item'=>function($query) { $query->with('user'); },
@@ -144,7 +145,7 @@ class IndexRepository {
             $user_id = $user->id;
 
             // Method 1
-//            $query = User::with([
+//            $query = Doc_User::with([
 //                'pivot_item'=>function($query) use($user_id) { $query->with([
 //                    'user',
 //                    'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
@@ -175,7 +176,7 @@ class IndexRepository {
             $user_id = $user->id;
 
             // Method 1
-            $query = User::with([
+            $query = Doc_User::with([
                 'pivot_item'=>function($query) use($user_id) { $query->with([
                     'user',
                     'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
@@ -204,7 +205,7 @@ class IndexRepository {
             $user_id = $user->id;
 
             // Method 1
-            $query = User::with([
+            $query = Doc_User::with([
                 'pivot_item'=>function($query) use($user_id) { $query->with([
                     'user',
                     'forward_item'=>function($query) { $query->with('user'); },
@@ -238,7 +239,7 @@ class IndexRepository {
         }
         else $user_id = 0;
 
-        $items = RootItem::with([
+        $items = Doc_Item::with([
             'user',
             'forward_item'=>function($query) { $query->with('user'); },
             'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
@@ -264,12 +265,12 @@ class IndexRepository {
         }
         else $user_id = 0;
 //
-//        $items = RootItem::with([
+//        $items = Doc_Item::with([
 //            'user',
 //            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
 //        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
 
-        $user = User::with([
+        $user = Doc_User::with([
             'relation_items'=>function($query) use($user_id) {$query->with([
                 'user',
                 'forward_item'=>function($query) { $query->with('user'); },
@@ -301,12 +302,12 @@ class IndexRepository {
         }
         else $user_id = 0;
 //
-//        $items = RootItem::with([
+//        $items = Doc_Item::with([
 //            'user',
 //            'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
 //        ])->where('is_shared','>=',99)->orderBy('id','desc')->get();
 
-        $user = User::with([
+        $user = Doc_User::with([
             'relation_items'=>function($query) use($user_id) { $query->with([
                 'user',
                 'forward_item'=>function($query) { $query->with('user'); },
@@ -338,7 +339,7 @@ class IndexRepository {
         {
             $me = Auth::user();
             $me_id = $me->id;
-            $item = RootItem::with([
+            $item = Doc_Item::with([
                 'user',
                 'contents'=>function($query) { $query->where(['active'=>1,'p_id'=>0])->orderBy('id','asc'); },
                 'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
@@ -346,7 +347,7 @@ class IndexRepository {
         }
         else
         {
-            $item = RootItem::with([
+            $item = Doc_Item::with([
                 'user',
                 'contents'=>function($query) { $query->where(['active'=>1,'p_id'=>0])->orderBy('id','asc'); }
             ])->find($id);
@@ -367,7 +368,7 @@ class IndexRepository {
 
         $user_id = $id;
 
-        $user = User::with([
+        $user = Doc_User::with([
             'items'=>function($query) { $query->orderBy('id','desc'); }
         ])->withCount('items')->find($user_id);
 
@@ -380,7 +381,7 @@ class IndexRepository {
         {
             $me = Auth::user();
             $me_id = $me->id;
-            $items = RootItem::with([
+            $items = Doc_Item::with([
                 'user',
                 'forward_item'=>function($query) { $query->with('user'); },
                 'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
@@ -388,13 +389,13 @@ class IndexRepository {
 
             if($user_id != $me_id)
             {
-                $relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                $relation = Doc_Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
                 view()->share(['relation'=>$relation]);
             }
         }
         else
         {
-            $items = RootItem::with([
+            $items = Doc_Item::with([
                 'user',
                 'forward_item'=>function($query) { $query->with('user'); }
             ])->where('user_id',$user_id)->where('is_shared','>=',99)->orderBy('id','desc')->get();
@@ -420,7 +421,7 @@ class IndexRepository {
 
         $user_id = $id;
 
-        $user = User::with([
+        $user = Doc_User::with([
             'items'=>function($query) { $query->orderBy('id','desc'); }
         ])->withCount('items')->find($user_id);
 
@@ -433,7 +434,7 @@ class IndexRepository {
         {
             $me = Auth::user();
             $me_id = $me->id;
-            $items = RootItem::with([
+            $items = Doc_Item::with([
                 'user',
                 'forward_item'=>function($query) { $query->with('user'); },
                 'pivot_item_relation'=>function($query) use($me_id) { $query->where('user_id',$me_id); }
@@ -444,13 +445,13 @@ class IndexRepository {
 
             if($user_id != $me_id)
             {
-                $relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                $relation = Doc_Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
                 view()->share(['relation'=>$relation]);
             }
         }
         else
         {
-            $items = RootItem::with([
+            $items = Doc_Item::with([
                 'user',
                 'forward_item'=>function($query) { $query->with('user'); }
             ])->where('user_id',$user_id)
@@ -474,10 +475,10 @@ class IndexRepository {
     // 【Ta关注的人】
     public function view_user_follow($post_data,$id=0)
     {
-        $Ta = User::withCount('items')->find($id);
+        $Ta = Doc_User::withCount('items')->find($id);
         if(!$Ta) return view('frontend.errors.404');
 
-        $pivot_users = Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$id])->whereIn('relation_type',[21,41])
+        $pivot_users = Doc_Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$id])->whereIn('relation_type',[21,41])
             ->orderBy('id','desc')->get();
 
         if(Auth::check())
@@ -487,11 +488,11 @@ class IndexRepository {
 
             if($id != $me_id)
             {
-                $relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$id])->first();
+                $relation = Doc_Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$id])->first();
                 view()->share(['relation'=>$relation]);
             }
 
-            $me_users = Pivot_User_Relation::where(['mine_user_id'=>$me_id])->get();
+            $me_users = Doc_Pivot_User_Relation::where(['mine_user_id'=>$me_id])->get();
 
             foreach ($pivot_users as $num => $user)
             {
@@ -517,10 +518,10 @@ class IndexRepository {
     // 【关注Ta的人】
     public function view_user_fans($post_data,$id=0)
     {
-        $Ta = User::withCount('items')->find($id);
+        $Ta = Doc_User::withCount('items')->find($id);
         if(!$Ta) return view('frontend.errors.404');
 
-        $pivot_users = Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$id])->whereIn('relation_type',[21,71])
+        $pivot_users = Doc_Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$id])->whereIn('relation_type',[21,71])
             ->orderBy('id','desc')->get();
 
         if(Auth::check())
@@ -530,11 +531,11 @@ class IndexRepository {
 
             if($id != $me_id)
             {
-                $relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$id])->first();
+                $relation = Doc_Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$id])->first();
                 view()->share(['relation'=>$relation]);
             }
 
-            $me_users = Pivot_User_Relation::where(['mine_user_id'=>$me_id])->get();
+            $me_users = Doc_Pivot_User_Relation::where(['mine_user_id'=>$me_id])->get();
 
             foreach ($pivot_users as $num => $user)
             {
@@ -584,12 +585,12 @@ class IndexRepository {
             $me_id = $me->id;
 
             $user_id = $post_data['user_id'];
-            $user = User::find($user_id);
+            $user = Doc_User::find($user_id);
 
             DB::beginTransaction();
             try
             {
-                $me_relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                $me_relation = Doc_Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
                 if($me_relation)
                 {
                     if($me_relation->relation_type == 71) $me_relation->relation_type = 21;
@@ -598,7 +599,7 @@ class IndexRepository {
                 }
                 else
                 {
-                    $me_relation = new Pivot_User_Relation;
+                    $me_relation = new Doc_Pivot_User_Relation;
                     $me_relation->mine_user_id = $me_id;
                     $me_relation->relation_user_id = $user_id;
                     $me_relation->relation_type = 41;
@@ -607,7 +608,7 @@ class IndexRepository {
                 $me->timestamps = false;
                 $me->increment('follow_num');
 
-                $it_relation = Pivot_User_Relation::where(['mine_user_id'=>$user_id,'relation_user_id'=>$me_id])->first();
+                $it_relation = Doc_Pivot_User_Relation::where(['mine_user_id'=>$user_id,'relation_user_id'=>$me_id])->first();
                 if($it_relation)
                 {
                     if($it_relation->relation_type == 41) $it_relation->relation_type = 21;
@@ -616,7 +617,7 @@ class IndexRepository {
                 }
                 else
                 {
-                    $it_relation = new Pivot_User_Relation;
+                    $it_relation = new Doc_Pivot_User_Relation;
                     $it_relation->mine_user_id = $user_id;
                     $it_relation->relation_user_id = $me_id;
                     $it_relation->relation_type = 71;
@@ -662,12 +663,12 @@ class IndexRepository {
             $me_id = $me->id;
 
             $user_id = $post_data['user_id'];
-            $user = User::find($user_id);
+            $user = Doc_User::find($user_id);
 
             DB::beginTransaction();
             try
             {
-                $me_relation = Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
+                $me_relation = Doc_Pivot_User_Relation::where(['mine_user_id'=>$me_id,'relation_user_id'=>$user_id])->first();
                 if($me_relation)
                 {
                     if($me_relation->relation_type == 21) $me_relation->relation_type = 71;
@@ -678,7 +679,7 @@ class IndexRepository {
                 $me->timestamps = false;
                 $me->decrement('follow_num');
 
-                $it_relation = Pivot_User_Relation::where(['mine_user_id'=>$user_id,'relation_user_id'=>$me_id])->first();
+                $it_relation = Doc_Pivot_User_Relation::where(['mine_user_id'=>$user_id,'relation_user_id'=>$me_id])->first();
                 if($it_relation)
                 {
                     if($it_relation->relation_type == 21) $it_relation->relation_type = 41;
@@ -715,7 +716,7 @@ class IndexRepository {
             $me = Auth::user();
             $me_id = $me->id;
 
-            $users = Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$me_id])->whereIn('relation_type',[21,41])->get();
+            $users = Doc_Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$me_id])->whereIn('relation_type',[21,41])->get();
             foreach ($users as $user)
             {
                 $user->relation_with_me = $user->relation_type;
@@ -734,7 +735,7 @@ class IndexRepository {
             $me = Auth::user();
             $me_id = $me->id;
 
-            $users = Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$me_id])->whereIn('relation_type',[21,71])->get();
+            $users = Doc_Pivot_User_Relation::with(['relation_user'])->where(['mine_user_id'=>$me_id])->whereIn('relation_type',[21,71])->get();
             foreach ($users as $user)
             {
                 $user->relation_with_me = $user->relation_type;
@@ -758,10 +759,10 @@ class IndexRepository {
         }
         else $me_id = 0;
 
-        $count = Notification::where(['is_read'=>0,'type'=>11,'user_id'=>$me_id])->count();
+        $count = Doc_Notification::where(['is_read'=>0,'type'=>11,'user_id'=>$me_id])->count();
         if($count)
         {
-            $notifications = Notification::with([
+            $notifications = Doc_Notification::with([
                 'source',
                 'item'=>function($query) {
                     $query->with([
@@ -778,12 +779,12 @@ class IndexRepository {
                 }
             ])->where(['type'=>11,'is_read'=>0,'user_id'=>$me_id])->orderBy('id','desc')->get();
 
-            $update_num = Notification::where(['type'=>11,'is_read'=>0,'user_id'=>$me_id])->update(['is_read'=>1]);
+            $update_num = Doc_Notification::where(['type'=>11,'is_read'=>0,'user_id'=>$me_id])->update(['is_read'=>1]);
             view()->share('notification_type', 'new');
         }
         else
         {
-            $notifications = Notification::with([
+            $notifications = Doc_Notification::with([
                 'source',
                 'item'=>function($query) {
                     $query->with([
@@ -828,7 +829,7 @@ class IndexRepository {
         }
         else $user_id = 0;
 
-        $item = RootItem::with([
+        $item = Doc_Item::with([
             'user',
             'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
         ])->find($id);
@@ -846,7 +847,7 @@ class IndexRepository {
                         'contents'=>function($query) { $query->where('active',1)->orderBy('rank','asc'); }
                     ]);
                 }
-                else $parent_item = RootItem::with([
+                else $parent_item = Doc_Item::with([
                     'contents'=>function($query) { $query->where('active',1)->orderBy('rank','asc'); }
                 ])->find($item->item_id);
 
@@ -879,7 +880,7 @@ class IndexRepository {
                 }
                 else
                 {
-                    $parent_item = RootItem::with([
+                    $parent_item = Doc_Item::with([
                         'contents'=>function($query) {
                             $query->where('active',1);
                             $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as SIGNED) asc'));
@@ -943,7 +944,7 @@ class IndexRepository {
             $end = mktime(23, 59, 59, date('m', strtotime($monthStr))+1, 00); // 指定月份月末时间戳
 
             // Method 1
-            $query = User::with([
+            $query = Doc_User::with([
                 'pivot_item'=>function($query) use($user_id,$start,$end) { $query->with([
                     'user',
                     'pivot_item_relation'=>function($query) use($user_id) { $query->where('user_id',$user_id); }
@@ -1000,7 +1001,7 @@ class IndexRepository {
         }
         else
         {
-            $data = RootItem::find($id);
+            $data = Doc_Item::find($id);
             if($data)
             {
                 unset($data->id);
@@ -1037,12 +1038,12 @@ class IndexRepository {
         {
             if($operate == 'create') // $id==0，添加一个新的课程
             {
-                $mine = new RootItem;
+                $mine = new Doc_Item;
                 $post_data["user_id"] = $user->id;
             }
             elseif('edit') // 编辑
             {
-                $mine = RootItem::find($id);
+                $mine = Doc_Item::find($id);
                 if(!$mine) return response_error([],"该内容不存在，刷新页面重试");
                 if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
             }
@@ -1131,7 +1132,7 @@ class IndexRepository {
         if(!$id) return view('home.404')->with(['error'=>'参数有误']);
         // abort(404);
 
-        $item = RootItem::with([
+        $item = Doc_Item::with([
             'contents'=>function($query) { $query->orderBy('rank','asc'); }
         ])->find($id);
         if($item)
@@ -1152,7 +1153,7 @@ class IndexRepository {
         if(!$id) return view('home.404')->with(['error'=>'参数有误']);
         // abort(404);
 
-        $item = RootItem::with([
+        $item = Doc_Item::with([
             'contents'=>function($query) {
                 $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as SIGNED) asc'));
                 $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as DECIMAL) asc'));
@@ -1197,7 +1198,7 @@ class IndexRepository {
         $item_encode = $post_data["item_id"];
         $item_decode = decode($item_encode);
         if(!$item_decode) return response_error();
-        $item = RootItem::find($item_decode);
+        $item = Doc_Item::find($item_decode);
         if($item)
         {
             if($item->user_id == $user->id)
@@ -1214,14 +1215,14 @@ class IndexRepository {
                     $operate = $post_data["operate"];
                     if($operate == 'create') // $id==0，添加一个新的内容
                     {
-                        $content = new RootItem;
+                        $content = new Doc_Item;
                         $post_data["user_id"] = $user->id;
                     }
                     elseif('edit') // 编辑
                     {
                         if($content_decode == $post_data["p_id"]) return response_error([],"不能选择自己为父节点");
 
-                        $content = RootItem::find($content_decode);
+                        $content = Doc_Item::find($content_decode);
                         if(!$content) return response_error([],"该内容不存在，刷新页面重试");
                         if($content->user_id != $user->id) return response_error([],"你没有操作权限");
 //                        if($content->type == 1) unset($post_data["type"]);
@@ -1232,16 +1233,16 @@ class IndexRepository {
                             $p_id = $post_data["p_id"];
                             while($is_child)
                             {
-                                $p = RootItem::find($p_id);
+                                $p = Doc_Item::find($p_id);
                                 if(!$p) return response_error([],"参数有误，刷新页面重试");
                                 if($p->p_id == 0) $is_child = false;
                                 if($p->p_id == $content_decode)
                                 {
-                                    $content_children = RootItem::where('p_id',$content_decode)->get();
+                                    $content_children = Doc_Item::where('p_id',$content_decode)->get();
                                     $children_count = count($content_children);
                                     if($children_count)
                                     {
-                                        $num = RootItem::where('p_id',$content_decode)->update(['p_id'=>$content->p_id]);
+                                        $num = Doc_Item::where('p_id',$content_decode)->update(['p_id'=>$content->p_id]);
                                         if($num != $children_count)  throw new Exception("update--children--fail");
                                     }
                                 }
@@ -1261,7 +1262,7 @@ class IndexRepository {
 
                     if($post_data["p_id"] != 0)
                     {
-                        $parent = RootItem::find($post_data["p_id"]);
+                        $parent = Doc_Item::find($post_data["p_id"]);
                         if(!$parent) return response_error([],"父节点不存在，刷新页面重试");
                     }
 
@@ -1316,7 +1317,7 @@ class IndexRepository {
         $item_encode = $post_data["item_id"];
         $item_decode = decode($item_encode);
         if(!$item_decode) return response_error();
-        $item = RootItem::find($item_decode);
+        $item = Doc_Item::find($item_decode);
         if($item)
         {
             if($item->user_id == $user->id)
@@ -1333,12 +1334,12 @@ class IndexRepository {
                     $operate = $post_data["operate"];
                     if($operate == 'create') // $id==0，添加一个新的内容
                     {
-                        $content = new RootItem;
+                        $content = new Doc_Item;
                         $post_data["user_id"] = $user->id;
                     }
                     elseif('edit') // 编辑
                     {
-                        $content = RootItem::find($content_decode);
+                        $content = Doc_Item::find($content_decode);
                         if(!$content) return response_error([],"该内容不存在，刷新页面重试");
                         if($content->user_id != $user->id) return response_error([],"你没有操作权限");
 //                        if($content->type == 1) unset($post_data["type"]);
@@ -1388,7 +1389,7 @@ class IndexRepository {
         $id = $post_data["id"];
         if(intval($id) !== 0 && !$id) return response_error([],"该内容不存在，刷新页面试试");
 
-        $mine = RootItem::find($id);
+        $mine = Doc_Item::find($id);
         if($mine->user_id != $me->id) return response_error([],"你没有操作权限");
 
         DB::beginTransaction();
@@ -1454,7 +1455,7 @@ class IndexRepository {
             }
 
             $item_id = $post_data['item_id'];
-            $item = RootItem::find($item_id);
+            $item = Doc_Item::find($item_id);
             if($item)
             {
                 $me = Auth::user();
@@ -1506,7 +1507,7 @@ class IndexRepository {
                         $communication_insert['source_id'] = $me->id;
                         $communication_insert['item_id'] = $item_id;
 
-                        $communication = new Communication;
+                        $communication = new Doc_Communication;
                         $bool = $communication->fill($communication_insert)->save();
                         if(!$bool) throw new Exception("insert--communication--fail");
 
@@ -1523,10 +1524,10 @@ class IndexRepository {
                                 $notification_insert['source_id'] = $me->id;
                                 $notification_insert['item_id'] = $item_id;
 
-                                $notification_once = Notification::where($notification_insert)->first();
+                                $notification_once = Doc_Notification::where($notification_insert)->first();
                                 if(!$notification_once)
                                 {
-                                    $notification = new Notification;
+                                    $notification = new Doc_Notification;
                                     $bool = $notification->fill($notification_insert)->save();
                                     if(!$bool) throw new Exception("insert--notification--fail");
                                 }
@@ -1582,7 +1583,7 @@ class IndexRepository {
             }
 
             $item_id = $post_data['item_id'];
-            $item = RootItem::find($item_id);
+            $item = Doc_Item::find($item_id);
             if($item)
             {
                 $me = Auth::user();
@@ -1633,7 +1634,7 @@ class IndexRepository {
                         $communication_insert['source_id'] = $me->id;
                         $communication_insert['item_id'] = $item_id;
 
-                        $communication = new Communication;
+                        $communication = new Doc_Communication;
                         $bool = $communication->fill($communication_insert)->save();
                         if(!$bool) throw new Exception("insert--communication--fail");
 
@@ -1687,7 +1688,7 @@ class IndexRepository {
             }
 
             $item_id = $post_data['item_id'];
-            $item = RootItem::find($item_id);
+            $item = Doc_Item::find($item_id);
             if($item)
             {
                 $me = Auth::user();
@@ -1696,7 +1697,7 @@ class IndexRepository {
                 DB::beginTransaction();
                 try
                 {
-                    $mine = new RootItem;
+                    $mine = new Doc_Item;
                     $post_data['user_id'] = $me_id;
                     $post_data['category'] = 99;
                     $post_data['is_shared'] = 100;
@@ -1712,7 +1713,7 @@ class IndexRepository {
 //                        $insert['user_id'] = $user->id;
 //                        $insert['item_id'] = $item_id;
 //
-//                        $communication = new Communication;
+//                        $communication = new Doc_Communication;
 //                        $bool = $communication->fill($insert)->save();
 //                        if(!$bool) throw new Exception("insert--communication--fail");
 //
@@ -1778,13 +1779,13 @@ class IndexRepository {
             DB::beginTransaction();
             try
             {
-                $item = RootItem::find($item_id);
+                $item = Doc_Item::find($item_id);
                 if(!$item) return response_error([],"该内容不存在，刷新一下试试");
 
                 $item->timestamps = false;
                 $item->increment('comment_num');
 
-                $communication = new Communication;
+                $communication = new Doc_Communication;
                 $bool = $communication->fill($communication_insert)->save();
                 if(!$bool) throw new Exception("insert--communication--fail");
 
@@ -1798,7 +1799,7 @@ class IndexRepository {
                     $notification_insert['item_id'] = $item_id;
                     $notification_insert['communication_id'] = $communication->id;
 
-                    $notification = new Notification;
+                    $notification = new Doc_Notification;
                     $bool = $notification->fill($notification_insert)->save();
                     if(!$bool) throw new Exception("insert--notification--fail");
                 }
@@ -1846,7 +1847,7 @@ class IndexRepository {
         {
             $user = Auth::user();
             $user_id = $user->id;
-            $comments = Communication::with([
+            $comments = Doc_Communication::with([
                 'user',
                 'reply'=>function($query) { $query->with(['user']); },
 //                'dialogs'=>function($query) use ($user_id) { $query->with([
@@ -1860,7 +1861,7 @@ class IndexRepository {
         }
         else
         {
-            $comments = Communication::with([
+            $comments = Doc_Communication::with([
                 'user',
                 'reply'=>function($query) { $query->with(['user']); }//,
 //                'dialogs'=>function($query) { $query->with([
@@ -1969,7 +1970,7 @@ class IndexRepository {
         $item_decode = decode($item_encode);
         if(!$item_decode) return response_error([],"参数有误，刷新一下试试");
 
-        $communications = Communication::with(['user'])
+        $communications = Doc_Communication::with(['user'])
             ->where(['item_id'=>$item_decode])->orderBy('id','desc')->get();
 
         $html["html"] = view('frontend.component.comments')->with("communications",$communications)->__toString();
@@ -2020,13 +2021,13 @@ class IndexRepository {
             DB::beginTransaction();
             try
             {
-                $item = RootItem::find($item_id);
+                $item = Doc_Item::find($item_id);
                 if(!$item) return response_error([],"该内容不存在，刷新一下试试");
 
                 $item->timestamps = false;
                 $item->increment('comment_num');
 
-                $comment = Communication::find($comment_decode);
+                $comment = Doc_Communication::find($comment_decode);
                 if(!$comment) return response_error([],"该评论不存在，刷新一下试试！");
                 $comment->timestamps = false;
                 $comment->increment('comment_num');
@@ -2034,7 +2035,7 @@ class IndexRepository {
                 if($comment->dialog_id)
                 {
                     $communication_insert['dialog_id'] = $comment->dialog_id;
-                    $dialog = Communication::find($communication_insert['dialog_id']);
+                    $dialog = Doc_Communication::find($communication_insert['dialog_id']);
                     $dialog->timestamps = false;
                     $dialog->increment('comment_num');
                 }
@@ -2043,7 +2044,7 @@ class IndexRepository {
                     $communication_insert['dialog_id'] = $comment_decode;
                 }
 
-                $communication = new Communication;
+                $communication = new Doc_Communication;
                 $bool = $communication->fill($communication_insert)->save();
                 if(!$bool) throw new Exception("insert--communication--fail");
 
@@ -2058,7 +2059,7 @@ class IndexRepository {
                     $notification_insert_1['communication_id'] = $communication->id;
                     $notification_insert_1['reply_id'] = $comment->id;
 
-                    $notification_1 = new Notification;
+                    $notification_1 = new Doc_Notification;
                     $bool = $notification_1->fill($notification_insert_1)->save();
                     if(!$bool) throw new Exception("insert--notification--fail");
                 }
@@ -2073,7 +2074,7 @@ class IndexRepository {
                     $notification_insert_2['communication_id'] = $communication->id;
                     $notification_insert_2['reply_id'] = $comment->id;
 
-                    $notification_2 = new Notification;
+                    $notification_2 = new Doc_Notification;
                     $bool = $notification_2->fill($notification_insert_2)->save();
                     if(!$bool) throw new Exception("insert--notification--fail");
                 }
@@ -2127,7 +2128,7 @@ class IndexRepository {
         {
             $user = Auth::user();
             $user_id = $user->id;
-            $comments = Communication::with([
+            $comments = Doc_Communication::with([
                 'user',
                 'reply'=>function($query) { $query->with(['user']); },
                 'favors'=>function($query) use ($user_id) { $query->where(['type'=>11,'user_id'=>$user_id]); }
@@ -2136,7 +2137,7 @@ class IndexRepository {
         }
         else
         {
-            $comments = Communication::with([
+            $comments = Doc_Communication::with([
                 'user',
                 'reply'=>function($query) { $query->with(['user']); },
             ])->where(['type'=>$type,'item_id'=>$item_id,'dialog_id'=>$comment_decode])
@@ -2206,16 +2207,16 @@ class IndexRepository {
             DB::beginTransaction();
             try
             {
-                $item = RootItem::find($item_id);
+                $item = Doc_Item::find($item_id);
                 if(!$item) return response_error([],"该内容不存在，刷新一下试试");
 
-                $comment = Communication::find($comment_decode);
+                $comment = Doc_Communication::find($comment_decode);
                 if(!$comment) return response_error([],"该评论不存在，刷新一下试试！");
 
                 $comment->timestamps = false;
                 $comment->increment('favor_num');
 
-                $communication = new Communication;
+                $communication = new Doc_Communication;
                 $bool = $communication->fill($communication_insert)->save();
                 if(!$bool) throw new Exception("insert--communication--fail");
 
@@ -2230,7 +2231,7 @@ class IndexRepository {
                     $notification_insert_1['communication_id'] = $communication->id;
                     $notification_insert_1['reply_id'] = $comment_decode;
 
-                    $notification_1 = new Notification;
+                    $notification_1 = new Doc_Notification;
                     $bool = $notification_1->fill($notification_insert_1)->save();
                     if(!$bool) throw new Exception("insert--notification--fail");
                 }
@@ -2245,7 +2246,7 @@ class IndexRepository {
                     $notification_insert_2['communication_id'] = $communication->id;
                     $notification_insert_2['reply_id'] = $comment->id;
 
-                    $notification_2 = new Notification;
+                    $notification_2 = new Doc_Notification;
                     $bool = $notification_2->fill($notification_insert_2)->save();
                     if(!$bool) throw new Exception("insert--notification--fail");
                 }
@@ -2299,11 +2300,11 @@ class IndexRepository {
             DB::beginTransaction();
             try
             {
-                $comment = Communication::find($comment_decode);
+                $comment = Doc_Communication::find($comment_decode);
                 if(!$comment && $comment->user_id != $me_id) return response_error([],"参数有误，刷新一下试试");
                 $comment->decrement('favor_num');
 
-                $favors = Communication::where([
+                $favors = Doc_Communication::where([
                     'type'=>11,
                     'user_id'=>$me_id,
                     'item_id'=>$item_id,

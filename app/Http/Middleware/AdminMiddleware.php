@@ -4,7 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use App\Administrator;
+
+use App\User;
+
 use Auth, Response;
 
 class AdminMiddleware

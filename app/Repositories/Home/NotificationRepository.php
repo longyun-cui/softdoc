@@ -2,12 +2,10 @@
 namespace App\Repositories\Home;
 
 use App\User;
-use App\Models\Course;
-use App\Models\Content;
-use App\Models\Communication;
-use App\Models\Notification;
-use App\Models\Pivot_User_Collection;
-use App\Models\Pivot_User_Course;
+use App\Models\Doc_Content;
+use App\Models\Doc_Communication;
+use App\Models\Doc_Notification;
+use App\Models\Doc_Pivot_User_Collection;
 
 use App\Repositories\Common\CommonRepository;
 use Response, Auth, Validator, DB, Exception;
@@ -25,7 +23,7 @@ class NotificationRepository {
     public function comment($post_data)
     {
         $user = Auth::user();
-        $query = Notification::with([
+        $query = Doc_Notification::with([
             'source'=>function($query) { $query->select('id','name'); },
             'course'=>function($query) { $query->select('id','title'); },
             'chapter'=>function($query) { $query->select('id','title'); },
@@ -39,7 +37,7 @@ class NotificationRepository {
 
         $num = $query->where(['is_read'=>0])->update(['is_read'=>1]);
 
-        $count = Notification::where(['is_read'=>0,'type'=>8,'user_id'=>$user->id])->count();
+        $count = Doc_Notification::where(['is_read'=>0,'type'=>8,'user_id'=>$user->id])->count();
         if(!$count) $count = '';
         view()->share('notification_count', $count);
 
@@ -50,7 +48,7 @@ class NotificationRepository {
     public function favor($post_data)
     {
         $user = Auth::user();
-        $query = Notification::with([
+        $query = Doc_Notification::with([
             'source'=>function($query) { $query->select('id','name'); },
             'course'=>function($query) { $query->select('id','title'); },
             'chapter'=>function($query) { $query->select('id','title'); },

@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories\Home;
 
-use App\Models\RootItem;
+use App\Models\Doc_Item;
 
 use App\Repositories\Common\CommonRepository;
 
@@ -13,7 +13,7 @@ class ItemRepository {
     private $model;
     public function __construct()
     {
-//        $this->model = new RootItem;
+//        $this->model = new Doc_Item;
     }
 
 
@@ -27,7 +27,7 @@ class ItemRepository {
     public function get_list_datatable($post_data)
     {
         $user = Auth::user();
-        $query = RootItem::select("*")->with(['user'])->where('user_id', $user->id)->where('item_id', 0);
+        $query = Doc_Item::select("*")->with(['user'])->where('user_id', $user->id)->where('item_id', 0);
 
         $category = isset($post_data['category']) ? $post_data['category'] : '';
         if($category == "article") $query->where('category', 1);
@@ -133,9 +133,9 @@ class ItemRepository {
         elseif($category == 'customer') $view_blade = 'home.item.edit-customer';
         else $view_blade = 'home.item.edit';
 
-        if($category == 'item') $menus = RootItem::get();
-        elseif($category == 'advantage') $menus = RootItem::where(['category'=>5])->get();
-        elseif($category == 'service') $menus = RootItem::where(['category'=>11])->get();
+        if($category == 'item') $menus = Doc_Item::get();
+        elseif($category == 'advantage') $menus = Doc_Item::where(['category'=>5])->get();
+        elseif($category == 'service') $menus = Doc_Item::where(['category'=>11])->get();
         else $menus = [];
 
         return view($view_blade)->with(['operate'=>'create', 'encode_id'=>encode(0), 'menus'=>$menus]);
@@ -153,7 +153,7 @@ class ItemRepository {
         }
         else
         {
-            $data = RootItem::find($decode_id);
+            $data = Doc_Item::find($decode_id);
             if($data)
             {
                 unset($data->id);
@@ -191,12 +191,12 @@ class ItemRepository {
         {
             if($operate == 'create') // $id==0，添加一个新的内容
             {
-                $mine = new RootItem;
+                $mine = new Doc_Item;
                 $post_data["user_id"] = $user->id;
             }
             elseif('edit') // 编辑
             {
-                $mine = RootItem::find($id);
+                $mine = Doc_Item::find($id);
                 if(!$mine) return response_error([],"该内容不存在，刷新页面重试");
                 if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
             }
@@ -284,7 +284,7 @@ class ItemRepository {
         $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该内容不存在，刷新页面试试");
 
-        $mine = RootItem::find($id);
+        $mine = Doc_Item::find($id);
         if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
 
         DB::beginTransaction();
@@ -336,7 +336,7 @@ class ItemRepository {
         if(!is_numeric($post_data["is_shared"])) return response_error([],"参数有误，刷新页面试试");
 
         $user = Auth::user();
-        $mine = RootItem::find($id);
+        $mine = Doc_Item::find($id);
         if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
         $update["is_shared"] = $post_data["is_shared"];
         DB::beginTransaction();
@@ -363,7 +363,7 @@ class ItemRepository {
         $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该作者不存在，刷新页面试试");
 
-        $mine = RootItem::find($id);
+        $mine = Doc_Item::find($id);
         if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
         $update["active"] = 1;
         DB::beginTransaction();
@@ -389,7 +389,7 @@ class ItemRepository {
         $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该文章不存在，刷新页面试试");
 
-        $mine = RootItem::find($id);
+        $mine = Doc_Item::find($id);
         if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
         $update["active"] = 9;
         DB::beginTransaction();
@@ -422,7 +422,7 @@ class ItemRepository {
         if(!$item_decode) return view('home.404')->with(['error'=>'参数有误']);
         // abort(404);
 
-        $item = RootItem::with([
+        $item = Doc_Item::with([
             'contents'=>function($query) { $query->orderBy('rank','asc'); }
         ])->find($item_decode);
         if($item)
@@ -454,7 +454,7 @@ class ItemRepository {
         if(!$item_decode) return view('home.404')->with(['error'=>'参数有误']);
         // abort(404);
 
-        $item = RootItem::with([
+        $item = Doc_Item::with([
             'contents'=>function($query) {
                 $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as SIGNED) asc'));
                 $query->orderByRaw(DB::raw('cast(replace(trim(time_point)," ","") as DECIMAL) asc'));
@@ -527,7 +527,7 @@ class ItemRepository {
         $item_encode = $post_data["item_id"];
         $item_decode = decode($item_encode);
         if(!$item_decode) return response_error();
-        $item = RootItem::find($item_decode);
+        $item = Doc_Item::find($item_decode);
         if($item)
         {
             if($item->user_id == $user->id)
@@ -544,14 +544,14 @@ class ItemRepository {
                     $operate = $post_data["operate"];
                     if($operate == 'create') // $id==0，添加一个新的内容
                     {
-                        $content = new RootItem;
+                        $content = new Doc_Item;
                         $post_data["user_id"] = $user->id;
                     }
                     elseif('edit') // 编辑
                     {
                         if($content_decode == $post_data["p_id"]) return response_error([],"不能选择自己为父节点");
 
-                        $content = RootItem::find($content_decode);
+                        $content = Doc_Item::find($content_decode);
                         if(!$content) return response_error([],"该内容不存在，刷新页面重试");
                         if($content->user_id != $user->id) return response_error([],"你没有操作权限");
 //                        if($content->type == 1) unset($post_data["type"]);
@@ -562,16 +562,16 @@ class ItemRepository {
                             $p_id = $post_data["p_id"];
                             while($is_child)
                             {
-                                $p = RootItem::find($p_id);
+                                $p = Doc_Item::find($p_id);
                                 if(!$p) return response_error([],"参数有误，刷新页面重试");
                                 if($p->p_id == 0) $is_child = false;
                                 if($p->p_id == $content_decode)
                                 {
-                                    $content_children = RootItem::where('p_id',$content_decode)->get();
+                                    $content_children = Doc_Item::where('p_id',$content_decode)->get();
                                     $children_count = count($content_children);
                                     if($children_count)
                                     {
-                                        $num = RootItem::where('p_id',$content_decode)->update(['p_id'=>$content->p_id]);
+                                        $num = Doc_Item::where('p_id',$content_decode)->update(['p_id'=>$content->p_id]);
                                         if($num != $children_count)  throw new Exception("update--children--fail");
                                     }
                                 }
@@ -591,7 +591,7 @@ class ItemRepository {
 
                     if($post_data["p_id"] != 0)
                     {
-                        $parent = RootItem::find($post_data["p_id"]);
+                        $parent = Doc_Item::find($post_data["p_id"]);
                         if(!$parent) return response_error([],"父节点不存在，刷新页面重试");
                     }
 
@@ -666,7 +666,7 @@ class ItemRepository {
         $item_encode = $post_data["item_id"];
         $item_decode = decode($item_encode);
         if(!$item_decode) return response_error();
-        $item = RootItem::find($item_decode);
+        $item = Doc_Item::find($item_decode);
         if($item)
         {
             if($item->user_id == $user->id)
@@ -683,12 +683,12 @@ class ItemRepository {
                     $operate = $post_data["operate"];
                     if($operate == 'create') // $id==0，添加一个新的内容
                     {
-                        $content = new RootItem;
+                        $content = new Doc_Item;
                         $post_data["user_id"] = $user->id;
                     }
                     elseif('edit') // 编辑
                     {
-                        $content = RootItem::find($content_decode);
+                        $content = Doc_Item::find($content_decode);
                         if(!$content) return response_error([],"该内容不存在，刷新页面重试");
                         if($content->user_id != $user->id) return response_error([],"你没有操作权限");
 //                        if($content->type == 1) unset($post_data["type"]);
@@ -755,7 +755,7 @@ class ItemRepository {
 //        $id = decode($post_data["id"]);
         if(!$id) return response_error([],"该内容不存在，刷新页面试试");
 
-        $content = RootItem::find($id);
+        $content = Doc_Item::find($id);
         if($content->user_id != $user->id) return response_error([],"你没有操作权限");
         else
         {
@@ -777,17 +777,17 @@ class ItemRepository {
 //        $id = decode($post_data["id"]);
         if(!$id) return response_error([],"该内容不存在，刷新页面试试");
 
-        $content = RootItem::find($id);
+        $content = Doc_Item::find($id);
         if($content->user_id != $user->id) return response_error([],"你没有操作权限");
 
         DB::beginTransaction();
         try
         {
-            $content_children = RootItem::where('p_id',$id)->get();
+            $content_children = Doc_Item::where('p_id',$id)->get();
             $children_count = count($content_children);
             if($children_count)
             {
-                $num = RootItem::where('p_id',$id)->update(['p_id'=>$content->p_id]);
+                $num = Doc_Item::where('p_id',$id)->update(['p_id'=>$content->p_id]);
                 if($num != $children_count)  throw new Exception("update--children--fail");
             }
             $bool = $content->delete();
@@ -815,7 +815,7 @@ class ItemRepository {
 //        $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该内容不存在，刷新页面试试");
 
-        $mine = RootItem::find($id);
+        $mine = Doc_Item::find($id);
         if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
         $update["active"] = 1;
         DB::beginTransaction();
@@ -843,7 +843,7 @@ class ItemRepository {
 //        $id = decode($post_data["id"]);
         if(intval($id) !== 0 && !$id) return response_error([],"该文章不存在，刷新页面试试");
 
-        $mine = RootItem::find($id);
+        $mine = Doc_Item::find($id);
         if($mine->user_id != $user->id) return response_error([],"你没有操作权限");
         $update["active"] = 9;
         DB::beginTransaction();

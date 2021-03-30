@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use function foo\func;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
