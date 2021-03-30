@@ -2,13 +2,13 @@
 namespace App\Repositories\Front;
 
 use App\User;
-use App\Models\Doc_Item;
-use App\Models\Doc_User;
-use App\Models\Doc_Content;
-use App\Models\Doc_Communication;
-use App\Models\Doc_Notification;
-use App\Models\Doc_Pivot_User_Item;
-use App\Models\Doc_Pivot_User_Relation;
+use App\Models\Doc\Doc_Item;
+use App\Models\Doc\Doc_User;
+use App\Models\Doc\Doc_Content;
+use App\Models\Doc\Doc_Communication;
+use App\Models\Doc\Doc_Notification;
+use App\Models\Doc\Doc_Pivot_User_Item;
+use App\Models\Doc\Doc_Pivot_User_Relation;
 
 use App\Repositories\Common\CommonRepository;
 

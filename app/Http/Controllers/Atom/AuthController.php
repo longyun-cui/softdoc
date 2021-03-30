@@ -24,7 +24,7 @@ class AuthController extends Controller
     {
         if(request()->isMethod('get'))
         {
-            return view(env('TEMPLATE_ATOM').'auth.login');
+            return view(env('TEMPLATE_DOC_ATOM').'auth.login');
         }
         else if(request()->isMethod('post'))
         {
@@ -71,7 +71,7 @@ class AuthController extends Controller
     {
         if(request()->isMethod('get'))
         {
-            return view(env('TEMPLATE_ATOM').'auth.register');
+            return view(env('TEMPLATE_DOC_ATOM').'auth.register');
         }
         else if(request()->isMethod('post'))
         {
