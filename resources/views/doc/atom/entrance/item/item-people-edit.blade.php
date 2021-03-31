@@ -2,12 +2,12 @@
 
 
 @section('head_title')
-    {{ $title_text }} - 管理员系统 - 朝鲜族组织活动平台 - 如未科技
+    {{ $title_text }} - 原子系统 - 如未科技
 @endsection
 
 
 @section('header', '')
-@section('description', '管理员系统 - 朝鲜族组织活动平台 - 如未科技')
+@section('description', '原子系统 - 如未科技')
 @section('breadcrumb')
     <li><a href="{{ url('/admin') }}"><i class="fa fa-home"></i>首页</a></li>
     <li><a href="{{ url($list_link) }}"><i class="fa fa-list"></i>{{ $list_text or '内容列表' }}</a></li>
@@ -33,50 +33,50 @@
                 {{csrf_field()}}
                 <input type="hidden" name="operate" value="{{ $operate or '' }}" readonly>
                 <input type="hidden" name="operate_id" value="{{ $operate_id or 0 }}" readonly>
-                <input type="hidden" name="category" value="{{ $category or 'item' }}" readonly>
+                <input type="hidden" name="icategory" value="{{ $category or 'people' }}" readonly>
                 <input type="hidden" name="type" value="{{ $type or 'item' }}" readonly>
 
 
-                {{--类别--}}
-                <div class="form-group form-category _none">
-                    <label class="control-label col-md-2">类别</label>
-                    <div class="col-md-8">
-                        <div class="btn-group">
-
-                            <button type="button" class="btn">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="item_category-" value="1" checked="checked"> 文章
-                                    </label>
-                                </div>
-                            </button>
-
-                            <button type="button" class="btn">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="item_category-" value="11" checked="checked"> 文章
-                                    </label>
-                                </div>
-                            </button>
-
-                            <button type="button" class="btn">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="item_category-" value="88" checked="checked"> 广告
-                                    </label>
-                                </div>
-                            </button>
-
-                        </div>
+                {{--作者--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2"><sup class="text-red">*</sup> 作者</label>
+                    <div class="col-md-8 ">
+                        <input type="text" class="form-control" name="name" placeholder="作者" value="{{ $data->name or '' }}">
                     </div>
                 </div>
-
-
-                {{--标题--}}
+                {{--职位--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2"><sup class="text-red">*</sup> 标题</label>
+                    <label class="control-label col-md-2">标签</label>
                     <div class="col-md-8 ">
-                        <input type="text" class="form-control" name="title" placeholder="标题" value="{{ $data->title or '' }}">
+                        <input type="text" class="form-control" name="tag" placeholder="职业" value="{{ $data->tag or '' }}">
+                    </div>
+                </div>
+                {{--职位--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">职业</label>
+                    <div class="col-md-8 ">
+                        <input type="text" class="form-control" name="major" placeholder="职业" value="{{ $data->major or '' }}">
+                    </div>
+                </div>
+                {{--国别--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">国别</label>
+                    <div class="col-md-8 ">
+                        <input type="text" class="form-control" name="nation" placeholder="国别" value="{{ $data->nation or '' }}">
+                    </div>
+                </div>
+                {{--出生日期--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">出生日期</label>
+                    <div class="col-md-8 ">
+                        <input type="text" class="form-control" name="birth_time" placeholder="出生日期" value="{{ $data->birth_time or '' }}">
+                    </div>
+                </div>
+                {{--逝世时间--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">逝世时间</label>
+                    <div class="col-md-8 ">
+                        <input type="text" class="form-control" name="death_time" placeholder="逝世时间" value="{{ $data->death_time or '' }}">
                     </div>
                 </div>
 
@@ -85,41 +85,6 @@
                     <label class="control-label col-md-2">描述</label>
                     <div class="col-md-8 ">
                         <textarea class="form-control" name="description" rows="3" placeholder="描述">{{$data->description or ''}}</textarea>
-                    </div>
-                </div>
-
-                {{--活动--}}
-                @if($type == "activity")
-                {{--活动时间--}}
-                <div class="form-group">
-                    <label class="control-label col-md-2">活动时间</label>
-                    <div class="col-md-8 ">
-                        <div class="col-sm-6 col-md-6 padding-0">
-                            <input type="text" class="form-control" name="start" placeholder="开始时间"
-                                   @if(!empty($data->start_time)) value="{{ date("Y-m-d H:i",$data->start_time) }}" @endif
-                            >
-                        </div>
-                        <div class="col-sm-6 col-md-6 padding-0">
-                            <input type="text" class="form-control" name="end" placeholder="结束时间"
-                                   @if(!empty($data->end_time)) value="{{ date("Y-m-d H:i",$data->end_time) }}" @endif
-                            >
-                        </div>
-                    </div>
-                </div>
-                {{--活动地点--}}
-                <div class="form-group">
-                    <label class="control-label col-md-2">活动地点</label>
-                    <div class="col-md-8 ">
-                        <input type="text" class="form-control" name="address" placeholder="地点" value="{{ $data->address or '' }}">
-                    </div>
-                </div>
-                @endif
-
-                {{--链接地址--}}
-                <div class="form-group">
-                    <label class="control-label col-md-2">链接地址</label>
-                    <div class="col-md-8 ">
-                        <input type="text" class="form-control" name="link_url" placeholder="链接地址" value="{{ $data->link_url or '' }}">
                     </div>
                 </div>
 
@@ -154,7 +119,7 @@
 
                 {{--内容--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2">内容详情</label>
+                    <label class="control-label col-md-2">图文详情</label>
                     <div class="col-md-8 ">
                         <div>
                             @include('UEditor::head')
@@ -305,90 +270,5 @@
 @section('custom-script')
 {{--<script src="https://cdn.bootcss.com/select2/4.0.5/js/select2.min.js"></script>--}}
 <script src="{{ asset('/lib/js/select2-4.0.5.min.js') }}"></script>
-<script>
-    $(function() {
-
-        $("#multiple-images").fileinput({
-            allowedFileExtensions : [ 'jpg', 'jpeg', 'png', 'gif' ],
-            showUpload: false
-        });
-
-
-        // 【选择时间】
-        $("#form-edit-item").on('click', "input[name=time_type]", function() {
-            // checkbox
-//            if($(this).is(':checked')) {
-//                $('.time-show').show();
-//            } else {
-//                $('.time-show').hide();
-//            }
-            // radio
-            var $value = $(this).val();
-            if($value == 1) {
-                $('.time-show').show();
-            } else {
-                $('.time-show').hide();
-            }
-        });
-
-
-        $('input[name=start]').datetimepicker({
-            locale: moment.locale('zh-cn'),
-            format:"YYYY-MM-DD HH:mm"
-        });
-        $('input[name=end]').datetimepicker({
-            locale: moment.locale('zh-cn'),
-            format:"YYYY-MM-DD HH:mm"
-        });
-
-        // 添加or编辑
-        $("#edit-item-submit").on('click', function() {
-            var options = {
-                url: "{{ url('/admin/item/item-edit') }}",
-                type: "post",
-                dataType: "json",
-                // target: "#div2",
-                success: function (data) {
-                    if(!data.success) layer.msg(data.msg);
-                    else
-                    {
-                        layer.msg(data.msg);
-                        location.href = "{{ url('/admin/item/item-all-list') }}";
-                    }
-                }
-            };
-            $("#form-edit-item").ajaxSubmit(options);
-        });
-
-        $('#menus').select2({
-            ajax: {
-                url: "{{url('/admin/item/select2_menus')}}",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        keyword: params.term, // search term
-                        page: params.page
-                    };
-                },
-                processResults: function (data, params) {
-
-                    params.page = params.page || 1;
-//                    console.log(data);
-                    return {
-                        results: data,
-                        pagination: {
-                            more: (params.page * 30) < data.total_count
-                        }
-                    };
-                },
-                cache: true
-            },
-            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-            minimumInputLength: 0,
-            theme: 'classic'
-        });
-
-    });
-</script>
+@include(env('TEMPLATE_DOC_ATOM').'entrance.item.item-edit-script')
 @endsection

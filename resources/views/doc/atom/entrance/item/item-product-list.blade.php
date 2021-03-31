@@ -50,11 +50,10 @@
                     </div>
                 </div>
 
-                <table class='table table-striped table-bordered- table-hover' id='datatable_ajax'>
+                <table class='table table-striped table-bordered table-hover' id='datatable_ajax'>
                     <thead>
                         <tr role='row' class='heading'>
                             <th>ID</th>
-                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -205,8 +204,8 @@
                     {
                         "className": "text-left",
                         "width": "",
-                        "title": "标题",
-                        "data": "title",
+                        "title": "名称",
+                        "data": "name",
                         "orderable": false,
                         render: function(data, type, row, meta) {
                             return '<a target="_blank" href="/item/'+row.id+'">'+data+'</a>';
@@ -215,6 +214,24 @@
                     {
                         "className": "text-left",
                         "width": "160px",
+                        "title": "作者",
+                        "data": "pivot_product_people",
+                        "orderable": false,
+                        render: function(data, type, row, meta) {
+                            var html = '';
+//                            console.log(data);
+                            $.each(data,function( key, val ) {
+//                                console.log( key, val, this );
+                                html += '<a target="_blank" href="/item?id='+this.id+'">'+this.name+'</a><br>';
+                            });
+                            return html;
+//                            return row.people == null ? '未知' :
+//                                '<a target="_blank" href="/people?id='+row.people.encode_id+'">'+row.people.name+'</a>';
+                        }
+                    },
+                    {
+                        "className": "",
+                        "width": "64px",
                         "title": "发布者",
                         "data": "owner_id",
                         "orderable": false,
@@ -223,34 +240,19 @@
                         }
                     },
                     {
+                        "className": "",
                         "width": "64px",
                         "title": "类型",
                         "data": "item_type",
                         'orderable': false,
                         render: function(data, type, row, meta) {
                             if(data == 0) return 'item';
-                            else if(data == 1) return '<small class="btn-xs bg-primary">文章</small>';
-                            else if(data == 11) return '<small class="btn-xs bg-olive">活动</small>';
-                            else if(data == 88) return '<small class="btn-xs bg-purple">广告</small>';
+                            else if(data == 1) return '<small class="btn-xs bg-olive">物</small>';
+                            else if(data == 11) return '<small class="btn-xs bg-primary">人</small>';
+                            else if(data == 22) return '<small class="btn-xs bg-orange">作品</small>';
+                            else if(data == 33) return '<small class="btn-xs bg-maroon">事件</small>';
+                            else if(data == 9) return '<small class="btn-xs bg-purple">概念</small>';
                             else return "有误";
-                        }
-                    },
-                    {
-                        "width": "48px",
-                        "title": "浏览数",
-                        "data": "visit_num",
-                        "orderable": true,
-                        render: function(data, type, row, meta) {
-                            return data;
-                        }
-                    },
-                    {
-                        "width": "48px",
-                        "title": "分享数",
-                        "data": "share_num",
-                        "orderable": true,
-                        render: function(data, type, row, meta) {
-                            return data;
                         }
                     },
                     {
@@ -438,5 +440,5 @@
         TableDatatablesAjax.init();
     });
 </script>
-@include(env('TEMPLATE_DOC_ATOM').'entrance.item.item-script')
+@include(env('TEMPLATE_DOC_ATOM').'entrance.item.item-list-script')
 @endsection

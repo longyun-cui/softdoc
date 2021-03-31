@@ -42,14 +42,14 @@
                     <i class="fa fa-file-text text-green"></i><span>全部内容</span>
                 </a>
             </li>
-            <li class="treeview {{ $sidebar_item_people_list_active or '' }}">
-                <a href="{{ url('/atom/item/item-people-list') }}">
-                    <i class="fa fa-file-text text-green"></i><span>人</span>
-                </a>
-            </li>
             <li class="treeview {{ $sidebar_item_object_list_active or '' }}">
                 <a href="{{ url('/atom/item/item-object-list') }}">
                     <i class="fa fa-file-text text-green"></i><span>物</span>
+                </a>
+            </li>
+            <li class="treeview {{ $sidebar_item_people_list_active or '' }}">
+                <a href="{{ url('/atom/item/item-people-list') }}">
+                    <i class="fa fa-file-text text-green"></i><span>人</span>
                 </a>
             </li>
             <li class="treeview {{ $sidebar_item_product_list_active or '' }}">

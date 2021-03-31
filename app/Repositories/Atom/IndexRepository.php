@@ -3,6 +3,7 @@ namespace App\Repositories\Atom;
 
 use App\User;
 use App\Models\Doc\Doc_Item;
+use App\Models\Doc\Doc_Pivot_Item_Relation;
 
 use App\Repositories\Common\CommonRepository;
 
@@ -313,6 +314,19 @@ class IndexRepository {
 
 
 
+    //
+    public function operate_item_select2_people($post_data)
+    {
+        $query = Doc_Item::select(['id','name as text'])->where(['item_category'=>0,'item_type'=>11]);
+        if(!empty($post_data['keyword']))
+        {
+            $keyword = "%{$post_data['keyword']}%";
+            $query->where('name','like',"%$keyword%");
+        }
+        $list = $query->get()->toArray();
+        return $list;
+    }
+
 
     // 【内容】返回-列表-视图
     public function view_item_item_list($post_data)
@@ -379,57 +393,9 @@ class IndexRepository {
         $me = Auth::guard("admin")->user();
         $query = Doc_Item::select('*')
             ->with('owner')
-            ->where('owner_id','>=',1);
-
-        if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
-
-        $total = $query->count();
-
-        $draw  = isset($post_data['draw'])  ? $post_data['draw']  : 1;
-        $skip  = isset($post_data['start'])  ? $post_data['start']  : 0;
-        $limit = isset($post_data['length']) ? $post_data['length'] : 20;
-
-        if(isset($post_data['order']))
-        {
-            $columns = $post_data['columns'];
-            $order = $post_data['order'][0];
-            $order_column = $order['column'];
-            $order_dir = $order['dir'];
-
-            $field = $columns[$order_column]["data"];
-            $query->orderBy($field, $order_dir);
-        }
-        else $query->orderBy("id", "desc");
-
-        if($limit == -1) $list = $query->get();
-        else $list = $query->skip($skip)->take($limit)->get();
-
-        foreach ($list as $k => $v)
-        {
-            $list[$k]->encode_id = encode($v->id);
-            $list[$k]->description = replace_blank($v->description);
-        }
-//        dd($list->toArray());
-        return datatable_response($list, $draw, $total);
-    }
-
-
-    // 【内容】【人】返回-列表-视图
-    public function view_item_people_list($post_data)
-    {
-        return view(env('TEMPLATE_DOC_ATOM').'entrance.item.item-people-list')
-            ->with([
-                'sidebar_item_people'=>'active',
-                'sidebar_item_people_list_active'=>'active'
-            ]);
-    }
-    // 【内容】【文章】返回-列表-数据
-    public function get_item_people_datatable($post_data)
-    {
-        $me = Auth::guard("atom")->user();
-        $query = Doc_Item::select('*')
-            ->with('owner')
-            ->where(['item_category'=>1,'item_type'=>1]);
+            ->where('owner_id','>=',1)
+            ->where('item_category',0)
+            ->where('item_type','!=',0);
 
         if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
 
@@ -479,9 +445,59 @@ class IndexRepository {
         $me = Auth::guard("admin")->user();
         $query = Doc_Item::select('*')
             ->with('owner')
-            ->where(['item_category'=>1,'item_type'=>11]);
+            ->where(['item_category'=>0,'item_type'=>1]);
 
         if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+
+        $total = $query->count();
+
+        $draw  = isset($post_data['draw'])  ? $post_data['draw']  : 1;
+        $skip  = isset($post_data['start'])  ? $post_data['start']  : 0;
+        $limit = isset($post_data['length']) ? $post_data['length'] : 20;
+
+        if(isset($post_data['order']))
+        {
+            $columns = $post_data['columns'];
+            $order = $post_data['order'][0];
+            $order_column = $order['column'];
+            $order_dir = $order['dir'];
+
+            $field = $columns[$order_column]["data"];
+            $query->orderBy($field, $order_dir);
+        }
+        else $query->orderBy("id", "desc");
+
+        if($limit == -1) $list = $query->get();
+        else $list = $query->skip($skip)->take($limit)->get();
+
+        foreach ($list as $k => $v)
+        {
+            $list[$k]->encode_id = encode($v->id);
+            $list[$k]->description = replace_blank($v->description);
+        }
+//        dd($list->toArray());
+        return datatable_response($list, $draw, $total);
+    }
+
+
+    // 【内容】【人】返回-列表-视图
+    public function view_item_people_list($post_data)
+    {
+        return view(env('TEMPLATE_DOC_ATOM').'entrance.item.item-people-list')
+            ->with([
+                'sidebar_item_people'=>'active',
+                'sidebar_item_people_list_active'=>'active'
+            ]);
+    }
+    // 【内容】【文章】返回-列表-数据
+    public function get_item_people_datatable($post_data)
+    {
+        $me = Auth::guard("atom")->user();
+        $query = Doc_Item::select('*')
+            ->with('owner')
+            ->where(['item_category'=>0,'item_type'=>11]);
+
+        if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
 
         $total = $query->count();
 
@@ -528,10 +544,13 @@ class IndexRepository {
     {
         $me = Auth::guard("admin")->user();
         $query = Doc_Item::select('*')
-            ->with('owner')
-            ->where(['item_category'=>1,'item_type'=>88]);
+            ->with([
+                'owner',
+                'pivot_product_people'=>function ($query) { $query->where('relation_type',1); }
+            ])
+            ->where(['item_category'=>0,'item_type'=>22]);
 
-        if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+        if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
 
         $total = $query->count();
 
@@ -579,9 +598,9 @@ class IndexRepository {
         $me = Auth::guard("admin")->user();
         $query = Doc_Item::select('*')
             ->with('owner')
-            ->where(['item_category'=>1,'item_type'=>88]);
+            ->where(['item_category'=>0,'item_type'=>33]);
 
-        if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+        if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
 
         $total = $query->count();
 
@@ -629,7 +648,7 @@ class IndexRepository {
         $me = Auth::guard("admin")->user();
         $query = Doc_Item::select('*')
             ->with('owner')
-            ->where(['item_category'=>1,'item_type'=>88]);
+            ->where(['item_category'=>0,'item_type'=>9]);
 
         if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
 
@@ -669,16 +688,50 @@ class IndexRepository {
     // 【ITEM】返回-添加-视图
     public function view_item_item_create($post_data)
     {
-        $me = Auth::guard('atom')->user();
-        if(!in_array($me->user_type,[0,1])) return view(env('TEMPLATE_DOC_ATOM').'errors.404');
+        $type = request('type','');
+        if(!in_array($type,["people","object","product","event","conception"])) return view(env('TEMPLATE_DOC_ATOM').'errors.404');
 
-        $item_type = 'item';
-        $item_type_text = '内容';
-        $title_text = '添加'.$item_type_text;
-        $list_text = $item_type_text.'列表';
-        $list_link = '/admin/item/item-my-list';
+        $me = Auth::guard('atom')->user();
+//        if(!in_array($me->user_type,[0,1])) return view(env('TEMPLATE_DOC_ATOM').'errors.404');
 
         $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-edit';
+        $item_type = 'item';
+        $item_type = $type;
+
+        if($type == "object")
+        {
+            $item_type_text = '物';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-object-edit';
+        }
+        else if($type == "people")
+        {
+            $item_type_text = '人';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-people-edit';
+        }
+        else if($type == "product")
+        {
+            $item_type_text = '作品';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-product-edit';
+        }
+        else if($type == "event")
+        {
+            $item_type_text = '事件';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-event-edit';
+        }
+        else if($type == "conception")
+        {
+            $item_type_text = '概念';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-conception-edit';
+        }
+        else
+        {
+            $item_type_text = '内容';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-edit';
+        }
+        $title_text = '添加'.$item_type_text;
+        $list_text = $item_type_text;
+        $list_link = '/atom/item/item-'.$item_type.'-list';
+
         return view($view_blade)->with([
             'operate'=>'create',
             'operate_id'=>0,
@@ -694,11 +747,15 @@ class IndexRepository {
     public function view_item_item_edit($post_data)
     {
         $me = Auth::guard('atom')->user();
-        if(!in_array($me->user_type,[0,1])) return view(env('TEMPLATE_DOC_ATOM').'errors.404');
+//        if(!in_array($me->user_type,[0,1])) return view(env('TEMPLATE_DOC_ATOM').'errors.404');
 
         $id = $post_data["id"];
-        $mine = Doc_Item::with(['owner'])->find($id);
+        $mine = Doc_Item::with([
+                'owner',
+                'pivot_product_people'=>function ($query) { $query->where('relation_type',1); }
+            ])->find($id);
         if(!$mine) return view(env('TEMPLATE_DOC_ATOM').'errors.404');
+//        dd($mine->toArray());
 
 
         $item_type = 'item';
@@ -706,6 +763,7 @@ class IndexRepository {
         $title_text = '编辑'.$item_type_text;
         $list_text = $item_type_text.'列表';
         $list_link = '/admin/item/item-list';
+        $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-edit';
 
         if($mine->item_type == 0)
         {
@@ -714,33 +772,53 @@ class IndexRepository {
             $title_text = '编辑'.$item_type_text;
             $list_text = $item_type_text.'列表';
             $list_link = '/admin/item/item-all-list';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-edit';
         }
         else if($mine->item_type == 1)
         {
-            $item_type = 'article';
-            $item_type_text = '文章';
+            $item_type = 'object';
+            $item_type_text = '物';
             $title_text = '编辑'.$item_type_text;
             $list_text = $item_type_text.'列表';
             $list_link = '/admin/item/item-article-list';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-object-edit';
         }
         else if($mine->item_type == 11)
         {
-            $item_type = 'activity';
-            $item_type_text = '活动';
+            $item_type = 'people';
+            $item_type_text = '人';
             $title_text = '编辑'.$item_type_text;
             $list_text = $item_type_text.'列表';
-            $list_link = '/admin/item/item-activity-list';
+            $list_link = '/admin/item/item-people-list';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-people-edit';
         }
-        else if($mine->item_type == 88)
+        else if($mine->item_type == 22)
         {
-            $item_type = 'advertising';
-            $item_type_text = '广告';
+            $item_type = 'product';
+            $item_type_text = '作品';
             $title_text = '编辑'.$item_type_text;
             $list_text = $item_type_text.'列表';
-            $list_link = '/admin/item/item-advertising-list';
+            $list_link = '/admin/item/item-product-list';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-product-edit';
+        }
+        else if($mine->item_type == 33)
+        {
+            $item_type = 'event';
+            $item_type_text = '事件';
+            $title_text = '编辑'.$item_type_text;
+            $list_text = $item_type_text.'列表';
+            $list_link = '/admin/item/item-event-list';
+            $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-event-edit';
+        }
+        else if($mine->item_type == 9)
+        {
+            $item_type = 'conception';
+            $item_type_text = '概念';
+            $title_text = '编辑'.$item_type_text;
+            $list_text = $item_type_text.'列表';
+            $list_link = '/admin/item/item-conception-list';
         }
 
-        $view_blade = env('TEMPLATE_DOC_ATOM').'entrance.item.item-edit';
 
         if($id == 0)
         {
@@ -757,7 +835,6 @@ class IndexRepository {
         }
         else
         {
-            $mine = Doc_Item::with(['user'])->find($id);
             if($mine)
             {
                 $mine->custom = json_decode($mine->custom);
@@ -782,13 +859,12 @@ class IndexRepository {
     // 【ITEM】保存-数据
     public function operate_item_item_save($post_data)
     {
+//        dd(0);
         $messages = [
             'operate.required' => '参数有误',
-            'title.required' => '请输入标题',
         ];
         $v = Validator::make($post_data, [
             'operate' => 'required',
-            'title' => 'required',
         ], $messages);
         if ($v->fails())
         {
@@ -808,11 +884,14 @@ class IndexRepository {
         {
             $mine = new Doc_Item;
             $post_data["owner_id"] = $me->id;
-            $post_data["item_category"] = 1;
-            if($type == 'item') $post_data["item_type"] = 0;
-            else if($type == 'article') $post_data["item_type"] = 1;
-            else if($type == 'activity') $post_data["item_type"] = 11;
-            else if($type == 'advertising') $post_data["item_type"] = 88;
+            $post_data["item_category"] = 0;
+            $post_data["owner_id"] = 100;
+            $post_data["creator_id"] = $me->id;
+            if($type == 'object') $post_data["item_type"] = 1;
+            else if($type == 'people') $post_data["item_type"] = 11;
+            else if($type == 'product') $post_data["item_type"] = 22;
+            else if($type == 'event') $post_data["item_type"] = 33;
+            else if($type == 'conception') $post_data["item_type"] = 9;
         }
         else if($operate == 'edit') // 编辑
         {
@@ -850,6 +929,22 @@ class IndexRepository {
             $bool = $mine->fill($mine_data)->save();
             if($bool)
             {
+                // 插入中间表
+//                if(!empty($post_data["people_id"]))
+//                {
+//                    $mine->pivot_product_people()->attach($post_data["people_id"]);
+//                }
+                if(!empty($post_data["peoples"]))
+                {
+//                    $product->peoples()->attach($post_data["peoples"]);
+                    $peoples = $post_data["peoples"];
+                    foreach($peoples as $p)
+                    {
+                        $people_insert[$p] = ['relation_type'=>1];
+                    }
+                    $mine->pivot_product_people()->sync($people_insert);
+//                    $mine->pivot_product_people()->syncWithoutDetaching($people_insert);
+                }
 
                 // 封面图片
                 if(!empty($post_data["cover"]))
@@ -867,7 +962,7 @@ class IndexRepository {
                         $mine->cover_pic = $result["local"];
                         $mine->save();
                     }
-                    else throw new Exception("upload-cover-fail");
+                    else throw new Exception("upload--cover--fail");
 
 //                    $upload = new CommonRepository();
 //                    $result = $upload->upload($post_data["cover"], 'outside-unique-items' , 'cover_item_'.$encode_id);
@@ -896,7 +991,7 @@ class IndexRepository {
                         $mine->attachment_src = $result["local"];
                         $mine->save();
                     }
-                    else throw new Exception("upload-attachment-fail");
+                    else throw new Exception("upload--attachment--fail");
                 }
 
                 // 生成二维码
@@ -904,7 +999,7 @@ class IndexRepository {
                 if(!file_exists(storage_path($qr_code_path)))
                     mkdir(storage_path($qr_code_path), 0777, true);
                 // qr_code 图片文件
-                $url = 'http://www.k-org.cn/item/'.$mine->id;  // 目标 URL
+                $url = env('DOMAIN_WWW').'/item/'.$mine->id;  // 目标 URL
                 $filename = 'qr_code_item_'.$mine->id.'.png';  // 目标 file
                 $qr_code = $qr_code_path.$filename;
                 QrCode::errorCorrection('H')->format('png')->size(640)->margin(0)->encoding('UTF-8')->generate($url,storage_path($qr_code));

@@ -37,46 +37,11 @@
                 <input type="hidden" name="type" value="{{ $type or 'item' }}" readonly>
 
 
-                {{--类别--}}
-                <div class="form-group form-category _none">
-                    <label class="control-label col-md-2">类别</label>
-                    <div class="col-md-8">
-                        <div class="btn-group">
-
-                            <button type="button" class="btn">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="item_category-" value="1" checked="checked"> 文章
-                                    </label>
-                                </div>
-                            </button>
-
-                            <button type="button" class="btn">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="item_category-" value="11" checked="checked"> 文章
-                                    </label>
-                                </div>
-                            </button>
-
-                            <button type="button" class="btn">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="item_category-" value="88" checked="checked"> 广告
-                                    </label>
-                                </div>
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-
-
-                {{--标题--}}
+                {{--名称--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2"><sup class="text-red">*</sup> 标题</label>
+                    <label class="control-label col-md-2"><sup class="text-red">*</sup> 名称</label>
                     <div class="col-md-8 ">
-                        <input type="text" class="form-control" name="title" placeholder="标题" value="{{ $data->title or '' }}">
+                        <input type="text" class="form-control" name="name" placeholder="名称" value="{{ $data->name or '' }}">
                     </div>
                 </div>
 

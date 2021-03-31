@@ -2,12 +2,12 @@
 
 
 @section('head_title')
-    {{ $title_text }} - 管理员系统 - 朝鲜族组织活动平台 - 如未科技
+    {{ $title_text }} - 原子系统 - 如未科技
 @endsection
 
 
 @section('header', '')
-@section('description', '管理员系统 - 朝鲜族组织活动平台 - 如未科技')
+@section('description', '原子系统 - 如未科技')
 @section('breadcrumb')
     <li><a href="{{ url('/admin') }}"><i class="fa fa-home"></i>首页</a></li>
     <li><a href="{{ url($list_link) }}"><i class="fa fa-list"></i>{{ $list_text or '内容列表' }}</a></li>
@@ -37,46 +37,11 @@
                 <input type="hidden" name="type" value="{{ $type or 'item' }}" readonly>
 
 
-                {{--类别--}}
-                <div class="form-group form-category _none">
-                    <label class="control-label col-md-2">类别</label>
-                    <div class="col-md-8">
-                        <div class="btn-group">
-
-                            <button type="button" class="btn">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="item_category-" value="1" checked="checked"> 文章
-                                    </label>
-                                </div>
-                            </button>
-
-                            <button type="button" class="btn">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="item_category-" value="11" checked="checked"> 文章
-                                    </label>
-                                </div>
-                            </button>
-
-                            <button type="button" class="btn">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="item_category-" value="88" checked="checked"> 广告
-                                    </label>
-                                </div>
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-
-
-                {{--标题--}}
+                {{--名称--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2"><sup class="text-red">*</sup> 标题</label>
+                    <label class="control-label col-md-2"><sup class="text-red">*</sup> 名称</label>
                     <div class="col-md-8 ">
-                        <input type="text" class="form-control" name="title" placeholder="标题" value="{{ $data->title or '' }}">
+                        <input type="text" class="form-control" name="name" placeholder="名称" value="{{ $data->name or '' }}">
                     </div>
                 </div>
 

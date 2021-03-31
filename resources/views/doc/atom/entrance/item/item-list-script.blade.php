@@ -37,14 +37,14 @@
         // 【数据分析】
         $("#item-main-body").on('click', ".item-statistic-submit", function() {
             var that = $(this);
-            window.open("/admin/statistic/statistic-item?id="+that.attr('data-id'));
-//            window.location.href = "/admin/statistic/statistic-item?id="+that.attr('data-id');
+            window.open("/atom/statistic/statistic-item?id="+that.attr('data-id'));
+//            window.location.href = "/atom/statistic/statistic-item?id="+that.attr('data-id');
         });
 
         // 【编辑】
         $("#item-main-body").on('click', ".item-edit-link", function() {
             var that = $(this);
-            window.location.href = "/admin/item/item-edit?id="+that.attr('data-id');
+            window.location.href = "/atom/item/item-edit?id="+that.attr('data-id');
         });
 
 
@@ -58,7 +58,7 @@
                 type:"post",
                 dataType:'json',
                 async:false,
-                url: "{{ url('/admin/item/item-get') }}",
+                url: "{{ url('/atom/item/item-get') }}",
                 data: {
                     _token: $('meta[name="_token"]').attr('content'),
                     operate:"item-get",
@@ -87,14 +87,14 @@
         });
 
         // 内容【删除】
-        $("#item-main-body").on('click', ".item-admin-delete-submit", function() {
+        $("#item-main-body").on('click', ".item-delete-submit", function() {
             var that = $(this);
             layer.msg('确定要"删除"么？', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                        "{{ url('/admin/item/item-delete') }}",
+                        "{{ url('/atom/item/item-delete') }}",
                         {
                             _token: $('meta[name="_token"]').attr('content'),
                             operate: "item-delete",
@@ -114,14 +114,14 @@
         });
 
         // 内容【恢复】
-        $("#item-main-body").on('click', ".item-admin-restore-submit", function() {
+        $("#item-main-body").on('click', ".item-restore-submit", function() {
             var that = $(this);
             layer.msg('确定要"恢复"么？', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                        "{{ url('/admin/item/item-restore') }}",
+                        "{{ url('/atom/item/item-restore') }}",
                         {
                             _token: $('meta[name="_token"]').attr('content'),
                             operate: "item-restore",
@@ -141,14 +141,14 @@
         });
 
         // 内容【永久删除】
-        $("#item-main-body").on('click', ".item-admin-delete-permanently-submit", function() {
+        $("#item-main-body").on('click', ".item-delete-permanently-submit", function() {
             var that = $(this);
             layer.msg('确定要"永久删除"么？', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                        "{{ url('/admin/item/item-delete-permanently') }}",
+                        "{{ url('/atom/item/item-delete-permanently') }}",
                         {
                             _token: $('meta[name="_token"]').attr('content'),
                             operate: "item-delete-permanently",
@@ -175,7 +175,7 @@
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                        "{{ url('/admin/item/item-publish') }}",
+                        "{{ url('/atom/item/item-publish') }}",
                         {
                             _token: $('meta[name="_token"]').attr('content'),
                             operate: "item-publish",
@@ -203,7 +203,7 @@
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                        "{{ url('/admin/item/item-ad-set') }}",
+                        "{{ url('/atom/item/item-ad-set') }}",
                         {
                             _token: $('meta[name="_token"]').attr('content'),
                             operate: "item-ad-set",
@@ -231,7 +231,7 @@
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                        "{{ url('/admin/item/item-ad-cancel') }}",
+                        "{{ url('/atom/item/item-ad-cancel') }}",
                         {
                             _token: $('meta[name="_token"]').attr('content'),
                             operate: "item-ad-cancel",
@@ -255,17 +255,17 @@
 
 
         // 【启用】
-        $("#item-main-body").on('click', ".item-admin-enable-submit", function() {
+        $("#item-main-body").on('click', ".item-enable-submit", function() {
             var that = $(this);
             layer.msg('确定"封禁"？', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                        "{{ url('/admin/item/item-admin-enable') }}",
+                        "{{ url('/atom/item/item-enable') }}",
                         {
                             _token: $('meta[name="_token"]').attr('content'),
-                            operate: "item-admin-enable",
+                            operate: "item-enable",
                             id:that.attr('data-id')
                         },
                         function(data){
@@ -282,17 +282,17 @@
             });
         });
         // 【禁用】
-        $("#item-main-body").on('click', ".item-admin-disable-submit", function() {
+        $("#item-main-body").on('click', ".item-disable-submit", function() {
             var that = $(this);
             layer.msg('确定"解禁"？', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                        "{{ url('/admin/item/item-admin-disable') }}",
+                        "{{ url('/atom/item/item-disable') }}",
                         {
                             _token: $('meta[name="_token"]').attr('content'),
-                            operate: "item-admin-disable",
+                            operate: "item-disable",
                             id:that.attr('data-id')
                         },
                         function(data){

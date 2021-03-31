@@ -1,9 +1,11 @@
 <?php
 namespace App\Models\Doc;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Doc_Item extends Model
 {
+    use SoftDeletes;
     //
     protected $table = "item";
     protected $fillable = [
@@ -29,7 +31,7 @@ class Doc_Item extends Model
 
     // 应被转换为日期的属性
 //    protected $dates = [];
-//    protected $dates = ['created_at', 'updated_at', 'disabled_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
 
     // 如果数据库存的是datetime或者没定义$dateFormat，又想取出的时候是int...
@@ -106,6 +108,22 @@ class Doc_Item extends Model
 
 
 
+    // 多对多 人关联的作品
+    function pivot_people_product()
+    {
+        return $this->belongsToMany('App\Models\Doc\Doc_Item','pivot_item_relation','mine_id','relation_id')
+            ->wherePivot('relation_type', 1);
+    }
+    // 多对多 作品关联的人
+    function pivot_product_people()
+    {
+        return $this->belongsToMany('App\Models\Doc\Doc_Item','pivot_item_relation','relation_id','mine_id')
+            ->wherePivot('relation_type', 1);
+    }
+
+
+
+
     // 子节点
     function items()
     {
@@ -159,6 +177,9 @@ class Doc_Item extends Model
     {
         return $this->hasMany('App\Models\Doc\Doc_Pivot_User_Collection','item_id','id');
     }
+
+
+
 
     // 其他人的
     function pivot_item_relation()

@@ -2,7 +2,7 @@
 <header class="main-header">
 
         <!-- Logo -->
-        <a href="{{ url('/admin') }}" class="logo">
+        <a href="{{ url('/atom') }}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>A</b></span>
             <!-- logo for regular state and mobile devices -->
@@ -28,40 +28,40 @@
                         <ul class="dropdown-menu">
 
                             <li class="header _none">
-                                <a href="{{url('/admin/module/create')}}">
+                                <a href="{{url('/atom/module/create')}}">
                                     <i class="fa fa-plus text-green"></i> 添加模块
                                 </a>
                             </li>
 
                             <li class="header">添加内容</li>
-                            <li class="header">
-                                <a href="{{url('/admin/item/item-create')}}">
+                            <li class="header _none">
+                                <a href="{{url('/atom/item/item-create')}}">
                                     <i class="fa fa-plus text-blue"></i> 添加内容
                                 </a>
                             </li>
-
-                            <li class="header">添加用户</li>
                             <li class="header">
-                                <a href="{{url('/admin/user/user-create')}}">
-                                    <i class="fa fa-plus text-blue"></i> 添加组织
+                                <a href="{{url('/atom/item/item-create?type=object')}}">
+                                    <i class="fa fa-plus text-blue"></i> 添加物
                                 </a>
                             </li>
-
-                            <li class="header _none">添加内容</li>
-                            <li class="header _none">
-                                <a href="{{url('/admin/item/create?category=about')}}">
-                                    <i class="fa fa-plus text-green"></i> 添加关于企业
+                            <li class="header">
+                                <a href="{{url('/atom/item/item-create?type=people')}}">
+                                    <i class="fa fa-plus text-blue"></i> 添加人
                                 </a>
                             </li>
-                            <li class="header _none">
-                                <a href="{{url('/admin/item/create?category=advantage')}}">
-                                    <i class="fa fa-plus text-green"></i> 添加选择我们
+                            <li class="header">
+                                <a href="{{url('/atom/item/item-create?type=product')}}">
+                                    <i class="fa fa-plus text-blue"></i> 添加作品
                                 </a>
                             </li>
-
-                            <li class="header _none">
-                                <a href="{{url('/admin/item/create?category=client')}}">
-                                    <i class="fa fa-plus text-green"></i> 添加客户
+                            <li class="header">
+                                <a href="{{url('/atom/item/item-create?type=event')}}">
+                                    <i class="fa fa-plus text-blue"></i> 添加事件
+                                </a>
+                            </li>
+                            <li class="header">
+                                <a href="{{url('/atom/item/item-create?type=conception')}}">
+                                    <i class="fa fa-plus text-blue"></i> 添加概念
                                 </a>
                             </li>
 

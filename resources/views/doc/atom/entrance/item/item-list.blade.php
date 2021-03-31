@@ -426,5 +426,5 @@
         TableDatatablesAjax.init();
     });
 </script>
-@include(env('TEMPLATE_DOC_ATOM').'entrance.item.item-script')
+@include(env('TEMPLATE_DOC_ATOM').'entrance.item.item-list-script')
 @endsection
