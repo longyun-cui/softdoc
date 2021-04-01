@@ -397,7 +397,9 @@ class IndexRepository {
             ->where('item_category',0)
             ->where('item_type','!=',0);
 
+        if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
         if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+        if(!empty($post_data['tag'])) $query->where('tag', 'like', "%{$post_data['tag']}%");
 
         $total = $query->count();
 
@@ -447,7 +449,9 @@ class IndexRepository {
             ->with('owner')
             ->where(['item_category'=>0,'item_type'=>1]);
 
+        if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
         if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+        if(!empty($post_data['tag'])) $query->where('tag', 'like', "%{$post_data['tag']}%");
 
         $total = $query->count();
 
@@ -498,6 +502,8 @@ class IndexRepository {
             ->where(['item_category'=>0,'item_type'=>11]);
 
         if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
+        if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+        if(!empty($post_data['tag'])) $query->where('tag', 'like', "%{$post_data['tag']}%");
 
         $total = $query->count();
 
@@ -542,7 +548,7 @@ class IndexRepository {
     // 【内容】【广告】返回-列表-数据
     public function get_item_product_datatable($post_data)
     {
-        $me = Auth::guard("admin")->user();
+        $me = Auth::guard("atom")->user();
         $query = Doc_Item::select('*')
             ->with([
                 'owner',
@@ -551,6 +557,8 @@ class IndexRepository {
             ->where(['item_category'=>0,'item_type'=>22]);
 
         if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
+        if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+        if(!empty($post_data['tag'])) $query->where('tag', 'like', "%{$post_data['tag']}%");
 
         $total = $query->count();
 
@@ -595,12 +603,14 @@ class IndexRepository {
     // 【内容】【广告】返回-列表-数据
     public function get_item_event_datatable($post_data)
     {
-        $me = Auth::guard("admin")->user();
+        $me = Auth::guard("atom")->user();
         $query = Doc_Item::select('*')
             ->with('owner')
             ->where(['item_category'=>0,'item_type'=>33]);
 
         if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
+        if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+        if(!empty($post_data['tag'])) $query->where('tag', 'like', "%{$post_data['tag']}%");
 
         $total = $query->count();
 
@@ -645,12 +655,14 @@ class IndexRepository {
     // 【内容】【广告】返回-列表-数据
     public function get_item_conception_datatable($post_data)
     {
-        $me = Auth::guard("admin")->user();
+        $me = Auth::guard("atom")->user();
         $query = Doc_Item::select('*')
             ->with('owner')
             ->where(['item_category'=>0,'item_type'=>9]);
 
+        if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
         if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+        if(!empty($post_data['tag'])) $query->where('tag', 'like', "%{$post_data['tag']}%");
 
         $total = $query->count();
 
@@ -937,13 +949,19 @@ class IndexRepository {
                 if(!empty($post_data["peoples"]))
                 {
 //                    $product->peoples()->attach($post_data["peoples"]);
+                    $current_time = time();
                     $peoples = $post_data["peoples"];
                     foreach($peoples as $p)
                     {
-                        $people_insert[$p] = ['relation_type'=>1];
+//                        $people_insert[$p] = ['relation_type'=>1];
+                        $people_insert[$p] = ['relation_type'=>1,'created_at'=>$current_time,'updated_at'=>$current_time];
                     }
                     $mine->pivot_product_people()->sync($people_insert);
 //                    $mine->pivot_product_people()->syncWithoutDetaching($people_insert);
+                }
+                else
+                {
+                    $mine->pivot_product_people()->detach();
                 }
 
                 // 封面图片

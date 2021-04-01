@@ -38,7 +38,9 @@
                 <div class="row col-md-12 datatable-search-row">
                     <div class="input-group">
 
-                        <input type="text" class="form-control form-filter item-search-keyup" name="title" placeholder="标题" />
+                        <input type="text" class="form-control form-filter item-search-keyup" name="name" placeholder="名称" />
+                        {{--<input type="text" class="form-control form-filter item-search-keyup" name="title" placeholder="标题" />--}}
+                        <input type="text" class="form-control form-filter item-search-keyup" name="tag" placeholder="标签" />
 
                         <button type="button" class="form-control btn btn-flat btn-success filter-submit" id="filter-submit">
                             <i class="fa fa-search"></i> 搜索
@@ -54,6 +56,8 @@
                     <thead>
                         <tr role='row' class='heading'>
                             <th>ID</th>
+                            <th></th>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -172,8 +176,9 @@
                     "dataType" : 'json',
                     "data": function (d) {
                         d._token = $('meta[name="_token"]').attr('content');
-                        d.keyword = $('input[name="keyword"]').val();
-                        d.website = $('input[name="website"]').val();
+                        d.name = $('input[name="name"]').val();
+                        d.title = $('input[name="title"]').val();
+                        d.tag = $('input[name="tag"]').val();
 //                        d.nickname 	= $('input[name="nickname"]').val();
 //                        d.certificate_type_id = $('select[name="certificate_type_id"]').val();
 //                        d.certificate_state = $('select[name="certificate_state"]').val();
@@ -213,16 +218,6 @@
                     {
                         "className": "",
                         "width": "64px",
-                        "title": "发布者",
-                        "data": "owner_id",
-                        "orderable": false,
-                        render: function(data, type, row, meta) {
-                            return row.owner == null ? '未知' : '<a target="_blank" href="/user/'+row.owner.id+'">'+row.owner.username+'</a>';
-                        }
-                    },
-                    {
-                        "className": "",
-                        "width": "64px",
                         "title": "类型",
                         "data": "item_type",
                         'orderable': false,
@@ -234,6 +229,36 @@
                             else if(data == 33) return '<small class="btn-xs bg-maroon">事件</small>';
                             else if(data == 9) return '<small class="btn-xs bg-purple">概念</small>';
                             else return "有误";
+                        }
+                    },
+                    {
+                        "className": "",
+                        "width": "128px",
+                        "title": "开始时间",
+                        "data": "birth_time",
+                        "orderable": true,
+                        render: function(data, type, row, meta) {
+                            return data;
+                        }
+                    },
+                    {
+                        "className": "",
+                        "width": "128px",
+                        "title": "结束时间",
+                        "data": "death_time",
+                        "orderable": true,
+                        render: function(data, type, row, meta) {
+                            return data;
+                        }
+                    },
+                    {
+                        "className": "",
+                        "width": "64px",
+                        "title": "发布者",
+                        "data": "owner_id",
+                        "orderable": false,
+                        render: function(data, type, row, meta) {
+                            return row.owner == null ? '未知' : '<a target="_blank" href="/user/'+row.owner.id+'">'+row.owner.username+'</a>';
                         }
                     },
                     {

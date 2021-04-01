@@ -44,6 +44,21 @@
                         <input type="text" class="form-control" name="name" placeholder="名称" value="{{ $data->name or '' }}">
                     </div>
                 </div>
+                {{--标签--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">标签</label>
+                    <div class="col-md-8 ">
+                        <input type="text" class="form-control" name="tag" placeholder="标签" value="{{ $data->tag or '' }}">
+                    </div>
+                </div>
+                {{--描述--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">描述</label>
+                    <div class="col-md-8 ">
+                        <textarea class="form-control" name="description" rows="3" placeholder="描述">{{$data->description or ''}}</textarea>
+                    </div>
+                </div>
+
                 {{--作者--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">添加作者</label>
@@ -63,14 +78,6 @@
                     <label class="control-label col-md-2">时间</label>
                     <div class="col-md-8 ">
                         <input type="text" class="form-control" name="birth_time" placeholder="时间" value="{{ $data->birth_time or '' }}">
-                    </div>
-                </div>
-
-                {{--描述--}}
-                <div class="form-group">
-                    <label class="control-label col-md-2">描述</label>
-                    <div class="col-md-8 ">
-                        <textarea class="form-control" name="description" rows="3" placeholder="描述">{{ $data->description or '' }}</textarea>
                     </div>
                 </div>
 

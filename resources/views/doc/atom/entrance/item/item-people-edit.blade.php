@@ -37,20 +37,28 @@
                 <input type="hidden" name="type" value="{{ $type or 'item' }}" readonly>
 
 
-                {{--作者--}}
+                {{--名称--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2"><sup class="text-red">*</sup> 作者</label>
+                    <label class="control-label col-md-2"><sup class="text-red">*</sup> 名称</label>
                     <div class="col-md-8 ">
-                        <input type="text" class="form-control" name="name" placeholder="作者" value="{{ $data->name or '' }}">
+                        <input type="text" class="form-control" name="name" placeholder="名称" value="{{ $data->name or '' }}">
                     </div>
                 </div>
-                {{--职位--}}
+                {{--标签--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">标签</label>
                     <div class="col-md-8 ">
-                        <input type="text" class="form-control" name="tag" placeholder="职业" value="{{ $data->tag or '' }}">
+                        <input type="text" class="form-control" name="tag" placeholder="标签" value="{{ $data->tag or '' }}">
                     </div>
                 </div>
+                {{--描述--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">描述</label>
+                    <div class="col-md-8 ">
+                        <textarea class="form-control" name="description" rows="3" placeholder="描述">{{$data->description or ''}}</textarea>
+                    </div>
+                </div>
+
                 {{--职位--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">职业</label>
@@ -80,13 +88,6 @@
                     </div>
                 </div>
 
-                {{--描述--}}
-                <div class="form-group">
-                    <label class="control-label col-md-2">描述</label>
-                    <div class="col-md-8 ">
-                        <textarea class="form-control" name="description" rows="3" placeholder="描述">{{$data->description or ''}}</textarea>
-                    </div>
-                </div>
 
                 {{--目录--}}
                 <div class="form-group _none">

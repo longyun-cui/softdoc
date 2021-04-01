@@ -17,7 +17,7 @@ class Doc_Item extends Model
         'name', 'title', 'subtitle', 'description', 'content', 'custom', 'custom2', 'custom3',
         'link_url', 'cover_pic', 'attachment_name', 'attachment_src',
         'tag',
-        'major', 'nation', 'birth_time', 'death_time',
+        'atom_category', 'major', 'nation', 'birth_time', 'death_time',
         'time_point', 'time_type', 'start_time', 'end_time', 'address',
         'visit_num', 'share_num', 'favor_num', 'comment_num',
         'published_at'
@@ -113,12 +113,14 @@ class Doc_Item extends Model
     {
         return $this->belongsToMany('App\Models\Doc\Doc_Item','pivot_item_relation','mine_id','relation_id')
             ->wherePivot('relation_type', 1);
+//            ->withTimestamps();
     }
     // 多对多 作品关联的人
     function pivot_product_people()
     {
         return $this->belongsToMany('App\Models\Doc\Doc_Item','pivot_item_relation','relation_id','mine_id')
             ->wherePivot('relation_type', 1);
+//            ->withTimestamps();
     }
 
 

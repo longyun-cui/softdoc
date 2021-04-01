@@ -44,7 +44,13 @@
                         <input type="text" class="form-control" name="name" placeholder="名称" value="{{ $data->name or '' }}">
                     </div>
                 </div>
-
+                {{--标签--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">标签</label>
+                    <div class="col-md-8 ">
+                        <input type="text" class="form-control" name="tag" placeholder="标签" value="{{ $data->tag or '' }}">
+                    </div>
+                </div>
                 {{--描述--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">描述</label>
@@ -53,32 +59,13 @@
                     </div>
                 </div>
 
-                {{--活动--}}
-                @if($type == "activity")
-                {{--活动时间--}}
+                {{--类别--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2">活动时间</label>
+                    <label class="control-label col-md-2">类别</label>
                     <div class="col-md-8 ">
-                        <div class="col-sm-6 col-md-6 padding-0">
-                            <input type="text" class="form-control" name="start" placeholder="开始时间"
-                                   @if(!empty($data->start_time)) value="{{ date("Y-m-d H:i",$data->start_time) }}" @endif
-                            >
-                        </div>
-                        <div class="col-sm-6 col-md-6 padding-0">
-                            <input type="text" class="form-control" name="end" placeholder="结束时间"
-                                   @if(!empty($data->end_time)) value="{{ date("Y-m-d H:i",$data->end_time) }}" @endif
-                            >
-                        </div>
+                        <input type="text" class="form-control" name="major" placeholder="类别" value="{{ $data->major or '' }}">
                     </div>
                 </div>
-                {{--活动地点--}}
-                <div class="form-group">
-                    <label class="control-label col-md-2">活动地点</label>
-                    <div class="col-md-8 ">
-                        <input type="text" class="form-control" name="address" placeholder="地点" value="{{ $data->address or '' }}">
-                    </div>
-                </div>
-                @endif
 
                 {{--链接地址--}}
                 <div class="form-group">
@@ -270,90 +257,5 @@
 @section('custom-script')
 {{--<script src="https://cdn.bootcss.com/select2/4.0.5/js/select2.min.js"></script>--}}
 <script src="{{ asset('/lib/js/select2-4.0.5.min.js') }}"></script>
-<script>
-    $(function() {
-
-        $("#multiple-images").fileinput({
-            allowedFileExtensions : [ 'jpg', 'jpeg', 'png', 'gif' ],
-            showUpload: false
-        });
-
-
-        // 【选择时间】
-        $("#form-edit-item").on('click', "input[name=time_type]", function() {
-            // checkbox
-//            if($(this).is(':checked')) {
-//                $('.time-show').show();
-//            } else {
-//                $('.time-show').hide();
-//            }
-            // radio
-            var $value = $(this).val();
-            if($value == 1) {
-                $('.time-show').show();
-            } else {
-                $('.time-show').hide();
-            }
-        });
-
-
-        $('input[name=start]').datetimepicker({
-            locale: moment.locale('zh-cn'),
-            format:"YYYY-MM-DD HH:mm"
-        });
-        $('input[name=end]').datetimepicker({
-            locale: moment.locale('zh-cn'),
-            format:"YYYY-MM-DD HH:mm"
-        });
-
-        // 添加or编辑
-        $("#edit-item-submit").on('click', function() {
-            var options = {
-                url: "{{ url('/admin/item/item-edit') }}",
-                type: "post",
-                dataType: "json",
-                // target: "#div2",
-                success: function (data) {
-                    if(!data.success) layer.msg(data.msg);
-                    else
-                    {
-                        layer.msg(data.msg);
-                        location.href = "{{ url('/admin/item/item-all-list') }}";
-                    }
-                }
-            };
-            $("#form-edit-item").ajaxSubmit(options);
-        });
-
-        $('#menus').select2({
-            ajax: {
-                url: "{{url('/admin/item/select2_menus')}}",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        keyword: params.term, // search term
-                        page: params.page
-                    };
-                },
-                processResults: function (data, params) {
-
-                    params.page = params.page || 1;
-//                    console.log(data);
-                    return {
-                        results: data,
-                        pagination: {
-                            more: (params.page * 30) < data.total_count
-                        }
-                    };
-                },
-                cache: true
-            },
-            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-            minimumInputLength: 0,
-            theme: 'classic'
-        });
-
-    });
-</script>
+@include(env('TEMPLATE_DOC_ATOM').'entrance.item.item-edit-script')
 @endsection
