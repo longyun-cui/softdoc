@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use App\Administrator;
-use App\Models\Doc_Notification;
+use App\Models\Doc\Doc_Notification;
 use Auth, Response;
 
 class NotificationMiddleware

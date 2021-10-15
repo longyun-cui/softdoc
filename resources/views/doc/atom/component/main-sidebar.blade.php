@@ -88,6 +88,18 @@
 
 
 
+            {{--平台--}}
+            <li class="header">平台</li>
+
+            <li class="treeview">
+                <a href="{{ url('/') }}" target="_blank">
+                    <i class="fa fa-cube text-default"></i> <span>平台首页</span>
+                </a>
+            </li>
+
+
+
+
 
 
         </ul>

@@ -1,21 +1,21 @@
-@extends(env('TEMPLATE_DEFAULT').'frontend.layout.layout')
+@extends(env('TEMPLATE_FRONT').'layout.layout')
 
 
-@section('head_title','朝鲜族组织活动平台')
+@section('head_title','如未科技')
 @section('meta_title')@endsection
 @section('meta_author')@endsection
 @section('meta_description')@endsection
 @section('meta_keywords')@endsection
 
 
-@section('wx_share_title')朝鲜族组织活动平台@endsection
+@section('wx_share_title')如未科技@endsection
 @section('wx_share_desc')@endsection
 @section('wx_share_imgUrl'){{ url('/k-org.cn.png') }}@endsection
 
 
 @section('sidebar')
 
-    @include(env('TEMPLATE_DEFAULT').'frontend.component.sidebar-root')
+    @include(env('TEMPLATE_FRONT').'component.sidebar-root')
 
 @endsection
 
@@ -34,15 +34,15 @@
         {{--@foreach($datas as $num => $item)--}}
             {{--@include('frontend.component.topic')--}}
         {{--@endforeach--}}
-        @include(env('TEMPLATE_DEFAULT').'frontend.component.item-list',['item_list'=>$item_list])
-        {{ $item_list->links() }}
+        {{--@include(env('TEMPLATE_DEFAULT').'frontend.component.item-list',['item_list'=>$item_list])--}}
+        {{--{{ $item_list->links() }}--}}
 
     </div>
 
 
     <div class="col-xs-12 col-sm-12 col-md-3 hidden-xs hidden-sm container-body-right">
 
-        @include(env('TEMPLATE_DEFAULT').'frontend.component.right-root')
+        @include(env('TEMPLATE_FRONT').'component.right-root')
         {{--@include(env('TEMPLATE_DEFAULT').'frontend.component.right-me')--}}
 
     </div>

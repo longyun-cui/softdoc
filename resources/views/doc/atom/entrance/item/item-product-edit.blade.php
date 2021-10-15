@@ -59,6 +59,13 @@
                     </div>
                 </div>
 
+                {{--类别--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">类别</label>
+                    <div class="col-md-8 ">
+                        <input type="text" class="form-control" name="atom_category" placeholder="类别" value="{{ $data->atom_category or '' }}">
+                    </div>
+                </div>
                 {{--作者--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">添加作者</label>

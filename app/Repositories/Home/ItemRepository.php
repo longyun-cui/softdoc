@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories\Home;
 
-use App\Models\Doc_Item;
+use App\Models\Doc\Doc_Item;
 
 use App\Repositories\Common\CommonRepository;
 

@@ -155,19 +155,19 @@ desired effect
 
 
     {{--main-header--}}
-    @include(env('TEMPLATE_ADMIN').'frontend.layout.main-header')
+    @include(env('TEMPLATE_FRONT').'layout.main-header')
 
     {{--main-sidebar--}}
-    @include(env('TEMPLATE_ADMIN').'frontend.layout.main-sidebar')
+    @include(env('TEMPLATE_FRONT').'layout.main-sidebar')
 
     {{--main-content--}}
-    @include(env('TEMPLATE_ADMIN').'frontend.layout.main-content')
+    @include(env('TEMPLATE_FRONT').'layout.main-content')
 
     {{--main-footer--}}
-    @include(env('TEMPLATE_ADMIN').'frontend.layout.main-footer')
+    @include(env('TEMPLATE_FRONT').'layout.main-footer')
 
     {{--control-sidebar--}}
-    @include(env('TEMPLATE_ADMIN').'frontend.layout.control-sidebar')
+    @include(env('TEMPLATE_FRONT').'layout.control-sidebar')
 
 
 </div>

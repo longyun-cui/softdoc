@@ -65,8 +65,9 @@ class IndexRepository {
         }
 
         $path = request()->path();
-        if($path == "root-1") return view('frontend.entrance.root-1')->with(['items'=>$items]);
-        else return view('frontend.entrance.root')->with(['items'=>$items]);
+        if($path == "root-1") return view(env('TEMPLATE_FRONT').'entrance.root-1')->with(['items'=>$items]);
+        else return view(env('TEMPLATE_FRONT').'entrance.root')->with(['items'=>$items]);
+//        else return view('frontend.entrance.root')->with(['items'=>$items]);
     }
 
 
